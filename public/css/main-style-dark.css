@@ -1,0 +1,96 @@
+:root {
+    --border-color: #3E3F4A;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--white);
+}
+
+.chat-wrapper-left .social-chat .user-info .user-name,
+.chat-wrapper-left .social-icon-wrp span,
+.chat-footer .tabs-container .tab-content .form-group label,
+.chat-footer .tabs-container .tab-content,
+.chat-container .right-msg p,
+.ticket-info-card,
+.chat-wrapper-left .social-chat .user-info .chat-user.not-read {
+    color: var(--white);
+}
+
+.form-control, 
+input:not([type="submit"]), 
+input:not([type="checkbox"]), 
+input:not([type="radio"]), 
+select, 
+textarea, 
+.nice-select {
+    color: #808191;
+    background-color: #22242c;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 9999s ease-in-out 0s;
+  -webkit-text-fill-color: #808191 !important;
+}
+.nice-select .list-wrp {
+    background-color: #22242c;
+}
+.nice-select .option {
+    color: #808191;
+}
+.nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
+    background-color: #202835;
+    color: #dee2e6;
+}
+
+.nice-select:after {
+    border-color: #808191;
+}
+.chat-wrapper-left .input-wrp {
+    background: transparent;
+}
+.chat-wrapper-left .input-wrp .form-control {
+    color: #808191;
+   border: 1px solid var(--border-color);
+}
+.chat-wrapper-left .input-wrp .search-btn svg path {
+    stroke: #808191;
+}
+.chat-right-body,
+.choose-file-col {
+    background-color: #292A33;
+}
+.note-editor .note-dropzone,
+.note-editor.note-frame .note-editing-area .note-editable,
+.chat-footer .note-editor.card .card-header,
+.reply-btn-wrp .reply-btn-list {
+    background-color: #292A33 !important;
+    color: #808191 !important;
+}
+.chat-footer .note-editor.card .card-header i,
+.chat-footer .tabs-container .tab-content .dropdown-toggle::after {
+    color: var(--white) !important;
+}
+
+.note-editor.note-frame .note-statusbar {
+    background-color: #3a3b42 !important;
+}
+.note-editor.note-frame,
+.note-editor.card .card-header {
+    border-color: var(--border-color) !important;
+}
+
+.chat-footer .tabs-container,
+.msg-card-wrp {
+    background-color: #22242c;
+}
+.chat-container .msg-box .msg-box-content {
+    background-color: #212129;
+    color: var(--white);
+}
+.chat-container .right-msg .msg-box .msg-box-content {
+    background-color: #37373e;
+}
+.chat-footer-wrp ul.list li a:not(:hover, :focus) {
+    color: var(--black);
+}
