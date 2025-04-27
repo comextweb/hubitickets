@@ -6,6 +6,11 @@
 storage/installed
 storage/uploads/
 /uploads/*
+!/uploads/dashboard/
+!/uploads/default-images/
+!/uploads/user-avatar/
+!/uploads/metaevent/
+!/uploads/logo/
 /vendor/
 /storage/debugbar/*
 /storage/framework/cache/*
