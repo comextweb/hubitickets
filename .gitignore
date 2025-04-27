@@ -11,6 +11,7 @@ storage/uploads/
 !/uploads/user-avatar/
 !/uploads/metaevent/
 !/uploads/logo/
+!/uploads/users-avatar/
 /vendor/
 /storage/debugbar/*
 /storage/framework/cache/*
