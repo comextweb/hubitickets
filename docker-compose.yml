@@ -48,3 +48,9 @@ services:
       - app
     networks:
       - hubi_net
+
+volumes:
+  hubi_db_data:
+
+networks:
+  hubi_net:
