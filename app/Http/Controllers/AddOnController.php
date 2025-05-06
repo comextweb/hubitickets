@@ -282,6 +282,8 @@ class AddOnController extends Controller
         \Log::info('filePath: ' . $filePath);
 
         if (!file_exists($filePath)) {
+            \Log::error('File not found at: ' . $filePath);
+            \Log::info('Directory contents: ' . implode(', ', scandir(dirname($filePath))));
             throw new Exception('module.json file is missing.');
         }
         $jsonContent = file_get_contents($filePath);
