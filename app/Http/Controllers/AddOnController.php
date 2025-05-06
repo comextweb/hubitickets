@@ -155,12 +155,12 @@ class AddOnController extends Controller
         }
 
         // Prepare the extraction path
-        $extractPath = 'packages/workdo/' . $fileName;
+        $extractPath = base_path('packages/workdo/' . $fileName);
 
         $this->createDirectory($extractPath);
 
         // After extracting to the temporary directory
-        $tempPath = 'packages/workdo/tmp_' . uniqid();
+        $tempPath = base_path('packages/workdo/tmp_' . uniqid());
         
 
         $zip->extractTo($tempPath);
