@@ -170,6 +170,7 @@ class AddOnController extends Controller
 
         // Determine the root folder name in the zip (if needed)
         $rootFolder = array_diff(scandir($tempPath), ['.', '..']);
+        \Log::info('Root folder: ' . implode(', ', $rootFolder));
 
         if (empty($rootFolder) || !file_exists($tempPath . '/' . $fileName . '/module.json')) {
             // Remove the temporary directory
@@ -178,6 +179,7 @@ class AddOnController extends Controller
         }
 
         $rootFolderName = array_values($rootFolder)[0]; // Get the first folder name in the zip
+        \Log::info('Root folder name: ' . $rootFolderName);
 
         // Move files to the target directory
         $this->moveExtractedFiles($tempPath, $extractPath, $rootFolderName);
