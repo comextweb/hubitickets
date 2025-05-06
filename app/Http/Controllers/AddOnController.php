@@ -166,6 +166,10 @@ class AddOnController extends Controller
         \Log::info('tempPath: ' . $tempPath);
 
         $zip->extractTo($tempPath);
+
+        // En el método installAddon(), después de extractTo():
+        \Log::info("Temp dir contents: " . implode(', ', scandir(base_path($tempPath))));
+        \Log::info("Target dir exists: " . (is_dir(base_path($extractPath)) ? 'Yes' : 'No'));
         $zip->close();
 
         // Determine the root folder name in the zip (if needed)
@@ -235,6 +239,7 @@ class AddOnController extends Controller
         if ($filename) {
             $source = $source . DIRECTORY_SEPARATOR . $filename;
         }
+        \Log::info("Moving files from: {$source} to {$destination}");
 
         $files = array_diff(scandir($source), ['.', '..']);
         foreach ($files as $file) {
@@ -283,7 +288,6 @@ class AddOnController extends Controller
 
         if (!file_exists($filePath)) {
             \Log::error('File not found at: ' . $filePath);
-            \Log::info('Directory contents: ' . implode(', ', scandir(dirname($filePath))));
             throw new Exception('module.json file is missing.');
         }
         $jsonContent = file_get_contents($filePath);
