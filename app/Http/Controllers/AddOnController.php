@@ -144,7 +144,6 @@ class AddOnController extends Controller
         $zip = new ZipArchive;
         $fileName = $request->file('file')->getClientOriginalName();
         $fileName = str_replace('.zip', '', $fileName); // Remove .zip from the file name
-        \Log::info('File name: ' . $fileName);
 
         try {
             $res = $zip->open($request->file);
@@ -157,24 +156,19 @@ class AddOnController extends Controller
 
         // Prepare the extraction path
         $extractPath = 'packages/workdo/' . $fileName;
-        \Log::info('extractPath: ' . $extractPath);
 
         $this->createDirectory($extractPath);
 
         // After extracting to the temporary directory
         $tempPath = 'packages/workdo/tmp_' . uniqid();
-        \Log::info('tempPath: ' . $tempPath);
+        
 
         $zip->extractTo($tempPath);
 
-        // En el método installAddon(), después de extractTo():
-        \Log::info("Temp dir contents: " . implode(', ', scandir(base_path($tempPath))));
-        \Log::info("Target dir exists: " . (is_dir(base_path($extractPath)) ? 'Yes' : 'No'));
         $zip->close();
 
         // Determine the root folder name in the zip (if needed)
         $rootFolder = array_diff(scandir($tempPath), ['.', '..']);
-        \Log::info('Root folder: ' . implode(', ', $rootFolder));
 
         if (empty($rootFolder) || !file_exists($tempPath . '/' . $fileName . '/module.json')) {
             // Remove the temporary directory
@@ -183,7 +177,6 @@ class AddOnController extends Controller
         }
 
         $rootFolderName = array_values($rootFolder)[0]; // Get the first folder name in the zip
-        \Log::info('Root folder name: ' . $rootFolderName);
 
         // Move files to the target directory
         $this->moveExtractedFiles($tempPath, $extractPath, $rootFolderName);
@@ -193,7 +186,6 @@ class AddOnController extends Controller
         $this->setPermissions($extractPath);
         // Process the `module.json` file
         $filePath = base_path('packages/workdo/' . $fileName . '/module.json');
-        \Log::info('filePath: ' . $filePath);
 
         $data = $this->parseJsonFile($filePath);
 
@@ -239,7 +231,6 @@ class AddOnController extends Controller
         if ($filename) {
             $source = $source . DIRECTORY_SEPARATOR . $filename;
         }
-        \Log::info("Moving files from: {$source} to {$destination}");
 
         $files = array_diff(scandir($source), ['.', '..']);
         foreach ($files as $file) {
@@ -284,10 +275,9 @@ class AddOnController extends Controller
 
     private function parseJsonFile($filePath)
     {
-        \Log::info('filePath: ' . $filePath);
 
         if (!file_exists($filePath)) {
-            \Log::error('File not found at: ' . $filePath);
+            #\Log::error('File not found at: ' . $filePath);
             throw new Exception('module.json file is missing.');
         }
         $jsonContent = file_get_contents($filePath);
