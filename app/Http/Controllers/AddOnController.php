@@ -144,6 +144,7 @@ class AddOnController extends Controller
         $zip = new ZipArchive;
         $fileName = $request->file('file')->getClientOriginalName();
         $fileName = str_replace('.zip', '', $fileName); // Remove .zip from the file name
+        \Log::info('File name: ' . $fileName);
 
         try {
             $res = $zip->open($request->file);
@@ -156,10 +157,14 @@ class AddOnController extends Controller
 
         // Prepare the extraction path
         $extractPath = 'packages/workdo/' . $fileName;
+        \Log::info('extractPath: ' . $extractPath);
+
         $this->createDirectory($extractPath);
 
         // After extracting to the temporary directory
         $tempPath = 'packages/workdo/tmp_' . uniqid();
+        \Log::info('tempPath: ' . $tempPath);
+
         $zip->extractTo($tempPath);
         $zip->close();
 
@@ -182,6 +187,8 @@ class AddOnController extends Controller
         $this->setPermissions($extractPath);
         // Process the `module.json` file
         $filePath = base_path('packages/workdo/' . $fileName . '/module.json');
+        \Log::info('filePath: ' . $filePath);
+
         $data = $this->parseJsonFile($filePath);
 
         $addon = AddOn::where('name', $fileName)->first();
@@ -270,6 +277,8 @@ class AddOnController extends Controller
 
     private function parseJsonFile($filePath)
     {
+        \Log::info('filePath: ' . $filePath);
+
         if (!file_exists($filePath)) {
             throw new Exception('module.json file is missing.');
         }
