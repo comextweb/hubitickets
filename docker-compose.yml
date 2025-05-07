@@ -13,25 +13,7 @@ services:
       - .:/var/www
     networks:
       - hubi_net
-    depends_on:
-      - db
 
-
-  db:
-    image: mysql:8.0
-    container_name: db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: hubi_tickets
-      MYSQL_USER: hubi_user
-      MYSQL_PASSWORD: Hub*tIckeT5
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-    volumes:
-      - hubi_db_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    networks:
-      - hubi_net
 
   nginx:
     image: nginx:alpine
@@ -48,9 +30,6 @@ services:
       - app
     networks:
       - hubi_net
-
-volumes:
-  hubi_db_data:
 
 networks:
   hubi_net:
