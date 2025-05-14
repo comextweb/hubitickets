@@ -12,6 +12,7 @@ storage/uploads/
 !/uploads/metaevent/
 !/uploads/logo/
 !/uploads/users-avatar/
+/packages/workdo/*
 /vendor/
 /storage/debugbar/*
 /storage/framework/cache/*
