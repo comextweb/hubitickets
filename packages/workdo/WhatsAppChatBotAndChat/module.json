@@ -1,8 +1,0 @@
-{
-    "name": "WhatsAppChatBotAndChat",
-    "alias": "WhatsApp ChatBot & Chat",
-    "description": "",
-    "priority": 1000,
-    "version":1.1,
-    "package_name":"whats-app-chat-bot-and-chat"
-}

@@ -1,8 +1,0 @@
-{
-    "name": "AutoReply",
-    "alias": "Auto Reply",
-    "description": "",
-    "priority": 320,
-    "version":1.0,
-    "package_name":"auto-reply"
-}

@@ -1,8 +1,0 @@
-{
-    "name": "Webhook",
-    "alias": "Webhook",
-    "description": "",
-    "priority": 2110,
-    "version":1.0,
-    "package_name":"webhook"
-}

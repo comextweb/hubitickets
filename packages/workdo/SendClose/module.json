@@ -1,8 +1,0 @@
-{
-    "name": "SendClose",
-    "alias": "Send & Close",
-    "description": "",
-    "priority": 310,
-    "version":1.0,
-    "package_name":"send-close"
-}
