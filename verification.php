@@ -1,6 +1,6 @@
 <?php
 // System : TicketGo
-// System Version : 5.5
+// System Version : 5.6
 
 function getPhpVersionInfo()
 {

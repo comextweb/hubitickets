@@ -26,7 +26,7 @@
                 @if (!empty($permissions))
                     <div class="col-sm-12 col-md-10 col-xxl-12 col-md-12">
                         <div class="card">
-                            <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+                            <ul class="nav nav-pills nav-fill p-3 role-tab" id="pills-tab" role="tablist">
                                 @foreach ($modules as $module)
                                     @if (moduleIsActive($module) || $module == 'General')
                                         <li class="nav-item text-start" role="presentation">

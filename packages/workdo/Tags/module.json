@@ -1,0 +1,8 @@
+{
+    "name": "Tags",
+    "alias": "Tags",
+    "description": "",
+    "priority": 270,
+    "version":1.0,
+    "package_name":"tags"
+}

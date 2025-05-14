@@ -54,7 +54,7 @@
                                     </div>
                                     <x-mobile required></x-mobile>
                                     <div class="col-12 mb-3">
-                                        <span>{{ __('Login is enabled') }}</span>
+                                        <span class="me-1">{{ __('Login is enabled') }}</span>
                                         <div class="form-check form-switch d-inline-block custom-switch-v1">
                                             <input type="checkbox" name="password_switch"
                                                 class="form-check-input input-primary pointer"

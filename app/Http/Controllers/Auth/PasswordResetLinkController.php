@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Models\Utility;
 use Illuminate\Support\Facades\App;
+use Exception;
 
 class PasswordResetLinkController extends Controller
 {
 
     public function create($lang = '')
     {
-        $settings    = getCompanyAllSettings();
+        $settings = getCompanyAllSettings();
         if ($lang == '') {
             $lang = getActiveLanguage();
         } else {
@@ -33,23 +34,23 @@ class PasswordResetLinkController extends Controller
         $request->validate([
             'email' => 'required|email',
         ]);
-
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
         $settings = getCompanyAllSettings();
 
         if ((isset($settings['mail_driver']) && $settings['mail_driver']) && (isset($settings['mail_host']) && $settings['mail_host']) && (isset($settings['mail_port']) && $settings['mail_port']) && (isset($settings['mail_encryption']) && $settings['mail_encryption']) && (isset($settings['mail_username']) && $settings['mail_username']) && (isset($settings['mail_password']) && $settings['mail_password']) && (isset($settings['mail_from_address']) && $settings['mail_from_address']) && (isset($settings['mail_from_name']) && $settings['mail_from_name'])) {
+            try {
 
-            setSMTPConfig();
-            $status = Password::sendResetLink(
-                $request->only('email')
-            );
+                setSMTPConfig();
+                $status = Password::sendResetLink(
+                    $request->only('email')
+                );
 
-            return $status == Password::RESET_LINK_SENT
-                ? back()->with('status', __($status))
-                : back()->withInput($request->only('email'))
-                ->withErrors(['email' => __($status)]);
+                return $status == Password::RESET_LINK_SENT
+                    ? back()->with('status', __($status))
+                    : back()->withInput($request->only('email'))
+                        ->withErrors(['email' => __($status)]);
+            } catch (Exception $e) {
+                return redirect()->back()->with('Error', __($e->getMessage()));
+            }
         } else {
             return redirect()->back()->with('Error', 'Email SMTP settings does not configured so please contact to your site admin.');
         }

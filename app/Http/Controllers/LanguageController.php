@@ -298,23 +298,6 @@ class LanguageController extends Controller
     public function destroyLang($lang)
     {
         if (Auth::user()->isAbleTo('language delete')) {
-            // $settings = getCompanyAllSettings();
-            // $language = Languages::where('code', $lang)->first();
-            // if ($language) {
-            //     $language->delete();
-            //     $default_lang =  isset($settings['default_language']) ? $settings['default_language'] : 'en';
-
-            //     $langDir = base_path() . '/resources/lang/';
-            //     if (is_dir($langDir)) {
-            //         User::delete_directory($langDir . $lang);
-            //         User::where('lang', 'LIKE', $lang)->update(['lang' => $default_lang]);
-            //     }
-            //     NotificationTemplateLangs::where('lang', $lang)->delete();
-            //     return redirect()->route('admin.lang.index', [Auth::user()->lang])->with('success', __('Language Deleted Successfully!'));
-            // } else {
-            //     return redirect()->back()->with('error', 'Language Not Found.');
-            // }
-
             $usr = Auth::user();
             $default_lang = $usr->lang;
 

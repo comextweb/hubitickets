@@ -1,0 +1,28 @@
+{
+    "name": "workdo/whats-app-chat-bot-and-chat",
+    "description": "Description for whats-app-chat-bot-and-chat package",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Workdo\\WhatsAppChatBotAndChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "WorkDo",
+            "email": "support@workdo.io"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Workdo\\WhatsAppChatBotAndChat\\Providers\\WhatsAppChatBotAndChatServiceProvider",
+                "Workdo\\WhatsAppChatBotAndChat\\Providers\\ViewComposer",
+                "Workdo\\WhatsAppChatBotAndChat\\Providers\\CloseTicketServiceProvider"
+
+            ]
+        }
+    }
+}

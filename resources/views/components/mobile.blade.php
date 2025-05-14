@@ -6,7 +6,7 @@
                class="{{ $class }}" placeholder="{{ $placeholder }}" 
                pattern="^\+\d{1,3}\d{9,13}$" id="{{ $id }}" 
                {{ $required ? 'required' : '' }}>
-        <div class="text-xs text-danger">
+        <div class="text-xs text-danger mt-1">
             {{ __('Please use with country code. (ex. +91)') }}
         </div>
     </div>

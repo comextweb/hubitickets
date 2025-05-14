@@ -268,40 +268,10 @@
 /* .fab_field .btn svg path{
     fill: #0CAF60;
 } */
-body.theme-1 .fab_field .btn svg path{
-    fill: var(--theme1-color);
+ .fab_field .btn svg path{
+    fill: var(--theme-color);
 }
-body.theme-2 .fab_field .btn svg path{
-    fill: var(--theme2-color);
-}
-body.theme-3 .fab_field .btn svg path{
-    fill: var(--theme3-color);
-}
-body.theme-4 .fab_field .btn svg path{
-    fill: var(--theme4-color);
-}
-body.theme-5 .fab_field .btn svg path{
-    fill: var(--theme5-color);
-}
-body.theme-6 .fab_field .btn svg path{
-    fill: var(--theme6-color);
-}
-body.theme-7 .fab_field .btn svg path{
-    fill: var(--theme7-color);
-}
-body.theme-8 .fab_field .btn svg path{
-    fill: var(--theme8-color);
-}
-body.theme-9 .fab_field .btn svg path{
-    fill: var(--theme9-color);
-}
-body.theme-10 .fab_field .btn svg path{
-    fill: var(--theme10-color);
-}
-body.custom-color .fab_field .btn svg path{
-    fill: var(--color-customColor);
 
-}
 
 .ticket-page-sec .fab_field .btn svg{
     width: 16px;

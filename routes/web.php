@@ -23,10 +23,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketConversionController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Http\Controllers\MetaController;
+use App\Http\Controllers\Auth\LoginExternalController;
 
 require __DIR__ . '/auth.php';
 
 Route::any('/cookie-consent', [SettingsController::class, 'CookieConsent'])->name('cookie-consent');
+Route::get('/loginExternal', [LoginExternalController::class, 'handle']);
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -150,6 +152,16 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(funct
     Route::post('addon-enable', [AddOnController::class, 'addonEnable'])->name('addon.enable');
     Route::get('addon/add', [AddOnController::class, 'addAddOn'])->name('addon.add');
     Route::post('addon-install', [AddOnController::class, 'installAddon'])->name('addon.install');
+
+
+     // Check TicketNumber Addon Active Or Not 
+     Route::get('ticket-number-format/{id}', function ($id) {
+        $ticketNumber = \Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($id);
+        return response()->json([
+            'status' => 'success',
+            'formatted' => $ticketNumber
+        ]);
+    })->name('convertTicketNumber');
 });
 
 Route::group(['middleware' => ['web', 'auth', 'verified','XSS']], function () {

@@ -77,6 +77,7 @@
     <!-- vendor css -->
 
     <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
+
     @if ($SITE_RTL == 'on' && isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'off')
         <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css') }}" id="main-style-link">
     

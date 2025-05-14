@@ -10,6 +10,7 @@
         "anhskohbo/no-captcha": "^3.6",
         "bacon/bacon-qr-code": "^3.0",
         "coingate/coingate-php": "^4.1",
+        "firebase/php-jwt": "^6.11",
         "guzzlehttp/guzzle": "^7.9",
         "iyzico/iyzipay-php": "^2.0",
         "kkomelin/laravel-translatable-string-exporter": "^1.22",

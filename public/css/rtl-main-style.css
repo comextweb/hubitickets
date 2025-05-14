@@ -1808,61 +1808,12 @@ body.custom-color .chat-wrapper-left .social-icon-wrp .notification{
 }
 
 
-body.theme-1 .msg-card .msg-card-top .ticket-no b,
-body.theme-1 .chat-wrapper-left .load-more-btn,
-body.theme-1 .chat-wrapper-left .no-more-btn{
-  color:var(--theme1-color);
-}
-body.theme-2 .msg-card .msg-card-top .ticket-no b,
-body.theme-2 .chat-wrapper-left .load-more-btn,
-body.theme-2 .chat-wrapper-left .no-more-btn{
-  color:var(--theme2-color);
-}
-body.theme-3 .msg-card .msg-card-top .ticket-no b,
-body.theme-3 .chat-wrapper-left .load-more-btn,
-body.theme-3 .chat-wrapper-left .no-more-btn{
-  color:var(--theme3-color);
-}
-body.theme-4 .msg-card .msg-card-top .ticket-no b ,
-body.theme-4 .chat-wrapper-left .load-more-btn,
-body.theme-4 .chat-wrapper-left .no-more-btn{
-  color:var(--theme4-color);
-}
-body.theme-5 .msg-card .msg-card-top .ticket-no b ,
-body.theme-5 .chat-wrapper-left .load-more-btn,
-body.theme-5 .chat-wrapper-left .no-more-btn{
-  color:var(--theme5-color);
-}
-body.theme-6 .msg-card .msg-card-top .ticket-no b,
-body.theme-6 .chat-wrapper-left .load-more-btn,
-body.theme-6 .chat-wrapper-left .no-more-btn{
-  color:var(--theme6-color);
-}
-body.theme-7 .msg-card .msg-card-top .ticket-no b,
-body.theme-7 .chat-wrapper-left .load-more-btn,
-body.theme-7 .chat-wrapper-left .no-more-btn{
-  color:var(--theme7-color);
-}
-body.theme-8 .msg-card .msg-card-top .ticket-no b,
-body.theme-8 .chat-wrapper-left .load-more-btn,
-body.theme-8 .chat-wrapper-left .no-more-btn{
-  color:var(--theme8-color);
-}
-body.theme-9.msg-card .msg-card-top .ticket-no b,
-body.theme-9 .chat-wrapper-left .load-more-btn,
-body.theme-9 .chat-wrapper-left .no-more-btn{
-  color: var(--theme9-color);
-}
-body.theme-10 .msg-card .msg-card-top .ticket-no b,
-body.theme-10 .chat-wrapper-left .load-more-btn,
-body.theme-10 .chat-wrapper-left .no-more-btn{
-  color: var(--theme10-color);
-}
 .msg-card .msg-card-top .ticket-no b,
 .chat-wrapper-left .load-more-btn,
 .chat-wrapper-left .no-more-btn{
-  color: var(--color-customColor);
+  color:var(--theme-color);
 }
+
 .chat-wrapper-left .delete-icon {
   display: flex;
   align-items: center;
@@ -1900,102 +1851,24 @@ body.theme-10 .chat-wrapper-left .no-more-btn{
   border-radius: 6px;
 }
 body.theme-1 .chat-footer-btn {
-  background: var(--theme1-color);
+  background: var(--theme-color);
 }
 
 body.theme-1 .chat-footer-btn {
-  background: var(--theme1-color);
+  background: var(--theme-color);
 }
 
-body.theme-1 .chat-footer-btn {
-  background: var(--theme1-color);
-}
-body.theme-2 .chat-footer-btn {
-  background: var(--theme2-color);
-}
-body.theme-3 .chat-footer-btn {
-  background: var(--theme3-color);
-}
-body.theme-4 .chat-footer-btn {
-  background: var(--theme4-color);
-}
-body.theme-5 .chat-footer-btn {
-  background: var(--theme5-color);
-}
-body.theme-6 .chat-footer-btn {
-  background: var(--theme6-color);
-}
-body.theme-7 .chat-footer-btn {
-  background: var(--theme7-color);
-}
-body.theme-8 .chat-footer-btn {
-  background: var(--theme8-color);
-}
-body.theme-9 .chat-footer-btn {
-  background: var(--theme9-color);
-}
-body.theme-10 .chat-footer-btn {
-  background: var(--theme10-color);
-}
-body.custom-color .chat-footer-btn {
-  background: var(--color-customColor);
+ .chat-footer-btn {
+  background: var(--theme-color);
 }
 
-body.theme-1 .chat-footer-btn .btn,
-body.theme-1 .chat-footer-btn .btn:hover{
-  background: var(--theme1-color);
-  border-color:var(--theme1-color);
+
+.chat-footer-btn .btn,
+.chat-footer-btn .btn:hover{
+  background: var(--theme-color);
+  border-color:var(--theme-color);
 }
-body.theme-2 .chat-footer-btn .btn,
-body.theme-2 .chat-footer-btn .btn:hover{
-  background: var(--theme2-color);
-  border-color:var(--theme2-color);
-}
-body.theme-3 .chat-footer-btn .btn,
-body.theme-3 .chat-footer-btn .btn:hover{
-  background: var(--theme3-color);
-  border-color:var(--theme3-color);
-}
-body.theme-4 .chat-footer-btn .btn,
-body.theme-4 .chat-footer-btn .btn:hover{
-  background: var(--theme4-color);
-  border-color:var(--theme4-color);
-}
-body.theme-5 .chat-footer-btn .btn,
-body.theme-5 .chat-footer-btn .btn:hover{
-  background: var(--theme5-color);
-  border-color:var(--theme5-color);
-}
-body.theme-6 .chat-footer-btn .btn,
-body.theme-6 .chat-footer-btn .btn:hover{
-  background: var(--theme6-color);
-  border-color:var(--theme6-color);
-}
-body.theme-7 .chat-footer-btn .btn,
-body.theme-7 .chat-footer-btn .btn:hover{
-  background: var(--theme7-color);
-  border-color:var(--theme7-color);
-}
-body.theme-8 .chat-footer-btn .btn,
-body.theme-8 .chat-footer-btn .btn:hover{
-  background: var(--theme8-color);
-  border-color:var(--theme8-color);
-}
-body.theme-9 .chat-footer-btn .btn,
-body.theme-9 .chat-footer-btn .btn:hover{
-  background: var(--theme9-color);
-  border-color:var(--theme9-color);
-}
-body.theme-10 .chat-footer-btn .btn,
-body.theme-10 .chat-footer-btn .btn:hover{
-  background: var(--theme10-color);
-  border-color:var(--theme10-color);
-}
-body.custom-color .chat-footer-btn .btn,
-body.custom-color .chat-footer-btn .btn:hover{
-  background: var(--color-customColor);
-  border-color:var(--color-customColor);
-}
+
 .chat-footer-btn .btn{
   border-radius: 0;
   border-radius: 6px;
@@ -2170,36 +2043,10 @@ body.custom-color .chat-footer-btn .btn:hover{
   width: 35px;
   margin: 0 auto 15px;
 }
-body.theme-1 .chat-right-body .no-conversation svg path {
-  fill: var(--theme1-color);
+ .chat-right-body .no-conversation svg path {
+  fill: var(--theme-color);
 }
-body.theme-2 .chat-right-body .no-conversation svg path {
-  fill: var(--theme2-color);
-}
-body.theme-3 .chat-right-body .no-conversation svg path {
-  fill: var(--theme3-color);
-}
-body.theme-4 .chat-right-body .no-conversation svg path {
-  fill: var(--theme4-color);
-}
-body.theme-5 .chat-right-body .no-conversation svg path {
-  fill: var(--theme5-color);
-}
-body.theme-6 .chat-right-body .no-conversation svg path {
-  fill: var(--theme6-color);
-}
-body.theme-8 .chat-right-body .no-conversation svg path {
-  fill: var(--theme8-color);
-}
-body.theme-9 .chat-right-body .no-conversation svg path {
-  fill: var(--theme9-color);
-}
-body.theme-10 .chat-right-body .no-conversation svg path {
-  fill: var(--theme10-color);
-}
-body.custom-color .chat-right-body .no-conversation svg path {
-  fill: var(--color-customColor);
-}
+
 
 /* alert css */
 .alert {
@@ -2267,4 +2114,8 @@ body.custom-color .chat-right-body .no-conversation svg path {
 /* filter css */
 .row-gap {
     row-gap: 20px;
+}
+
+.page-header h4 {
+  font-size: 20px;
 }

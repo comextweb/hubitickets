@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('page-title')
-{{ __('Notification Template') }}
+{{ __('Notification Templates') }}
 @endsection
 
 @section('title')
@@ -12,7 +12,7 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Home') }}</a></li>
-<li class="breadcrumb-item active" aria-current="page">{{ __('Notification Template') }}</li>
+<li class="breadcrumb-item active" aria-current="page">{{ __('Notification Templates') }}</li>
 @endsection
 
 @php

@@ -57,7 +57,7 @@ class UserController extends Controller
 
     public function show()
     {
-        abort(403,'Page Not Found !');
+        abort(403, 'Page Not Found !');
     }
 
     public function store(Request $request)
@@ -93,10 +93,6 @@ class UserController extends Controller
             $user->type = isset($role) ? $role->name : '';
             $user->lang = isset($settings['default_language']) ? $settings['default_language'] : 'en';
             $user->created_by = creatorId();
-            $user->save();
-            if ($role) {
-                $user->addRole($role);
-            }
             if ($request->hasFile('avatar')) {
                 $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -109,8 +105,13 @@ class UserController extends Controller
                     $user->avatar =  $url;
                     $user->save();
                 } else {
-                    return redirect()->back()->with('error', __($path['msg']));
+                    return redirect()->back()->with('error', __($path['msg']))->withInput();
                 }
+            }
+            $user->save();
+
+            if ($role) {
+                $user->addRole($role);
             }
             event(new CreateUser($user, $request));
 
@@ -169,12 +170,12 @@ class UserController extends Controller
 
                 $path = uploadFile($request, 'avatar', $fileNameToStore, 'users-avatar', []);
 
-                // Old img delete
-                if (!empty($user['avatar']) && strpos($user['avatar'], 'avatar.png') == false && checkFile($user['avatar'])) {
-                    deleteFile($user['avatar']);
-                }
-
                 if ($path['flag'] == 1) {
+                    // Old img delete
+                    if (!empty($user['avatar']) && strpos($user['avatar'], 'avatar.png') == false && checkFile($user['avatar'])) {
+                        deleteFile($user['avatar']);
+                    }
+
                     $url = $path['url'];
                 } else {
                     return redirect()->back()->with('error', __($path['msg']));
@@ -199,6 +200,9 @@ class UserController extends Controller
             event(new DestroyUser($user));
             // delete the role of the user role_user table
             $user->roles()->detach();
+            if ($user->avatar) {
+                $removeImage = deleteFile($user->avatar);
+            }
             $user->delete();
 
             return redirect()->route('admin.users')->with('success', __('User deleted Successfully'));
@@ -230,8 +234,8 @@ class UserController extends Controller
                     ->join('users', 'login_details.user_id', '=', 'users.id')
                     ->select(DB::raw('login_details.*, users.name as user_name , users.email as user_email'))
                     ->where(['login_details.created_by' => $objUser->id])
-                    ->whereMonth('login_details.date' , date('m'))
-                    ->whereYear('login_details.date' , date('Y'));
+                    ->whereMonth('login_details.date', date('m'))
+                    ->whereYear('login_details.date', date('Y'));
             } else {
                 $users = DB::table('login_details')
                     ->join('users', 'login_details.user_id', '=', 'users.id')
@@ -373,6 +377,7 @@ class UserController extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required',
+                'mobile_number' => 'required'
             ]);
 
             if ($request->filled('password')) {
@@ -406,7 +411,7 @@ class UserController extends Controller
             }
             $user->name  = $request->name;
             $user->email = $request->email;
-            $user->mobile_number = $request->mobile_no;
+            $user->mobile_number = $request->mobile_number;
             $user->save();
 
             return redirect()->back()->with('success', __('User updated successfully'));

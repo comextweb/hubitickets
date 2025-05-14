@@ -35,7 +35,7 @@
     </script>
 @endpush
 @section('page-title')
-    {{ __('Manage Email Templates') }}
+    {{ __('Email Templates') }}
 @endsection
 @section('title')
     <div class="d-inline-block">
@@ -56,7 +56,7 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header card-body table-border-style">
-                    <h5></h5>
+                    
                     <div class="table-responsive">
                         <table class="table" id="pc-dt-simple">
                             <thead>

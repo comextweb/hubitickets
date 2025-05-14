@@ -1,0 +1,26 @@
+{
+    "name": "workdo/tags",
+    "description": "Description for tags package",
+    "type": "library",
+    "license": "MIT",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Workdo\\Tags\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "WorkDo",
+            "email": "support@workdo.io"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Workdo\\Tags\\Providers\\TagsServiceProvider",
+                "Workdo\\Tags\\Providers\\ViewComposer"
+            ]
+        }
+    }
+}

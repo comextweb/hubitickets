@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class PermissionTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         // For Company Role
@@ -26,6 +23,7 @@ class PermissionTableSeeder extends Seeder
             $admin->avatar =  'uploads/users-avatar/avatar.png';
             $admin->parent = 0;
             $admin->type = 'admin';
+            $admin->mobile_number = "+911023012546";
             $admin->is_enable_login  = 1;
             $admin->lang =  'en';
             $admin->created_by =  0;
@@ -73,7 +71,7 @@ class PermissionTableSeeder extends Seeder
             'ticket delete',
             'ticket export',
             'ticket reply',
-            'tiketnote store' ,
+            'tiketnote store',
             // faq
             'faq manage',
             'faq create',

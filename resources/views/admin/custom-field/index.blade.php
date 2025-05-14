@@ -66,7 +66,7 @@
                                                 </div>
                                             @endpermission
                                             @permission('user delete')
-                                                @if ($customField->id > 8)
+                                                @if ($customField->id > 6)
                                                     <div class="action-btn me-2">
                                                         <form method="POST"
                                                             action="{{ route('admin.custom-field.destroy', $customField->id) }}"
@@ -91,8 +91,8 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="note ms-3 d-flex">
-                            <p><b>Note : </b></p> <span class="text-danger ms-2"> You Can Drag & Drop the Custom
+                        <div class="note mt-2 d-flex">
+                            <p class="mb-0"><b>Note : </b></p> <span class="text-danger ms-2"> You Can Drag & Drop the Custom
                                 Fields.</span>
                         </div>
                     </div>

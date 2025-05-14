@@ -155,16 +155,12 @@ class AddOnController extends Controller
         }
 
         // Prepare the extraction path
-        $extractPath = base_path('packages/workdo/' . $fileName);
-
+        $extractPath = 'packages/workdo/' . $fileName;
         $this->createDirectory($extractPath);
 
         // After extracting to the temporary directory
-        $tempPath = base_path('packages/workdo/tmp_' . uniqid());
-        
-
+        $tempPath = 'packages/workdo/tmp_' . uniqid();
         $zip->extractTo($tempPath);
-
         $zip->close();
 
         // Determine the root folder name in the zip (if needed)
@@ -186,7 +182,6 @@ class AddOnController extends Controller
         $this->setPermissions($extractPath);
         // Process the `module.json` file
         $filePath = base_path('packages/workdo/' . $fileName . '/module.json');
-
         $data = $this->parseJsonFile($filePath);
 
         $addon = AddOn::where('name', $fileName)->first();
@@ -275,9 +270,7 @@ class AddOnController extends Controller
 
     private function parseJsonFile($filePath)
     {
-
         if (!file_exists($filePath)) {
-            #\Log::error('File not found at: ' . $filePath);
             throw new Exception('module.json file is missing.');
         }
         $jsonContent = file_get_contents($filePath);

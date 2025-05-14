@@ -28,7 +28,7 @@ class TicketConversionController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {        
+    {     
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
@@ -110,24 +110,6 @@ class TicketConversionController extends Controller
             'tickets' => $ticketsWithMessages,
         ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
-    }
 
     public function getticketDetails($ticket_id)
     {
@@ -151,7 +133,7 @@ class TicketConversionController extends Controller
             $categoryTree = buildCategoryTree($categories);
             $priorities = Priority::where('created_by', creatorId())->get();
             $tikcettype = Ticket::getTicketTypes();
-            $customFields = CustomField::where('id', '>', '8')->get();
+            $customFields = CustomField::where('id', '>', '7')->get();
             $settings = getCompanyAllSettings();
 
             $tickethtml = view('admin.chats.new-chat-messge', compact('ticket', 'users', 'categoryTree', 'priorities', 'tikcettype', 'customFields', 'settings'))->render();
@@ -713,7 +695,7 @@ class TicketConversionController extends Controller
             $ticket = Ticket::find($id);
 
             if ($ticket) {
-                $customFields = CustomField::where('id', '>', '8')->get();
+                $customFields = CustomField::where('id', '>', '7')->get();
                 return view('admin.customFields.conversationformBuilder', compact('ticket', 'customFields'));
             } else {
                 return redirect()->back()->with('error', 'Ticket Not Found.');

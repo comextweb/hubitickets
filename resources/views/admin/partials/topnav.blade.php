@@ -25,9 +25,9 @@
                     </a>
                     <div class="dropdown-menu dash-h-dropdown">
                         @permission('user profile manage')
-                            <a href="{{ route('profile') }}" class="dropdown-item">
-                                <i class="ti ti-user text-dark"></i><span>{{ __('Profile') }}</span>
-                            </a>
+                        <a href="{{ route('profile') }}" class="dropdown-item">
+                            <i class="ti ti-user text-dark"></i><span>{{ __('Profile') }}</span>
+                        </a>
                         @endpermission
                         <a href="#!" class="dropdown-item"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();">
@@ -41,14 +41,9 @@
                 </li>
             </ul>
         </div>
-        @php
-            $unseenCounter = App\Models\FloatingChatMessage::where('id', Auth::user()->id)
-                ->where('is_read', 0)
-                ->count();
-        @endphp
         <div class="ms-auto">
             <ul class="list-unstyled">
-            
+
                 <li class="dropdown dash-h-item drp-language">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
                         role="button" aria-haspopup="false" aria-expanded="false">
@@ -69,12 +64,12 @@
                                 @permission('language create')
                                     <a href="#" data-url="{{ route('admin.lang.create') }}" data-size="md"
                                         data-ajax-popup="true" data-title="{{ __('Create New Language') }}"
-                                        class="dropdown-item border-top py-1 text-primary">{{ __('Create Language') }}</a>
+                                        class="dropdown-item border-top py-2 text-primary">{{ __('Create Language') }}</a>
                                     </a>
                                 @endpermission
                                 @permission('language manage')
                                     <a href="{{ route('admin.lang.index', [$currantLang]) }}"
-                                        class="dropdown-item border-top py-1 text-primary">{{ __('Manage Languages') }}
+                                        class="dropdown-item border-top py-2 text-primary">{{ __('Manage Languages') }}
                                     </a>
                                 @endpermission
                             @endif

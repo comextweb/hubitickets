@@ -37,7 +37,7 @@ class TicketController extends Controller
     public function create()
     {
         if (Auth::user()->isAbleTo('ticket create')) {
-            $customFields = CustomField::where('id', '>', '8')->get();
+            $customFields = CustomField::where('id', '>', '7')->get();
             $categories = Category::where('created_by', creatorId())->get();
             $categoryTree = buildCategoryTree($categories);
             $priorities = Priority::where('created_by', creatorId())->get();
@@ -70,7 +70,6 @@ class TicketController extends Controller
             $ticket->ticket_id = time();
             $ticket->name = $request->name;
             $ticket->email = $request->email;
-            $ticket->mobile_no = $request->mobile_no;
             $ticket->category_id = $request->category;
             $ticket->is_assign = $request->agent;
             $ticket->priority = $request->priority;
@@ -80,6 +79,7 @@ class TicketController extends Controller
             $ticket->type = "Assigned";
             $ticket->created_by = Auth::check() ? Auth::user()->id : creatorId();
             $data = [];
+
             if ($request->hasfile('attachments')) {
                 $errors = [];
                 foreach ($request->file('attachments') as $filekey => $file) {
@@ -89,7 +89,6 @@ class TicketController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                     $dir        = ('tickets/' . $ticket->ticket_id);
                     $path = multipleFileUpload($file, 'attachments', $fileNameToStore, $dir);
-
                     if ($path['flag'] == 1) {
                         $data[] = $path['url'];
                     } elseif ($path['flag'] == 0) {
@@ -105,7 +104,7 @@ class TicketController extends Controller
             // $agent = getRandomAgent($request->category);
             // $ticket->is_assign = $agent->id;
             // $ticket->save();
-           
+
             CustomField::saveData($ticket, $request->customField);
 
             $settings  = getCompanyAllSettings();
@@ -189,7 +188,4 @@ class TicketController extends Controller
             return redirect()->back()->with('error', 'Permission Denied.');
         }
     }
-
-  
-    
 }

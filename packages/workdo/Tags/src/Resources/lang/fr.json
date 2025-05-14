@@ -1,0 +1,21 @@
+{
+  "Action": "Action",
+  "Are You Sure?": "Es-tu sûr?",
+  "Cancel": "Annuler",
+  "Color": "Couleur",
+  "Create": "Créer",
+  "Create Tags": "Créer des balises",
+  "Edit Tags": "Modifier les balises",
+  "Enter Name": "Entrer le nom",
+  "Home": "Maison",
+  "Manage Tags": "Gérer les balises",
+  "Name": "Nom",
+  "Permission Denied.": "Autorisation refusée.",
+  "Tag delete successfully.": "Tag Supprimer avec succès.",
+  "Tag update successfully.": "Tag Update avec succès.",
+  "Tags": "Balises",
+  "Tags created successfully.": "Tags créés avec succès.",
+  "This action can not be undone. Do you want to continue?": "Cette action ne peut pas être annulée. ",
+  "This tag is being used and cannot be deleted.": "Cette balise est utilisée et ne peut pas être supprimée.",
+  "Update": "Mise à jour"
+}

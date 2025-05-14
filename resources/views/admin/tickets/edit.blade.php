@@ -41,8 +41,8 @@
                                 <a class="btn btn-primary btn-sm float-end ms-2" href="#" data-size="lg"
                                     data-ajax-popup-over="true" data-url="{{ route('generate', ['support']) }}"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Generate') }}"
-                                    data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot">
-                                        {{ __('Generate with AI') }}</i></a>
+                                    data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot me-1">
+                                        </i>{{ __('Generate with AI') }}</a>
                             @endif
                         </div>
 
@@ -168,7 +168,7 @@
                                 @endif
 
 
-                                <x-mobile divClass="col-md-6" value="{{ $ticket->mobile_no }}"></x-mobile>
+                                {{-- <x-mobile divClass="col-md-6" value="{{ $ticket->mobile_no }}"></x-mobile> --}}
 
                                 <div class="form-group col-md-6">
                                     <label class="require form-label">{{ __('Attachments') }}
@@ -282,9 +282,6 @@
                         <div class="col-6">
                                 <small>
                                     <span class="text-right">
-                                        <!-- {{ $field->name }} : {!! isset($ticket->customField[$field->id]) && !empty($ticket->customField[$field->id])
-                                            ? $ticket->customField[$field->id]
-                                            : '-' !!} -->
                                         {{ $field->name }} : {!! !empty($field->getData($ticket, $field->id))
                                             ? $field->getData($ticket, $field->id)
                                             : '-' !!}
@@ -373,8 +370,8 @@
                                                     data-title="{{ __('Generate content with AI') }}"
                                                     data-url="{{ route('generate', ['reply']) }}" data-toggle="tooltip"
                                                     title="{{ __('Generate') }}">
-                                                    <i class="fas fa-robot"></span><span
-                                                            class="robot">{{ __('Generate With AI') }}</span></i>
+                                                    <i class="fas fa-robot me-1"></i></span><span
+                                                    class="robot">{{ __('Generate With AI') }}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -437,8 +434,8 @@
                                     <a class="btn btn-primary btn-sm float-end ms-2" href="#" data-size="lg"
                                         data-ajax-popup-over="true" data-url="{{ route('generate', ['note']) }}"
                                         data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Generate') }}"
-                                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot">
-                                            {{ __('Generate with AI') }}</i></a>
+                                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot me-1">
+                                           </i> {{ __('Generate with AI') }}</a>
                                 @endif
                             </div>
                             <form method="post" action="{{ route('admin.note.store', $ticket->id) }}">

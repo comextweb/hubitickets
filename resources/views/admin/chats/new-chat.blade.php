@@ -31,6 +31,7 @@
     @stack('addButtonHook')
     <div class="row justify-content-end">
         <div class="col-auto">
+            <button id="filterTickets" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{ __('Filter') }}"><i class="ti ti-filter"></i></button>
             @permission('ticket export')
                 <div class="btn btn-sm btn-primary btn-icon me-2" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="{{ __('Export Tickets CSV file') }}">
@@ -51,7 +52,7 @@
 @endsection
 @section('content')
 <div class="row">
-        <div class="col-sm-12">
+    <div class="col-sm-12" id="showTicketFilter" style="display:none;">
             <div class="mt-2">
                 <div class="card">
                     <div class="card-body">
@@ -88,7 +89,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="row">
-                                        <div class="col-auto mt-4">
+                                        <div class="col-auto mt-4 d-flex gap-2">
                                             <a href="#" class="btn btn-sm btn-primary" onclick="document.getElementById('filter_ticket').submit(); return false;" data-bs-toggle="tooltip" title="{{__('Apply')}}" data-original-title="{{__('apply')}}">
                                                 <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                                             </a>
@@ -460,6 +461,13 @@
     <script src="{{ asset('css/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('public/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
     <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $("#filterTickets").click(function() {
+                $("#showTicketFilter").toggle();
+            });
+        });
+    </script>
 
     <script>
         // search ticket by number and name
@@ -1110,7 +1118,7 @@
                                     </svg>
                                  </a>
                                 <span class="chat-time">${data.timestamp}</span>
-                                ${data.unreadMessge > 0 ? `<span class="notification" id="unread_notification_${ticket_id}">${data.unreadMessge}</span>` : ''}
+                                ${data.unreadMessge > 0 ? `<span class="notification" id="unread_notification_${data.tikcet_id}">${data.unreadMessge}</span>` : ''}
                         `;
                             ticketItem.find('.social-icon-wrp').html(unreadhtml);
                             // ticketItem.find('.chat-time').text(data.timestamp);
@@ -1778,13 +1786,6 @@
 
                 let avatarSrc = data.profile_img ? data.profile_img : LetterAvatar(data.name, 100);
                 var ticketClass = (data.is_mark && data.is_mark == 1) ? 'ticket-danger' : '';
-                // Check if the ticket module is active then modify the ticket number
-                var ticketId = @json(moduleIsActive('TicketNumber') && isset($ticket) ? Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($ticket->id) : null);
-
-                if (ticketId == null) {
-                    ticketId = data.tikcet_id;
-                }
-                // end 
 
                 var ticketHtml = `
                         <li class="nav-item user_chat" id="${data.id}">
@@ -1916,6 +1917,31 @@
 
                 // Prepend the new ticket ul li to the list
                 $('#myUL').prepend(ticketHtml);
+
+                // Ajax call for checking TicketNumber Addon Active Or Not 
+                var ticketId;
+                var checkModuleActive = @json(moduleIsActive('TicketNumber'));
+                if (checkModuleActive == true) {
+                    const ticketNumberFormatUrl = "{{ route('admin.convertTicketNumber', ['id' => '__ID__']) }}";
+                    let url = ticketNumberFormatUrl.replace('__ID__', data.id);
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (result) {
+                            if (result.status == 'success') {
+                                ticketId = result.formatted;
+                            } else {
+                                ticketId = data.tikcet_id;
+                            }
+                            $('.chat_users_' + data.id).closest('.user-info').find('.app-name').empty();
+                            $('.chat_users_' + data.id).closest('.user-info').find('.app-name').append(ticketId);
+                        }
+                    });
+                } else {
+                    ticketId = data.tikcet_id;
+                    $('.chat_users_' + data.id).closest('.user-info').find('.app-name').empty();
+                    $('.chat_users_' + data.id).closest('.user-info').find('.app-name').append(ticketId);
+                }
 
                 // Remove the active class from the previously active ticket
                 $('.user_chat.active').removeClass('active');
