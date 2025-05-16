@@ -21,13 +21,13 @@
                 <div class="card">
                     <div
                         class="card-header flex-column flex-lg-row  d-flex align-items-lg-center gap-2 justify-content-between">
-                        <h5>{{ __('Ticket Information') }}</h5>
+                        <h6>{{ __('Ticket Information') }}</h6>
                         @if (isset($settings['is_enabled']) && $settings['is_enabled'] == 'on')
                             <a class="btn btn-primary btn-sm float-end ms-2" href="#" data-size="lg"
                                 data-ajax-popup-over="true" data-url="{{ route('generate', ['support']) }}"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Generate') }}"
-                                data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot me-1">
-                                    </i>{{ __('Generate with AI') }}</a>
+                                data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot">
+                                    {{ __('Generate with AI') }}</i></a>
                         @endif
                     </div>
 
@@ -138,7 +138,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            {{-- <x-mobile divClass="col-md-6"></x-mobile> --}}
+                            <x-mobile divClass="col-md-6"></x-mobile>
 
                             <div class="form-group col-md-6">
                                 <label class="require form-label">{{ __('Attachments') }}
@@ -146,10 +146,10 @@
                                 <div class="choose-file form-group">
                                     <label for="file" class="form-label d-block">
                                         <input type="file" name="attachments[]" id="file"
-                                            class="form-control  @error('attachments') is-invalid @enderror"
+                                            class="form-control mb-2  @error('attachments') is-invalid @enderror"
                                             multiple="" data-filename="multiple_file_selection"
                                             onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" >
-                                        <img src="" id="blah" width="100px" class="mt-3"/>
+                                        <img src="" id="blah" width="20%" />
                                         @error('attachments')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -157,12 +157,12 @@
                                         @enderror
                                     </label>
                                 </div>
-                                <p class="multiple_file_selection mb-0"></p>
+                                <p class="multiple_file_selection mx-4"></p>
                             </div>
 
 
 
-                            <div class="form-group col-md-12 mb-0">
+                            <div class="form-group col-md-12">
                                 <label class="require form-label">{{ __('Description') }}</label>
                                 <textarea name="description" id="description" class="form-control summernote-simple" required></textarea>
                                 <p class="text-danger summernote_text"></p>
@@ -177,6 +177,11 @@
                                 @include('admin.customFields.formBuilder')
                             @endif
                         </div>
+                        {{-- <div class="d-flex justify-content-end text-end">
+                            <button class="btn btn-primary btn-block btn-submit me-2">{{ __('Create') }}</button>
+                            <button class="btn btn-secondary btn-light custom-cancel-btn btn-submit" type="button"
+                                onclick="window.location='{{ route('admin.tickets.index') }}'">{{ __('Cancel') }}</button>
+                        </div> --}}
                         <div class="d-flex justify-content-end text-end">
                             <button class="btn btn-secondary custom-cancel-btn btn-submit me-2" type="button"
                                 onclick="window.location='{{ route('admin.new.chat') }}'">{{ __('Cancel') }}</button>

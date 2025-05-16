@@ -62,11 +62,19 @@ class CustomFieldSeeder extends Seeder
                 "custom_id" => "6",
             ],
             [
+                "name" => __("Mobile No"),
+                "type" => "text",
+                "placeholder" => __("Enter Mobile No"),
+                "width" => "12",
+                "custom_id" => "7",
+                "is_required" => "0",
+            ],
+            [
                 "name" => __("Attachments"),
                 "type" => "file",
                 "placeholder" => __("You can select multiple files"),
                 "width" => "12",
-                "custom_id" => "7",
+                "custom_id" => "8",
                 "is_required" => "0",
             ],
 
@@ -92,13 +100,6 @@ class CustomFieldSeeder extends Seeder
                 $customField->custom_id = $field['custom_id'];
                 $customField->save();
             }
-        }
-
-
-        // Remove Mobile Number Field From Old Client Database 
-        $oldMobileNumber = CustomField::where('id', 7)->where('name', 'Mobile No')->first();
-        if ($oldMobileNumber) {
-            $oldMobileNumber->delete();
         }
     }
 }

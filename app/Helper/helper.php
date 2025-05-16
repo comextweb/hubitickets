@@ -307,16 +307,6 @@ if (!function_exists('uploadFile')) {
                     $mimes =  !empty($settings['local_storage_validation']) ? $settings['local_storage_validation'] : '';
                 }
                 $file = $request->$key_name;
-
-                $extension = strtolower($file->getClientOriginalExtension());
-                $allowed_extensions = explode(',', $mimes);
-                if (empty($extension) || !in_array($extension, $allowed_extensions)) {
-                    return [
-                        'flag' => 0,
-                        'msg' => 'The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.',
-                    ];
-                }
-
                 if (count($custom_validation) > 0) {
                     $validation = $custom_validation;
                 } else {
@@ -411,16 +401,6 @@ if (!function_exists('multipleFileUpload')) {
                 }
 
                 $file = $request;
-        
-                $extension = strtolower($file->getClientOriginalExtension());
-                $allowed_extensions = explode(',', $mimes);
-                if (empty($extension) || !in_array($extension, $allowed_extensions)) {
-                    return [
-                        'flag' => 0,
-                        'msg' => 'The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.',
-                    ];
-                }
-                
                 $key_validation = $key_name . '*';
 
                 if (count($custom_validation) > 0) {
@@ -1101,7 +1081,7 @@ if (!function_exists('sendTicketEmail')) {
                 $uArr['ticket_description'] = $request->reply_description;
                 $recipientEmail = $admin->email;
                 break;
-            case 'Ticket Close':
+            case 'Ticket Close' :
                 $uArr['customer_email'] = $request->email;
                 $recipientEmail = $request->email;
                 break;

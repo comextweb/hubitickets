@@ -173,6 +173,7 @@ class HomeController extends Controller
             $ticket->ticket_id = time();
             $ticket->name = $request->name;
             $ticket->email = $request->email;
+            $ticket->mobile_no = $request->mobile_no;
             $ticket->category_id = $request->category;
             $ticket->priority = $request->priority;
             $ticket->subject = $request->subject;
@@ -188,6 +189,7 @@ class HomeController extends Controller
                     $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
                     $extention = $file->getClientOriginalExtension();
                     $filenameToStore = $fileName . '_' . time() . '.' . $extention;
+
                     $dir        = ('tickets/' . $ticket->ticket_id);
                     $path = multipleFileUpload($file, 'attachments', $filenameToStore, $dir);
                     if ($path['flag'] == 1) {
@@ -479,7 +481,7 @@ class HomeController extends Controller
     {
         $settings      = getCompanyAllSettings();
         if (isset($settings['knowledge_base']) && $settings['knowledge_base'] == 'on') {
-            $knowledgeBaseCategory = Knowledgebasecategory::with('knowledgebase')->orderBy('id','desc')->get();
+            $knowledgeBaseCategory = Knowledgebasecategory::with('knowledgebase')->get();
             $knowledgeBase = Knowledge::with('getCategoryInfo')->get();
 
             return view('knowledge', compact('knowledgeBaseCategory', 'knowledgeBase', 'settings'));

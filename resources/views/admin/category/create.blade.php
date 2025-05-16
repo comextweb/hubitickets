@@ -8,7 +8,7 @@
                 <a class="btn btn-primary btn-sm" href="#" data-size="md" data-ajax-popup-over="true"
                     data-url="{{ route('generate', ['category']) }}" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="{{ __('Generate') }}" data-title="{{ __('Generate Content with AI') }}"><i
-                        class="fas fa-robot me-1"> </i>{{ __('Generate with AI') }}</a>
+                        class="fas fa-robot"> {{ __('Generate with AI') }}</i></a>
             </div>
         @endif
         <div class="form-group col-md-5">

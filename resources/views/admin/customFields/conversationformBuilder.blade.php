@@ -96,35 +96,50 @@
                     </div>
                 </div>
             @elseif($customField->custom_id == '7')
-              <div class="">
-                  <label class="form-label form-bottom-content mb-3">{{ $customField->name }}
-                      <b>({{ $customField->placeholder }})</b></label>
-              </div>
-              <div class="col-lg-{{ $customField->width }}">
-                  <div class="form-group mb-3 {{ $customField->width }}">
-                      <div class="choose-file form-group">
-                          <label for="file" class="form-label">
-                              <div class="mb-2">{{ __('Choose File Here') }}</div>
-                              <div class="file-upload">
-                                  <div class="file-select">
-                                      <div class="file-select-button btn btn-primary btn-block" id="fileName">Choose
-                                          File
-                                      </div>
-                                      <div class="file-select-name" id="noFile">No file chosen...</div>
-                                      <input type="file"
-                                          class="form-control {{ $errors->has('attachments.') ? 'is-invalid' : '' }}"
-                                          multiple="" name="attachments[]" id="chooseFile"
-                                          data-filename="multiple_file_selection">
-                                  </div>
-                              </div>
-                          </label>
-                          <p class="multiple_file_selection"></p>
-                      </div>
-                  </div>
-                  <div class="invalid-feedback d-block">
-                      {{ $errors->first('attachments.*') }}
-                  </div>
-              </div>
+                <div class="col-lg-{{ $customField->width }}">
+                    <div class="form-group mb-3 {{ $customField->width }}">
+                        <label for="mobile_no" class="form-label">{{ __('Mobile No') }}</label>
+                        <input type="text" class="form-control {{ $errors->has('mobile_no') ? ' is-invalid' : '' }}"
+                            id="mobile_no" name="mobile_no" placeholder="{{ __($customField->placeholder) }}"
+                            value="{{ old('mobile_no') }}" pattern = '^\+\d{1,3}\d{9,13}$'>
+                        <div class=" text-xs text-danger">
+                            {{ __('Please use with country code. (ex. +91)') }}
+                        </div>
+                        <div class="invalid-feedback">
+                            {{ $errors->first('mobile_no') }}
+                        </div>
+                    </div>
+                </div>
+            @elseif($customField->custom_id == '8')
+                <div class="">
+                    <label class="form-label form-bottom-content mb-3">{{ $customField->name }}
+                        <b>({{ $customField->placeholder }})</b></label>
+                </div>
+                <div class="col-lg-{{ $customField->width }}">
+                    <div class="form-group mb-3 {{ $customField->width }}">
+                        <div class="choose-file form-group">
+                            <label for="file" class="form-label">
+                                <div class="mb-2">{{ __('Choose File Here') }}</div>
+                                <div class="file-upload">
+                                    <div class="file-select">
+                                        <div class="file-select-button btn btn-primary btn-block" id="fileName">Choose
+                                            File
+                                        </div>
+                                        <div class="file-select-name" id="noFile">No file chosen...</div>
+                                        <input type="file"
+                                            class="form-control {{ $errors->has('attachments.') ? 'is-invalid' : '' }}"
+                                            multiple="" name="attachments[]" id="chooseFile"
+                                            data-filename="multiple_file_selection">
+                                    </div>
+                                </div>
+                            </label>
+                            <p class="multiple_file_selection"></p>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback d-block">
+                        {{ $errors->first('attachments.*') }}
+                    </div>
+                </div>
             @elseif($customField->type == 'text')
                 <div class="col-lg-{{ $customField->width }}">
                     <div class="form-group mb-3{{ $customField->width }}">

@@ -69,8 +69,8 @@
                                         <label class="form-label">{{ __('Picture') }}</label>
                                         <span class="d-block mb-3 text-dark">Please upload a valid image file. Size of image
                                             should not be more than 2MB.</span>
-                                        <div class="row align-items-center row-gap-1 mb-3">
-                                            <div class="choose-file form-group mb-0 col-xl-8 col-12">
+                                        <div class="row align-items-center">
+                                            <div class="choose-file form-group col-xl-8 col-12">
                                                 <label for="file"
                                                     class="form-label">{{ __('Choose File Here') }}</label>
                                                 <input type="file" name="avatar" id="file"
@@ -81,7 +81,7 @@
                                                     {{ $errors->first('avatar') }}
                                                 </div>
                                             </div>
-                                            <div class="form-group mb-0 col-md-4 col-12">
+                                            <div class="form-group col-md-4 col-12">
                                                 <div class="user-main-image">
                                                     <a href="{{ !empty($user->avatar) && checkFile($user->avatar) ? getFile($user->avatar) : getFile('uploads/users-avatar/avatar.png') . '?' . time() }}"
                                                         target="_blank">
@@ -98,7 +98,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-12 mb-0">
+                                    <div class="form-group col-md-12">
                                         <button class="btn btn-secondary btn-block btn-submit me-1" type="button"
                                             onclick="window.location='{{ route('admin.users') }}'"><span>{{ __('Cancel') }}</span></button>
                                             <button

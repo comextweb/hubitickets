@@ -27,6 +27,12 @@ class User extends Authenticatable implements LaratrustUser
         'created_by'
     ];
 
+    // protected $appends = [
+    //     'profilelink',
+    //     'avatarlink',
+    //     'isme',
+    // ];
+
     public static $adminDefaultActivatedModules = [];
 
 
@@ -34,6 +40,12 @@ class User extends Authenticatable implements LaratrustUser
         'password',
         'remember_token',
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
@@ -92,6 +104,33 @@ class User extends Authenticatable implements LaratrustUser
         return $this->hasOne('App\Models\User', 'id', 'parent')->first();
     }
 
+    public function unread()
+    {
+        return Message::where('from', '=', $this->id)->where('is_read', '=', 0)->count();
+    }
+
+    public static function setEnvironmentValue(array $values)
+    {
+        $envFile = app()->environmentFilePath();
+        $str     = file_get_contents($envFile);
+        if (count($values) > 0) {
+            foreach ($values as $envKey => $envValue) {
+                $keyPosition       = strpos($str, "{$envKey}=");
+                $endOfLinePosition = strpos($str, "\n", $keyPosition);
+                $oldLine           = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
+
+                // If key does not exist, add it
+                if (!$keyPosition || !$endOfLinePosition || !$oldLine) {
+                    $str .= "{$envKey}='{$envValue}'\n";
+                } else {
+                    $str = str_replace($oldLine, "{$envKey}='{$envValue}'", $str);
+                }
+            }
+        }
+        $str = substr($str, 0, -1) . "\n";
+
+        return file_put_contents($envFile, $str) ? true : false;
+    }
 
     public static function delete_directory($dir)
     {
@@ -111,7 +150,21 @@ class User extends Authenticatable implements LaratrustUser
         }
         return rmdir($dir);
     }
+    public static function userDefaultDataRegister($user_id)
+    {
+        // Make Entry In User_Email_Template
+        $allEmail = EmailTemplate::all();
 
+        foreach ($allEmail as $email) {
+            UserEmailTemplate::create(
+                [
+                    'template_id' => $email->id,
+                    'user_id' => $user_id,
+                    'is_active' => 1,
+                ]
+            );
+        }
+    }
 
     public function createId()
     {

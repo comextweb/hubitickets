@@ -152,16 +152,6 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(funct
     Route::post('addon-enable', [AddOnController::class, 'addonEnable'])->name('addon.enable');
     Route::get('addon/add', [AddOnController::class, 'addAddOn'])->name('addon.add');
     Route::post('addon-install', [AddOnController::class, 'installAddon'])->name('addon.install');
-
-
-     // Check TicketNumber Addon Active Or Not 
-     Route::get('ticket-number-format/{id}', function ($id) {
-        $ticketNumber = \Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($id);
-        return response()->json([
-            'status' => 'success',
-            'formatted' => $ticketNumber
-        ]);
-    })->name('convertTicketNumber');
 });
 
 Route::group(['middleware' => ['web', 'auth', 'verified','XSS']], function () {

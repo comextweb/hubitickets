@@ -96,21 +96,6 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <label for="email" class="form-label">{{ __('Mobile Number') }}</label>
-                                            <input class="form-control @error('mobile_number') is-invalid @enderror" name="mobile_number"
-                                                type="text" id="mobile_number"
-                                                placeholder="{{ __('Enter Your Mobile Number') }}"
-                                                value="{{ $user->mobile_number ?? '' }}" required autocomplete="mobile_number" pattern="^\+\d{1,3}\d{9,13}$">
-                                            @error('mobile_number')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                            <div class=" text-xs text-danger">
-                                                {{ __('Please use with country code. (ex. +91)') }}
-                                            </div>
-                                        </div>
                                     </div>
 
                                 </div>

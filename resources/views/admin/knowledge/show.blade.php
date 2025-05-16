@@ -16,14 +16,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-12 mb-0">
+            <div class="form-group col-md-12">
                 <label class="require form-label">{{ __('Description') }}</label>
                 <textarea name="description" id="description" class="form-control summernote-simple">{{ $knowledge['description'] }}</textarea>
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-12 mb-0">
-                <!-- <label class="form-label"></label> -->
+            <div class="form-group col-md-12">
+                <label class="form-label"></label>
                 <div class="col-sm-12 col-md-12 text-end">
                     <button class="btn btn-secondary btn-block btn-submit"
                         data-bs-dismiss="modal"><span>{{ __('Close') }}</span></button>

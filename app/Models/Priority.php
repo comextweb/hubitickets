@@ -13,6 +13,9 @@ class Priority extends Model
         'color',
         'created_by'
     ];
+    // public function policies(){
+    //     return $this->hasOne('App\Models\Policies','priority_id','id');
+    // }
 
     public function getAllTickets()
     {

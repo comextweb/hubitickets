@@ -6,8 +6,8 @@
                     <a class="btn btn-primary btn-sm float-end ms-2" href="#" data-size="lg"
                         data-ajax-popup-over="true" data-url="{{ route('generate', ['faq']) }}" data-bs-toggle="tooltip"
                         data-bs-placement="top" title="{{ __('Generate') }}"
-                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot me-1">
-                            </i>{{ __('Generate with AI') }}</a>
+                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot">
+                            {{ __('Generate with AI') }}</i></a>
                 </div>
             @endif
         </div>

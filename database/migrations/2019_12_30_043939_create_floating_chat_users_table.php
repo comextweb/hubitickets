@@ -14,13 +14,12 @@ class CreateFloatingChatUsersTable extends Migration
     public function up()
     {
         Schema::create(
-            'floating_chat_users',
-            function (Blueprint $table) {
-                $table->bigIncrements('id');
-                $table->string('email');
-                $table->tinyInteger('is_end')->default(0);
-                $table->timestamps();
-            }
+            'floating_chat_users', function (Blueprint $table){
+            $table->bigIncrements('id');
+            $table->string('email');
+            $table->tinyInteger('is_end')->default(0);
+            $table->timestamps();
+        }
         );
     }
 

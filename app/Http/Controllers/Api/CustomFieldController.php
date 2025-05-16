@@ -14,7 +14,7 @@ class CustomFieldController extends Controller
 
     public function getCoustomField()
     {
-        $customFields = CustomField::where('id', '>', '7')->get();
+        $customFields = CustomField::where('id', '>', '8')->get();
 
         $data = [
             'custom_fields' => $customFields,
@@ -25,7 +25,7 @@ class CustomFieldController extends Controller
 
     public function CustomFields(Request $request)
     {
-        $customfield = CustomField::where('created_by', $request->user_id)->get();
+        $customfield = CustomField::where('created_by',$request->user_id)->get();
 
         $data = [
             'custom_field' => $customfield
@@ -48,10 +48,10 @@ class CustomFieldController extends Controller
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
             $data     = [];
-            return $this->error($data, $messages->first(), 200);
+            return $this->error($data , $messages->first() , 200);
         }
 
-        $order      = CustomField::where('created_by', creatorId())->get()->count();
+        $order      = CustomField::where('created_by',creatorId())->get()->count();
 
         $post = [
             'name'        => $request->name,
@@ -87,12 +87,13 @@ class CustomFieldController extends Controller
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
             $data     = [];
-            return $this->error($data, $messages->first(), 200);
+            return $this->error($data , $messages->first() , 200);
         }
 
         $customfield = CustomField::find($request->id);
 
-        if ($customfield) {
+        if($customfield)
+        {
             $post = [
                 'name'        => $request->name,
                 'type'        => $request->type,
@@ -109,30 +110,35 @@ class CustomFieldController extends Controller
                 'custom_field' => $customfield
             ];
             return $this->success($data);
-        } else {
-            $message = "CustomField does not exist";
-            return $this->error([], $message, 200);
+        }
+        else{
+            $message = "CustomField does not exist";        
+            return $this->error([] , $message , 200);
         }
     }
 
     public function destroyCustomFields(Request $request)
     {
-        if ($request->id <= 8) {
+        if($request->id <= 8)
+        {
             $message = "You can not delete default customfield";
-            return $this->error([], $message, 200);
+            return $this->error([] , $message , 200); 
         }
         $customfield = CustomField::find($request->id);
 
         $data = [
             'custom_field' => [],
-        ];
+        ]; 
 
-        if ($customfield) {
+        if($customfield)
+        {
             $customfield->delete();
-            return $this->success($data);
-        } else {
+            return $this->success($data); 
+        }
+        else
+        {
             $message = "CustomField does not exist";
-            return $this->error($data, $message, 200);
+            return $this->error($data , $message , 200); 
         }
     }
 }

@@ -10,7 +10,7 @@ class MetaController extends Controller
     public function handleWebhook(Request $request)
     {
         // Webhook verification
-        if ($request->query('hub_mode') === 'subscribe' && $request->query('hub_verify_token') == 12345678) {
+        if ($request->query('hub_mode') === 'subscribe' && $request->query('hub_verify_token') == 12345678) { 
             return response($request->query('hub_challenge'), 200);
         }
         $payload = $request->all();

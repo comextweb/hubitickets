@@ -30,7 +30,7 @@ class LoginExternalController extends Controller
         try {
             $decrypted = Crypt::decryptString($token);
             $decoded = JWT::decode($decrypted, new Key(env('JWT_HUBITICKETS_SHARED_SECRET'), 'HS256'));
-
+    
             $email = $decoded->email ?? null;
             if (!$email) {
                 return redirect()->route('login')->with('error', 'Token inválido: email no presente.');

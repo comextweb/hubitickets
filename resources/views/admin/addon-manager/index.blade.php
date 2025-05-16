@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-xxl-4 col-md-6 col-12">
                         <div class="add-on-banner-content text-center ">
-                            <a href="https://workdo.io/product-category/ticketgo-add-ons/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
+                            <a href="https://workdo.io/product-category/ticketgo-addon/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
                                 class="btn btn-light mb-md-3 mb-2" target="new">
                                 <img src="https://workdo.io/wp-content/uploads/2023/03/favicon.jpg" alt="">
                                 <span>{{ __('Click Here') }}</span>
@@ -85,7 +85,7 @@
                         <div
                             class="add-on-btn d-flex flex-wrap align-items-center justify-content-xxl-end justify-content-center gap-2">
                             <a class="btn btn-primary"
-                                href="https://workdo.io/product-category/ticketgo-add-ons/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
+                                href="https://workdo.io/product-category/ticketgo-addon/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
                                 target="new">
                                 {{ __('Buy More Add-on') }}
                             </a>
@@ -192,8 +192,8 @@
                                                 </div>
                                                 <h5 class="text-capitalize mb-0">{{ $module->name }}</h5>
                                             </div>
-                                            <div class="product-content p-3">
-                                                <a class="btn btn-primary w-100" href="{{ $module->url }}"
+                                            <div class="product-content">
+                                                <a class="btn btn-light-primary w-100" href="{{ $module->url }}"
                                                     target="_blank">View Details</a>
                                             </div>
                                         </div>

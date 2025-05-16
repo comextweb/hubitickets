@@ -6,7 +6,7 @@
 @endpush
 <div class="chat-top-content">
     <div class="chat-container">
-        {{-- Chat First Message --}}
+        {{-- Chat First Message  --}}
         <div class="chat-container-wrp">
             @if ($ticket->type != 'Instagram' && $ticket->type != 'Facebook')
                 {{-- customer login --}}
@@ -18,20 +18,20 @@
                                 <p>{!! $ticket->description !!}</p>
                                 @php $attachments = json_decode($ticket->attachments); @endphp
                                 @if (isset($attachments))
-                                    <div class="attachments-wrp mb-1">
-                                        <h6>{{ __('Ticket Attachments') }} :</h6>
-                                        <ul class="attachments-list">
-                                            @foreach ($attachments as $index => $attachment)
-                                                <li>
-                                                    <span> {{ basename($attachment) }} </span>
-                                                    <a download=""
-                                                        href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                        class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                            class="fa fa-download ms-2"></i></a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                <div class="attachments-wrp mb-1">
+                                    <h6>{{ __('Ticket Attachments') }} :</h6>
+                                    <ul class="attachments-list">
+                                        @foreach ($attachments as $index => $attachment)
+                                        <li>
+                                            <span> {{ basename($attachment) }} </span>
+                                            <a download=""
+                                                href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                    class="fa fa-download ms-2"></i></a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                                 @endif
                                 <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('l h:ia') }}</span>
                             </div>
@@ -56,20 +56,20 @@
                                 <p>{!! $ticket->description !!}</p>
                                 @php $attachments = json_decode($ticket->attachments);@endphp
                                 @if (isset($attachments) && !empty($attachments))
-                                    <div class="attachments-wrp mb-1">
-                                        <h6>{{ __('Ticket Attachments') }} :</h6>
-                                        <ul class="attachments-list">
-                                            @foreach ($attachments as $index => $attachment)
-                                                <li>
-                                                    <span> {{ basename($attachment) }} </span>
-                                                    <a download=""
-                                                        href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                        class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                            class="fa fa-download ms-2"></i></a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                <div class="attachments-wrp mb-1">
+                                    <h6>{{ __('Ticket Attachments') }} :</h6>
+                                    <ul class="attachments-list">
+                                        @foreach ($attachments as $index => $attachment)
+                                        <li>
+                                            <span> {{ basename($attachment) }} </span>
+                                            <a download=""
+                                                href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                    class="fa fa-download ms-2"></i></a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                                 @endif
                                 <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('l h:ia') }}</span>
                             </div>
@@ -81,7 +81,7 @@
 
         <div class="messages-container" id="msg">
             @foreach ($ticket->conversions as $conversion)
-                @if(moduleIsActive('CustomerLogin') && \Auth::user()->type == 'customer')
+            @if(moduleIsActive('CustomerLogin') && \Auth::user()->type == 'customer')
                     @if ($conversion->sender == 'user')
                         <div class="msg right-msg">
                             <div class="msg-box {{ isset($isSaveChat, $conversion->is_bookmark) && $isSaveChat && $conversion->is_bookmark ? 'bookmark-active' : '' }}"
@@ -91,25 +91,25 @@
                                     @php $attachments = json_decode($conversion->attachments); @endphp
 
                                     @if (isset($attachments))
-                                        <div class="attachments-wrp">
-                                            <h6>{{ __('Attachments') }} :</h6>
-                                            <ul class="attachments-list">
-                                                @foreach ($attachments as $index => $attachment)
-                                                    <li>
-                                                        <span> {{ basename($attachment) }} </span>
-                                                        <a download=""
-                                                            href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                            class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                                class="fa fa-download ms-2"></i></a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                    <div class="attachments-wrp">
+                                        <h6>{{ __('Attachments') }} :</h6>
+                                        <ul class="attachments-list">
+                                            @foreach ($attachments as $index => $attachment)
+                                            <li>
+                                                <span> {{ basename($attachment) }} </span>
+                                                <a download=""
+                                                    href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                    class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                        class="fa fa-download ms-2"></i></a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                     @endif
                                     <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
                                     <!-- SaveChat module start -->
                                     @if (isset($isSaveChat) && $isSaveChat)
-                                        @include('save-chat::bookmark', ['conversionId' => $conversion->id])
+                                    @include('save-chat::bookmark', ['conversionId' => $conversion->id])
                                     @endif
                                     <!-- SaveChat module end -->
                                 </div>
@@ -137,8 +137,8 @@
                                         @elseif($ticket->type == 'Facebook' && !empty($isFacebookChat))
                                             @include('facebook-chat::facebook.profile')
                                         @else
-                                            <img alt="{{ $conversion->replyBy()->name }}" class="img-fluid"
-                                                avatar="{{ $conversion->replyBy()->name }}">
+                                        <img alt="{{ $conversion->replyBy()->name }}" class="img-fluid"
+                                            avatar="{{ $conversion->replyBy()->name }}">
                                         @endif
                                     </div>
 
@@ -148,25 +148,25 @@
                                     @php $attachments = json_decode($conversion->attachments); @endphp
 
                                     @if (isset($attachments))
-                                        <div class="attachments-wrp mb-1">
-                                            <h6>{{ __('Attachments') }} :</h6>
-                                            <ul class="attachments-list">
-                                                @foreach ($attachments as $index => $attachment)
-                                                    <li>
-                                                        <span> {{ basename($attachment) ?? '' }} </span>
-                                                        <a download=""
-                                                            href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                            class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                                class="fa fa-download ms-2"></i></a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                    <div class="attachments-wrp mb-1">
+                                        <h6>{{ __('Attachments') }} :</h6>
+                                        <ul class="attachments-list">
+                                            @foreach ($attachments as $index => $attachment)
+                                            <li>
+                                                <span> {{ basename($attachment) ?? '' }} </span>
+                                                <a download=""
+                                                    href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                    class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                        class="fa fa-download ms-2"></i></a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                     @endif
                                     <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
                                     <!-- SaveChat module start -->
                                     @if (isset($isSaveChat) && $isSaveChat)
-                                        @include('save-chat::bookmark', ['conversionId' => $conversion->id])
+                                    @include('save-chat::bookmark', ['conversionId' => $conversion->id])
                                     @endif
                                     <!-- SaveChat module end -->
                                 </div>
@@ -182,12 +182,12 @@
                                     title="{{ $conversion->replyBy()->name }}">
                                     <div class="msg-img">
                                         @if ($ticket->type == 'Instagram' && !empty($isInstagramChat))
-                                            @include('instagram-chat::instagram.profile')
+                                        @include('instagram-chat::instagram.profile')
                                         @elseif($ticket->type == 'Facebook' && !empty($isFacebookChat))
-                                            @include('facebook-chat::facebook.profile')
+                                        @include('facebook-chat::facebook.profile')
                                         @else
-                                            <img alt="{{ $conversion->replyBy()->name }}" class="img-fluid"
-                                                avatar="{{ $conversion->replyBy()->name }}">
+                                        <img alt="{{ $conversion->replyBy()->name }}" class="img-fluid"
+                                            avatar="{{ $conversion->replyBy()->name }}">
                                         @endif
                                     </div>
 
@@ -197,25 +197,25 @@
                                     @php $attachments = json_decode($conversion->attachments); @endphp
 
                                     @if (isset($attachments))
-                                        <div class="attachments-wrp mb-1">
-                                            <h6>{{ __('Attachments') }} :</h6>
-                                            <ul class="attachments-list">
-                                                @foreach ($attachments as $index => $attachment)
-                                                    <li>
-                                                        <span> {{ basename($attachment) ?? '' }} </span>
-                                                        <a download=""
-                                                            href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                            class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                                class="fa fa-download ms-2"></i></a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                    <div class="attachments-wrp mb-1">
+                                        <h6>{{ __('Attachments') }} :</h6>
+                                        <ul class="attachments-list">
+                                            @foreach ($attachments as $index => $attachment)
+                                            <li>
+                                                <span> {{ basename($attachment) ?? '' }} </span>
+                                                <a download=""
+                                                    href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                    class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                        class="fa fa-download ms-2"></i></a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                     @endif
                                     <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
                                     <!-- SaveChat module start -->
                                     @if (isset($isSaveChat) && $isSaveChat)
-                                        @include('save-chat::bookmark', ['conversionId' => $conversion->id])
+                                    @include('save-chat::bookmark', ['conversionId' => $conversion->id])
                                     @endif
                                     <!-- SaveChat module end -->
                                 </div>
@@ -230,25 +230,25 @@
                                     @php $attachments = json_decode($conversion->attachments); @endphp
 
                                     @if (isset($attachments))
-                                        <div class="attachments-wrp">
-                                            <h6>{{ __('Attachments') }} :</h6>
-                                            <ul class="attachments-list">
-                                                @foreach ($attachments as $index => $attachment)
-                                                    <li>
-                                                        <span> {{ basename($attachment) }} </span>
-                                                        <a download=""
-                                                            href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
-                                                            class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
-                                                                class="fa fa-download ms-2"></i></a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                    <div class="attachments-wrp">
+                                        <h6>{{ __('Attachments') }} :</h6>
+                                        <ul class="attachments-list">
+                                            @foreach ($attachments as $index => $attachment)
+                                            <li>
+                                                <span> {{ basename($attachment) }} </span>
+                                                <a download=""
+                                                    href="{{ !empty($attachment) && checkFile($attachment) ? getFile($attachment) : getFile('uploads/default-images/image_not_available.png') }}"
+                                                    class="edit-icon py-1 ml-2" title="{{ __('Download') }}"><i
+                                                        class="fa fa-download ms-2"></i></a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                     @endif
                                     <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
                                     <!-- SaveChat module start -->
                                     @if (isset($isSaveChat) && $isSaveChat)
-                                        @include('save-chat::bookmark', ['conversionId' => $conversion->id])
+                                    @include('save-chat::bookmark', ['conversionId' => $conversion->id])
                                     @endif
                                     <!-- SaveChat module end -->
                                 </div>
@@ -274,12 +274,10 @@
             <ul class="chat-tabs nav nav-pills nav-fill" id="pills-tab" role="tablist">
                 @if ($ticket->status != 'Closed')
                     <li data-tab="chat-tab-1" class="{{ $ticket->status != 'Closed' ? 'active' : '-' }}">
-                        {{ __('Reply') }}
-                    </li>
+                        {{ __('Reply') }}</li>
                 @endif
                 <li data-tab="chat-tab-2" class="{{ $ticket->status == 'Closed' ? 'active' : '-' }}">
-                    {{ __('Private Note') }}
-                </li>
+                    {{ __('Private Note') }}</li>
             </ul>
 
         </div>
@@ -287,8 +285,8 @@
             @if ($ticket->status != 'Closed')
                 <div class="tab-content {{ $ticket->status != 'Closed' ? 'active' : '-' }} " id="chat-tab-1">
 
-                    <form method="POST" action="{{ route('admin.reply.store', $ticket->id) }}" enctype="multipart/form-data"
-                        class="needs-validation" novalidate id="your-form-id">
+                    <form method="POST" action="{{ route('admin.reply.store', $ticket->id) }}"
+                        enctype="multipart/form-data" class="needs-validation" novalidate id="your-form-id">
 
                         @csrf
                         <div class="card-body">
@@ -301,7 +299,8 @@
                                             <div class="d-flex flex-wrap gap-3 ">
                                                 <a href="#" data-size="md" class="btn btn-primary btn-icon btn-sm"
                                                     data-ajax-popup-over="true" id="grammarCheck"
-                                                    data-url="{{ route('grammar', ['grammar']) }}" data-bs-placement="top"
+                                                    data-url="{{ route('grammar', ['grammar']) }}"
+                                                    data-bs-placement="top"
                                                     data-title="{{ __('Grammar check with AI') }}">
                                                     <i class="ti ti-rotate"></i>
                                                     <span>{{ __('Grammar check with AI') }}</span>
@@ -311,17 +310,16 @@
                                                     data-title="{{ __('Generate content with AI') }}"
                                                     data-url="{{ route('generate', ['reply']) }}"
                                                     data-toggle="tooltip" title="{{ __('Generate') }}">
-                                                    <i class="fas fa-robot"></i><span
-                                                    class="robot ms-1">{{ __('Generate With AI') }}</span>
+                                                    <i class="fas fa-robot"><span
+                                                            class="robot ms-1">{{ __('Generate With AI') }}</span></i>
                                                 </a>
                                             </div>
                                         </div>
                                     @endif
                                 </div>
                                 <textarea name="reply_description" id="reply_description"
-                                    class="form-control summernote-simple grammer_textarea @error('name') is-invalid @enderror"
-                                    required>
-                                    </textarea>
+                                    class="form-control summernote-simple grammer_textarea @error('name') is-invalid @enderror" required>
+                                </textarea>
                                 @error('reply_description')
                                     <div class="invalid-feedback d-block">
                                         {{ $message }}
@@ -349,9 +347,7 @@
                             </div>
                             <p class="multiple_reply_file_selection"></p>
                             <!-- SaveReply module start -->
-                            @if (!Auth::user()->hasRole('customer'))
-                                @stack('save-reply')
-                            @endif
+                            @stack('save-reply')
                             <!-- SaveReply module end -->
                             <div class="chat-footer-btn-wrp d-flex gap-3 flex-wrap align-items-start">
                                 <div class="chat-footer-wrp">
@@ -360,9 +356,11 @@
                                             id="reply_submit">{{ __('Send') }}</button>
                                         @if (isset($isSendClose) && $isSendClose)
                                             <div class="chat-footer-dropdown">
-                                                <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision"
-                                                    text-rendering="geometricPrecision" image-rendering="optimizeQuality"
-                                                    fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 299.283">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    shape-rendering="geometricPrecision"
+                                                    text-rendering="geometricPrecision"
+                                                    image-rendering="optimizeQuality" fill-rule="evenodd"
+                                                    clip-rule="evenodd" viewBox="0 0 512 299.283">
                                                     <path
                                                         d="M75.334 12.591C10.57-24.337-20.852 28.186 15.131 64.566l200.866 209.613c33.472 33.471 46.534 33.471 80.006 0L496.869 64.566c35.983-36.38 4.561-88.903-60.203-51.975L256 109.944 75.334 12.591z" />
                                                 </svg>
@@ -397,14 +395,13 @@
                                         data-ajax-popup-over="true" data-url="{{ route('generate', ['note']) }}"
                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                         title="{{ __('Generate') }}"
-                                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot me-1">
-                                            </i>{{ __('Generate with AI') }}</a>
+                                        data-title="{{ __('Generate Content with AI') }}"><i class="fas fa-robot">
+                                            {{ __('Generate with AI') }}</i></a>
                                 @endif
                             </div>
 
                             <textarea name="note" id="note"
-                                class="form-control summernote-simple grammer_textarea @error('name') is-invalid @enderror"
-                                required>{{ $ticket->note }}</textarea>
+                                class="form-control summernote-simple grammer_textarea @error('name') is-invalid @enderror" required>{{ $ticket->note }}</textarea>
                             @error('note')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -467,7 +464,8 @@
                         <div class="save-badge d-flex align-items-center gap-2 admin-edit-select " id="name">
                             <input type="text" name="name" id="ticket-name" value="{{ $ticket->name }}">
 
-                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Save') }}">
+                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="{{ __('Save') }}">
                                 <a href="#" id="save-name">
                                     <i class="ti ti-file-check"></i>
                                 </a>
@@ -481,7 +479,8 @@
                         <div class="save-badge d-flex align-items-center gap-2 admin-edit-select " id="email">
                             <input type="text" name="email" id="ticket-email" value="{{ $ticket->email }}">
 
-                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Save') }}">
+                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="{{ __('Save') }}">
                                 <a href="#" id="save-email">
                                     <i class="ti ti-file-check"></i>
                                 </a>
@@ -493,9 +492,11 @@
                     <span>{{ __('Subject') }} :</span>
                     <div class="badge-wrp d-flex align-items-center gap-1">
                         <div class="save-badge d-flex align-items-center gap-2 admin-edit-select " id="subject">
-                            <input type="text" name="subject" id="ticket-subject" value="{{ $ticket->subject }}">
+                            <input type="text" name="subject" id="ticket-subject"
+                                value="{{ $ticket->subject }}">
 
-                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('Save') }}">
+                            <div class="" data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="{{ __('Save') }}">
                                 <a href="#" id="save-subject">
                                     <i class="ti ti-file-check"></i>
                                 </a>
@@ -508,15 +509,16 @@
                     <span>{{ __('Priority') }} :</span>
                     <div class="badge-wrp d-flex align-items-center gap-1">
 
-                        <div class="badge-wrp d-flex align-items-center gap-1 admin-edit-select " id="priority-select">
+                        <div class="badge-wrp d-flex align-items-center gap-1 admin-edit-select "
+                            id="priority-select">
                             <select id="priority" class="form-select" name="priority"
                                 data-url="{{ route('admin.ticket.priority.change', ['id' => isset($ticket) ? $ticket->id : '0']) }}"
                                 required>
                                 <option selected disabled>{{__('Select Priority')}}</option>
 
                                 @foreach ($priorities as $priority)
-                                    <option value="{{ $priority->id }}" @if ($ticket->priority == $priority->id) selected
-                                    @endif>{{ $priority->name }}
+                                    <option value="{{ $priority->id }}"
+                                        @if ($ticket->priority == $priority->id) selected @endif>{{ $priority->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -527,16 +529,17 @@
                     <span>{{ __('Category') }} :</span>
                     <div class="badge-wrp d-flex align-items-center gap-2">
 
-                        <div class="badge-wrp d-flex align-items-center gap-1 admin-edit-select " id="category-select">
+                        <div class="badge-wrp d-flex align-items-center gap-1 admin-edit-select "
+                            id="category-select">
                             <select id="category" class="form-select" name="category"
                                 data-url="{{ route('admin.ticket.category.change', ['id' => isset($ticket) ? $ticket->id : '0']) }}"
                                 required>
                                 <option selected disabled>{{__('Select Category')}}</option>
 
                                 @foreach ($categoryTree as $category)
-                                    <option value="{{ $category['id'] }}" {{ $ticket->category_id == $category['id'] ? 'selected' : '' }}>
-                                        {!! $category['name'] !!}
-                                    </option>
+                                    <option value="{{ $category['id'] }}"
+                                        {{ $ticket->category_id == $category['id'] ? 'selected' : '' }}>
+                                        {!! $category['name'] !!}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -554,7 +557,8 @@
                                 required>
                                 <option selected disabled value="">{{ __('Select Agent') }}</option>
                                 @foreach ($users as $agent)
-                                    <option value="{{ $agent->id }}" {{ $ticket->is_assign == $agent->id ? 'selected' : '' }}>
+                                    <option value="{{ $agent->id }}"
+                                        {{ $ticket->is_assign == $agent->id ? 'selected' : '' }}>
                                         {{ $agent->name }}
                                     </option>
                                 @endforeach
@@ -574,8 +578,8 @@
                                 ? $field->getData($ticket, $field->id)
                                 : '-' !!}</textarea>
                             @else
-                            <input type="{{ $field->type }}" name="{{ $field->name }}" id="ticket-{{ $field->name }}"
-                                value="{{ !empty($field->getData($ticket, $field->id)) 
+                                <input type="{{ $field->type }}" name="{{ $field->name }}" id="ticket-{{ $field->name }}"
+                                    value="{{ !empty($field->getData($ticket, $field->id)) 
                                         ? $field->getData($ticket, $field->id) 
                                         : '' }}" />
                             @endif
@@ -603,9 +607,9 @@
         @if (count($customFields) != 0)
             <div class="custom-field d-flex flex-wrap align-items-center justify-content-center gap-2">
                 <span>{{ __('Custom field') }}</span>
-                <a href="#" class="btn btn-sm btn-icon bg-warning text-white" title="{{ __('View Custom Field') }}"
-                    data-bs-toggle="tooltip" data-bs-placement="top" data-ajax-popup="true"
-                    data-title="{{ __('Custom Field') }}"
+                <a href="#" class="btn btn-sm btn-icon bg-warning text-white"
+                    title="{{ __('View Custom Field') }}" data-bs-toggle="tooltip" data-bs-placement="top"
+                    data-ajax-popup="true" data-title="{{ __('Custom Field') }}"
                     data-url="{{ route('admin.ticketcustomfield.show', $ticket->id) }}" data-size="lg"><i
                         class="ti ti-eye"></i></a>
             </div>
@@ -634,11 +638,11 @@
     }
 </script>
 <script>
-    $('#commonModal-right').on('shown.bs.modal', function () {
+    $('#commonModal-right').on('shown.bs.modal', function() {
         $(document).off('focusin.modal');
     });
 
-    $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"]', function (e) {
+    $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"]', function(e) {
         var title = $(this).data('title');
         var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
         var url = $(this).data('url');
@@ -649,13 +653,13 @@
         $.ajax({
             url: url,
             cache: false,
-            success: function (data) {
+            success: function(data) {
                 $('#commonModal .modal-body ').html(data);
                 $("#commonModal").modal('show');
                 commonLoader();
                 validation();
             },
-            error: function (data) {
+            error: function(data) {
                 data = data.responseJSON;
                 show_toastr('Error', data.error, 'error')
             }
@@ -666,19 +670,19 @@
 
     $(document).on('click',
         'a[data-ajax-popup-right="true"], button[data-ajax-popup-right="true"], div[data-ajax-popup-right="true"], span[data-ajax-popup-right="true"]',
-        function (e) {
+        function(e) {
             var url = $(this).data('url');
 
             $.ajax({
                 url: url,
                 cache: false,
-                success: function (data) {
+                success: function(data) {
                     $('#commonModal-right').html(data);
                     $("#commonModal-right").modal('show');
                     commonLoader();
                     validation();
                 },
-                error: function (data) {
+                error: function(data) {
                     data = data.responseJSON;
                     show_toastr('Error', data.error, 'error')
                 }
@@ -688,7 +692,7 @@
 
     $(document).on('click',
         'a[data-ajax-popup-over="true"], button[data-ajax-popup-over="true"], div[data-ajax-popup-over="true"]',
-        function () {
+        function() {
 
             var validate = $(this).attr('data-validate');
             var id = '';
@@ -705,11 +709,11 @@
 
             $.ajax({
                 url: url + '?id=' + id,
-                success: function (data) {
+                success: function(data) {
                     $('#commonModalOver .modal-body').html(data);
                     $("#commonModalOver").modal('show');
                 },
-                error: function (data) {
+                error: function(data) {
                     data = data.responseJSON;
                     show_toastr('Error', data.error, 'error')
                 }
@@ -717,7 +721,7 @@
 
         });
 
-    $(document).on('click', '.show_confirm', function () {
+    $(document).on('click', '.show_confirm', function() {
         var form = $(this).closest("form");
         var title = $(this).attr("data-confirm");
         var text = $(this).attr("data-text");
@@ -755,7 +759,7 @@
     });
 
     // copy link
-    $('.cp_link').on('click', function () {
+    $('.cp_link').on('click', function() {
         var value = $(this).attr('data-link');
         var $temp = $("<input>");
         $("body").append($temp);

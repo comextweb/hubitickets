@@ -4,21 +4,32 @@
     {{ __('Knowledge') }}
 @endsection
 @section('content')
-    <div class="auth-wrapper knowledge-sec">
+    <div class="auth-wrapper auth-v1">
+        <div class="bg-auth-side bg-primary"></div>
         <div class="auth-content">
-            <header class="custom-header">
-                <a class="logo-col" href="{{ route('home') }}">
-                    <img src="{{ getFile(getSidebarLogo()) }}{{ '?' . time() }}" alt="logo" />
-                </a>
-                <a href="{{ route('knowledge') }}"
-                    class="btn btn-lg btn-primary text-white d-flex align-items-center justify-content-center"
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Return">
-                    <i class="ti ti-arrow-back-up"></i>
-                </a>
-            </header>
+            <nav class="navbar navbar-expand-md navbar-dark default">
+                <div class="container-fluid pe-2">
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        <img src="{{ getFile(getSidebarLogo()) }}{{ '?' . time() }}" alt="logo" style="width:150px;" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <ul class="navbar-nav align-items-center ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('knowledge') }}"><i
+                                        class="ti ti-arrow-circle-left"></i>{{ __('Back') }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
-            <div class="row align-items-lg-start knowledge-des h-100 justify-content-center text-start">
-                <div class="col-xl-6 col-12 mx-auto text-center">
+            <div class="row align-items-center justify-content-center text-start">
+                <div class="col-xl-12 text-center">
                     <div class="mx-3 mx-md-5">
                     </div>
                     <div class="card">
