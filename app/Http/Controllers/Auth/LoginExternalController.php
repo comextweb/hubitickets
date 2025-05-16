@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Crypt;
 
 class LoginExternalController extends Controller
 {
@@ -27,8 +28,9 @@ class LoginExternalController extends Controller
         }
     
         try {
-            $decoded = JWT::decode($token, new Key(env('JWT_HUBITICKETS_SHARED_SECRET'), 'HS256'));
-    
+            $decrypted = Crypt::decryptString($token);
+            $decoded = JWT::decode($decrypted, new Key(env('JWT_HUBITICKETS_SHARED_SECRET'), 'HS256'));
+
             $email = $decoded->email ?? null;
             if (!$email) {
                 return redirect()->route('login')->with('error', 'Token inválido: email no presente.');
