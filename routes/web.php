@@ -23,12 +23,10 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketConversionController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Http\Controllers\MetaController;
-use App\Http\Controllers\Auth\LoginExternalController;
 
 require __DIR__ . '/auth.php';
 
 Route::any('/cookie-consent', [SettingsController::class, 'CookieConsent'])->name('cookie-consent');
-Route::get('/loginExternal', [LoginExternalController::class, 'handle']);
 
 Route::controller(HomeController::class)->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
