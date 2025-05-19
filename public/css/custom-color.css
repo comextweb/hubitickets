@@ -1,6 +1,3 @@
-body.custom-color {
-    background: linear-gradient(141.55deg, rgba(240, 244, 243, 0) 3.46%, #f0f4f3 99.86%);
-}
 
 body.custom-color .bg-primary {
     background: linear-gradient(141.55deg, var(--color-customColor) 3.46%, var(--color-customColor) 99.86%), var(--color-customColor) !important;

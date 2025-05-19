@@ -1,223 +1,299 @@
 @extends('layouts.admin')
 @section('page-title')
-    {{ __('Add-on Manager') }}
+{{ __('Add-on Manager') }}
 @endsection
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Home') }}</a></li>
-    <li class="breadcrumb-item">{{ __('Add-on Manager') }}</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Home') }}</a></li>
+<li class="breadcrumb-item">{{ __('Add-on Manager') }}</li>
 @endsection
 @push('css')
-    <style>
+<style>
+    .system-version h5 {
+        position: absolute;
+        bottom: -44px;
+        right: 27px;
+    }
+
+    .center-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .center-text .text-primary {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .theme-main {
+        display: flex;
+        align-items: center;
+    }
+
+    .theme-main .theme-avtar {
+        margin-right: 15px;
+    }
+
+    @media only screen and (max-width: 575px) {
         .system-version h5 {
-            position: absolute;
-            bottom: -44px;
-            right: 27px;
+            position: unset;
+            margin-bottom: 0px;
         }
 
-        .center-text {
-            display: flex;
-            flex-direction: column;
+        .system-version {
+            text-align: center;
+            margin-bottom: -22px;
         }
-
-        .center-text .text-primary {
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .theme-main {
-            display: flex;
-            align-items: center;
-        }
-
-        .theme-main .theme-avtar {
-            margin-right: 15px;
-        }
-
-        @media only screen and (max-width: 575px) {
-            .system-version h5 {
-                position: unset;
-                margin-bottom: 0px;
-            }
-
-            .system-version {
-                text-align: center;
-                margin-bottom: -22px;
-            }
-        }
-    </style>
+    }
+</style>
 @endpush
 @section('multiple-action-button')
-    @if (Auth::user()->hasRole('admin'))
-        <div>
-            <a href="{{ route('admin.addon.add') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title=""
-                data-bs-original-title="{{ __('ModuleSetup') }}">
-                <i class="ti ti-plus"></i>
-            </a>
-        </div>
-    @endif
+@if (Auth::user()->hasRole('admin'))
+<div>
+    <a href="{{ route('admin.addon.add') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title=""
+        data-bs-original-title="{{ __('ModuleSetup') }}">
+        <i class="ti ti-plus"></i>
+    </a>
+</div>
+@endif
 @endsection
 
 @section('content')
-    <div class="row justify-content-center px-0">
-        <div class=" col-12">
-            <div class="add-on-banner mb-4">
-                <img src="{{ asset('assets/images/addon-manager/add-on-banner-layer.png') }}" class="banner-layer"
-                    alt="banner-layer">
-                <div class="row  row-gap align-items-center">
-                    <div class="col-xxl-4 col-md-6 col-12">
-                        <div class="add-on-banner-image">
-                            <img src="{{ asset('assets/images/addon-manager/add-on-banner-image.png') }}"
-                                alt="banner-image">
-                        </div>
+<div class="row justify-content-center px-0">
+    <div class=" col-12">
+        <div class="add-on-banner mb-4">
+            <img src="{{ asset('assets/images/addon-manager/add-on-banner-layer.png') }}" class="banner-layer"
+                alt="banner-layer">
+            <div class="row  row-gap-1 align-items-center">
+                <div class="col-md-4 col-12">
+                    <div class="add-on-banner-image">
+                    <svg width="191" height="142" viewBox="0 0 191 142" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M53.6706 77.4364C53.6748 77.6106 53.6795 77.7912 53.6905 77.965C53.8835 82.2197 54.5979 86.4347 55.9377 90.48C56.3722 91.7885 56.8666 93.0824 57.4275 94.3541C59.1868 98.3087 61.8098 101.974 65.0702 104.879C67.0155 106.619 69.1954 108.085 71.5534 109.185C78.7905 112.568 85.3574 109.752 92.9531 109.51C98.3472 109.342 103.79 109.541 109.095 110.628C114.399 111.715 119.492 113.711 123.982 116.767C129.139 120.282 131.729 125.321 136.058 129.439C137.43 130.744 139.471 132.033 142.212 132.909C143.606 133.47 145.07 133.89 146.576 134.12C148.089 134.357 149.65 134.405 151.26 134.224C158.773 133.394 165.675 128.702 170.466 122.863C175.581 116.621 179.101 109.487 181.051 101.991C182.304 97.1983 182.911 92.2672 182.895 87.3182C182.852 76.9852 180.076 66.6198 174.652 57.4859C159.007 31.1394 125.666 12.5207 94.8902 20.286C94.6038 20.3601 94.3246 20.4342 94.0386 20.515C93.8655 20.5527 93.6861 20.604 93.513 20.6553C92.6084 20.9057 91.7045 21.1892 90.8149 21.4926C88.4839 22.2939 86.2174 23.2612 84.0493 24.4069C82.3441 25.3133 80.7016 26.3254 79.1285 27.4426C77.3125 28.7404 75.5646 30.0898 73.9118 31.4973C72.5997 32.6017 71.3422 33.7445 70.1463 34.933C67.414 37.6264 64.9815 40.5332 62.8771 43.7136C61.8571 45.246 60.9123 46.8433 60.0633 48.5118C58.9194 50.7171 57.9257 53.0455 57.0899 55.5111C55.4673 60.273 54.3398 65.2974 53.8768 70.3724C53.6602 72.7219 53.5854 75.0877 53.6706 77.4364Z" fill="white" fill-opacity="0.14" />
+                            <path d="M129.649 71.1691C129.649 71.1691 123.963 73.827 119.236 68.8435C114.509 63.86 119.162 49.2412 119.162 49.2412L123.667 44.922C123.667 44.922 128.984 44.756 129.058 45.3372C129.132 45.9184 131.717 60.205 131.717 60.205L129.649 71.1691Z" fill="#2E2C41" />
+                            <path d="M113.55 28.974C113.55 28.974 102.475 25.4336 99.2278 38.5577C97.0022 47.5528 104.49 53.069 103.505 59.8246C102.521 66.5802 99.513 63.3351 97.0809 68.9265C94.6784 74.4498 103.314 82.365 104.594 82.0328C105.874 81.7005 110.965 76.6789 113.821 74.353C116.676 72.0274 118.351 61.6171 118.351 61.6171L115.495 36.4775L113.55 28.974Z" fill="#060606" />
+                            <path d="M127.284 55.1774C127.284 55.1774 126.448 60.799 127.048 64.0556C127.976 69.0921 130.202 76.2861 130.202 76.2861L117.037 83.9342C117.037 83.9342 112.225 76.295 112.257 76.1796C112.289 76.0642 111.542 65.5638 111.542 65.5638L127.284 55.1774Z" fill="#FDB096" />
+                            <path d="M105.307 32.5322C105.307 32.5322 98.9823 38.5688 100.614 49.7857C102.246 61.0024 108.484 69.6598 113.599 68.9517C118.714 68.2441 125.79 59.976 127.71 54.5943C129.631 49.2127 130.315 39.0129 125.258 32.9133C120.2 26.8137 110.954 28.7108 105.307 32.5322Z" fill="#FDB096" />
+                            <path d="M110.736 61.8129C110.736 61.8129 113.658 64.7233 115.704 61.1626L110.736 61.8129Z" fill="white" />
+                            <path d="M106.497 48.7732C106.497 48.7732 103.867 46.917 102.431 49.957L106.497 48.7732Z" fill="#2E2C41" />
+                            <path d="M106.243 54.4605C106.787 54.4018 107.163 53.759 107.084 53.0247C107.004 52.2904 106.499 51.7427 105.956 51.8014C105.412 51.8602 105.036 52.503 105.115 53.2373C105.194 53.9716 105.699 54.5193 106.243 54.4605Z" fill="#2E2C41" />
+                            <path d="M116.106 53.3049C116.649 53.2461 117.026 52.6033 116.946 51.869C116.867 51.1347 116.362 50.587 115.818 50.6458C115.275 50.7045 114.898 51.3474 114.978 52.0817C115.057 52.8159 115.562 53.3636 116.106 53.3049Z" fill="#2E2C41" />
+                            <path d="M110.846 55.1189L110.776 57.7786L111.842 57.775" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M113.898 47.8309C113.898 47.8309 116.072 45.4561 118.123 48.1197L113.898 47.8309Z" fill="#2E2C41" />
+                            <path class="theme-color" d="M96.6699 74.7885C96.6699 74.7885 91.5002 77.9069 89.2027 93.8263C86.9053 109.746 84.6893 117.623 84.6893 117.623L64.6672 132.394L81.4353 139.82C81.4353 139.82 96.3419 131.163 99.9528 121.316C103.563 111.469 104.876 79.7118 104.876 79.7118L96.6699 74.7885Z" fill="#0CAF60" />
+                            <path class="theme-color" d="M102.605 134.364C103.332 129.227 103.562 122.827 101.591 117.748C97.6503 107.57 98.186 104.04 99.4966 94.8477C100.816 85.6647 96.6745 74.7885 96.6745 74.7885L111.358 69.0397C111.358 69.0397 111.396 77.7445 118.455 76.7591C125.515 75.7736 128.059 65.3088 128.059 65.3088C128.059 65.3088 142.743 65.2707 148.491 68.1401C148.491 68.1401 147.631 86.2765 147.956 100.223C148.185 110.028 149.879 125.84 150.864 134.363L102.605 134.364Z" fill="#0CAF60" />
+                            <path d="M101.593 117.746C97.6546 107.571 98.188 104.043 99.5008 94.852C99.817 92.6375 99.8167 90.3255 99.6336 88.0914" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M132.203 74.5663C137.492 64.6891 135.625 67.139 138.425 66.7501C142.853 66.135 141.281 62.2204 135.975 54.7343C132.845 50.3189 131.954 43.3517 131.892 38.2853C131.775 28.8358 120.692 21.8363 113.549 28.974C113.549 28.974 110.078 29.6108 108.552 35.5359C108.552 35.5359 114.803 45.4009 124.134 46.9181C131.308 48.0848 127.38 53.6677 126.642 58.8174C125.904 63.9672 130.307 78.1067 132.203 74.5663Z" fill="#060606" />
+                            <path d="M127.39 55.1944C130.346 54.1805 132.141 47.0025 129.931 45.9793C127.722 44.9561 126.881 47.5517 126.881 47.5517L127.39 55.1944Z" fill="#FDB096" />
+                            <path d="M127.655 51.4959C127.655 51.4959 127.574 47.7604 128.624 47.5128C129.43 47.323 129.78 48.6963 129.78 48.6963" stroke="#060606" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M127.883 48.9153C127.883 48.9153 128.445 47.8195 129.195 48.5635" stroke="#060606" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M108.552 35.5359C108.552 35.5359 100.692 40.8488 100.939 51.425C100.939 51.425 98.1653 43.289 100.97 37.4184C104.866 29.2635 113.081 29.2229 113.081 29.2229C113.081 29.2229 111.204 29.4972 108.552 35.5359Z" fill="#060606" />
+                            <path d="M121.827 135.203L122.097 135.965C122.351 136.681 122.073 137.477 121.429 137.88L103.087 141.473H100.238L98.5161 139.692L118.898 135.667L121.827 135.203Z" fill="#455A64" />
+                            <path d="M101.297 139.267L121.827 135.203L89.5168 134.088L101.297 139.267Z" fill="#455A64" />
+                            <path d="M101.101 138.992L121.827 135.203" stroke="white" stroke-width="0.6715" stroke-miterlimit="10" />
+                            <path d="M43.9655 140.373H101.496L90.1764 105.673C89.9549 104.994 89.3213 104.534 88.6069 104.534H34.5498C33.4276 104.534 32.6324 105.63 32.9803 106.697L43.9655 140.373Z" fill="#455A64" />
+                            <path d="M43.9655 140.373L100.238 141.474L88.9751 106.946C88.7201 106.164 87.9911 105.635 87.1688 105.635H33.6356C32.3439 105.635 31.4286 106.896 31.8293 108.124L43.9655 140.373Z" fill="#455A64" />
+                            <path d="M65.461 127.489C67.1518 127.073 68.1127 125.071 67.6071 123.017C67.1016 120.963 65.3211 119.635 63.6303 120.052C61.9395 120.468 60.9787 122.47 61.4842 124.524C61.9897 126.578 63.7702 127.905 65.461 127.489Z" fill="#E7E7F7" />
+                            <path d="M100.238 141.473L88.9752 106.945C88.7202 106.164 87.9911 105.635 87.1688 105.635H33.6357" stroke="white" stroke-width="0.6715" stroke-miterlimit="10" />
+                            <path d="M99.8545 132.446C100.052 130.166 102.936 126.78 102.936 126.78C102.936 126.78 99.9115 127.346 99.5058 128.576C99.1012 129.81 99.8545 132.446 99.8545 132.446Z" fill="#FDB096" />
+                            <path d="M101.024 133.892C101.024 133.892 100.647 136.317 102.725 136.42C102.725 136.42 103.484 137.977 105.098 137.521C105.098 137.521 105.333 138.584 107.671 137.716C110.006 136.846 111.479 136.231 113.764 135.914C116.052 135.597 120.516 133.572 120.516 133.572L118.335 125.416C118.335 125.416 111.835 122.935 110.44 123.014C109.041 123.093 104.896 125.327 104.214 125.703C103.533 126.083 102.936 126.779 102.936 126.779C102.936 126.779 100.052 130.165 99.8545 132.445C99.8545 132.445 99.8858 134.027 101.024 133.892Z" fill="#FDB096" />
+                            <path d="M120.516 133.572L126.704 131.005L124.892 125.446L121.885 123.757L118.715 124.128L116.779 124.169L114.761 124.828L118.55 130.593L120.516 133.572Z" fill="#FDB096" />
+                            <path d="M101.024 133.893C101.024 133.893 103.502 130.908 104.854 129.837C106.206 128.766 109.466 126.966 109.466 126.966" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M102.727 136.42C102.727 136.42 105.321 133.869 106.67 132.97C108.019 132.071 110.736 130.71 110.736 130.71" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M105.099 137.522C105.099 137.522 106.785 136.509 108.683 135.562C110.581 134.614 112.142 134.05 112.142 134.05" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path class="theme-color" d="M148.49 68.1419C148.49 68.1419 157.18 71.5883 157.672 88.4924C158.165 105.397 160.134 124.762 152.584 128.865C145.035 132.969 118.105 134.658 118.105 134.658C118.105 134.658 122.108 124.352 115.871 124.434L141.556 114.669C141.556 114.669 142.088 93.6935 141.597 87.0978C140.735 75.5272 146.028 68.388 148.49 68.1419Z" fill="#0CAF60" />
+                            <path d="M115.871 124.434L141.556 114.669C141.556 114.669 142.088 93.6931 141.597 87.0974" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M141.556 114.669C141.556 114.669 147.382 113.93 149.844 116.146" stroke="#2E2C41" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M113.549 28.974C113.549 28.974 109.439 31.853 108.552 35.5359" stroke="white" stroke-width="1.0637" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path class="strock-color theme-color" d="M0.935934 62.0199H61.8547C62.3715 62.0199 62.7906 62.439 62.7906 62.9562V88.2357C62.7906 88.7528 62.3715 89.172 61.8547 89.172H59.2225V93.7555L50.8934 89.172H0.935934C0.419176 89.172 0 88.7528 0 88.2357V62.9562C0 62.439 0.419176 62.0199 0.935934 62.0199Z" fill="#4EC88D" />
+                            <path class="strock-color" d="M2.33016 59.7723H63.2489C63.7657 59.7723 64.1849 60.1914 64.1849 60.7085V85.9881C64.1849 86.5052 63.7657 86.9243 63.2489 86.9243H60.6167V91.5079L52.2877 86.9243H2.33016C1.8134 86.9243 1.39423 86.5052 1.39423 85.9881V60.7085C1.39387 60.1914 1.8134 59.7723 2.33016 59.7723Z" fill="white" stroke="#0CAF60" stroke-width="1.2343" stroke-miterlimit="10" />
+                            <path class="strock-color theme-color"d="M90.8494 35.5199H29.931C29.4142 35.5199 28.9951 35.939 28.9951 36.4561V61.7357C28.9951 62.2528 29.4142 62.6719 29.931 62.6719H32.5632V67.2555L40.8923 62.6719H90.8501C91.3669 62.6719 91.786 62.2528 91.786 61.7357V36.4561C91.7857 35.939 91.3665 35.5199 90.8494 35.5199Z" fill="#4EC88D" />
+                            <path d="M92.3292 33.3574H31.4104C30.8937 33.3574 30.4745 33.7766 30.4745 34.2937V59.5732C30.4745 60.0903 30.8937 60.5095 31.4104 60.5095H34.0426V65.093L42.3717 60.5095H92.3295C92.8463 60.5095 93.2655 60.0903 93.2655 59.5732V34.2937C93.2651 33.7766 92.8459 33.3574 92.3292 33.3574Z" fill="white" stroke="#FFA21D" stroke-width="1.2343" stroke-miterlimit="10" />
+                            <path class="theme-color" d="M80.6478 54.5705C84.6536 54.5705 87.9009 51.3232 87.9009 47.3174C87.9009 43.3116 84.6536 40.0642 80.6478 40.0642C76.642 40.0642 73.3947 43.3116 73.3947 47.3174C73.3947 51.3232 76.642 54.5705 80.6478 54.5705Z" fill="#0CAF60" fill-opacity="0.3" />
+                            <path d="M80.6478 47.0649C81.5895 47.0649 82.353 46.3014 82.353 45.3597C82.353 44.4179 81.5895 43.6545 80.6478 43.6545C79.706 43.6545 78.9426 44.4179 78.9426 45.3597C78.9426 46.3014 79.706 47.0649 80.6478 47.0649Z" fill="white" />
+                            <path d="M77.9503 50.9803H83.3458V48.6796C83.3458 48.3199 83.0542 48.0282 82.6945 48.0282H78.6021C78.2424 48.0282 77.9507 48.3199 77.9507 48.6796V50.9803H77.9503Z" fill="white" />
+                            <path class="strock-color" d="M65.2765 42.1676H35.8326" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path class="strock-color" d="M65.2765 47.3174H35.8326" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path class="strock-color" d="M53.8059 52.4671H36.1154" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path class="theme-color" d="M13.1572 81.5912C17.163 81.5912 20.4103 78.3438 20.4103 74.338C20.4103 70.3322 17.163 67.0849 13.1572 67.0849C9.15139 67.0849 5.90405 70.3322 5.90405 74.338C5.90405 78.3438 9.15139 81.5912 13.1572 81.5912Z" fill="#0CAF60" />
+                            <path d="M13.1572 74.0855C14.0989 74.0855 14.8624 73.3221 14.8624 72.3803C14.8624 71.4386 14.0989 70.6751 13.1572 70.6751C12.2154 70.6751 11.452 71.4386 11.452 72.3803C11.452 73.3221 12.2154 74.0855 13.1572 74.0855Z" fill="white" />
+                            <path d="M15.8549 78.0006H10.4594V75.6999C10.4594 75.3402 10.7511 75.0485 11.1108 75.0485H15.2032C15.5629 75.0485 15.8546 75.3402 15.8546 75.6999L15.8549 78.0006Z" fill="white" />
+                            <path class="strock-color" d="M28.5286 69.1883H57.9725" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path class="strock-color" d="M28.5287 74.3381H57.9725" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path class="strock-color" d="M28.5287 79.4875H46.2192" stroke="#0CAF60" stroke-width="1.376" stroke-miterlimit="10" />
+                            <path d="M178.935 119.13C185.318 119.13 190.493 113.956 190.493 107.573C190.493 101.189 185.318 96.0148 178.935 96.0148C172.552 96.0148 167.377 101.189 167.377 107.573C167.377 113.956 172.552 119.13 178.935 119.13Z" fill="#FFA21D" />
+                            <path d="M173.55 102.012C173.555 102.007 173.561 102.003 173.569 101.998C173.791 101.839 173.995 101.662 174.187 101.49L174.259 101.427C174.374 101.327 174.481 101.233 174.602 101.138C175.153 100.69 175.775 100.747 176.226 101.285L177.759 103.088C177.98 103.331 178.089 103.619 178.066 103.905C178.042 104.188 177.892 104.454 177.63 104.676L176.509 105.627C176.473 105.659 176.436 105.695 176.432 105.741C176.431 105.75 176.429 105.77 176.446 105.816C176.449 105.823 176.453 105.829 176.457 105.836C176.509 105.943 176.557 106.059 176.604 106.179C176.648 106.288 176.697 106.411 176.757 106.524C177.267 107.499 177.965 108.405 178.893 109.29C178.895 109.293 178.897 109.296 178.899 109.299C179.408 109.768 179.836 110.083 180.284 110.314L180.288 110.316C180.388 110.357 180.412 110.359 180.491 110.294C180.492 110.292 180.494 110.291 180.497 110.289C180.751 110.047 181.005 109.829 181.307 109.579C181.371 109.523 181.435 109.469 181.501 109.414L181.591 109.34C182.141 108.874 182.748 108.923 183.215 109.473L183.971 110.362C184.017 110.416 184.066 110.469 184.11 110.525C184.155 110.575 184.198 110.623 184.242 110.673C184.435 110.894 184.595 111.081 184.751 111.276L184.754 111.279C184.966 111.531 185.067 111.811 185.043 112.093C185.021 112.369 184.879 112.633 184.632 112.856C184.628 112.861 184.625 112.863 184.621 112.867L183.503 113.818C183.145 114.12 182.725 114.276 182.254 114.278C181.615 114.279 180.974 114.112 180.178 113.737C178.927 113.154 177.785 112.338 176.584 111.164C175.141 109.741 174.047 108.083 173.33 106.229C173.065 105.537 172.764 104.615 172.781 103.622C172.783 103.569 172.787 103.508 172.791 103.455C172.842 102.85 173.09 102.378 173.55 102.012Z" fill="white" />
+                            <path class="theme-color" d="M176.306 79.7036C182.689 79.7036 187.864 74.529 187.864 68.1458C187.864 61.7626 182.689 56.588 176.306 56.588C169.923 56.588 164.748 61.7626 164.748 68.1458C164.748 74.529 169.923 79.7036 176.306 79.7036Z" fill="#0CAF60" />
+                            <path d="M181.73 72.2282H170.882C170.472 72.2282 170.139 71.8956 170.139 71.485V64.8059C170.139 64.3956 170.472 64.0627 170.882 64.0627H181.73C182.14 64.0627 182.473 64.3953 182.473 64.8059V71.485C182.473 71.8956 182.14 72.2282 181.73 72.2282Z" fill="white" />
+                            <path d="M181.608 64.6927L176.306 68.5504L171.004 64.6927" stroke="#2E2C41" stroke-width="0.6035" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path class="theme-color" d="M112.139 4.94566C112.139 4.94566 114.949 4.63724 114.39 0.329018C114.39 0.329018 116.239 -0.0588186 116.493 1.47436C116.746 3.0079 116.674 4.39969 116.674 4.39969L121.136 3.9652C122.083 3.87296 122.939 4.5361 123.08 5.47702C123.435 7.8482 123.768 11.9748 121.925 12.6308C119.315 13.5603 117.072 13.4585 116.538 13.3028C116.003 13.1472 113.897 13.0322 112.92 13.1273L112.139 4.94566Z" fill="#0CAF60" />
+                            <path d="M112.693 13.3744L110.274 13.6102C110.042 13.6326 109.836 13.4631 109.813 13.2312L109.048 5.37587C109.025 5.14403 109.195 4.93782 109.427 4.91538L111.846 4.67962C112.078 4.65718 112.284 4.82671 112.306 5.05855L113.072 12.9139C113.094 13.1458 112.924 13.352 112.693 13.3744Z" fill="white" />
+                            <path d="M156.641 48.7946C163.024 48.7946 168.198 43.62 168.198 37.2368C168.198 30.8536 163.024 25.679 156.641 25.679C150.257 25.679 145.083 30.8536 145.083 37.2368C145.083 43.62 150.257 48.7946 156.641 48.7946Z" fill="#FFA21D" />
+                            <path d="M156.967 45.1467C152.593 45.1467 149.034 41.5878 149.034 37.214C149.034 34.7517 150.15 32.4702 152.093 30.9549L152.962 32.0692C151.364 33.315 150.448 35.1901 150.448 37.214C150.448 40.8089 153.372 43.7335 156.967 43.7335C160.562 43.7335 163.487 40.8089 163.487 37.214C163.487 33.6191 160.562 30.6945 156.967 30.6945V29.2814C161.341 29.2814 164.9 32.8403 164.9 37.214C164.9 41.5878 161.341 45.1467 156.967 45.1467Z" fill="white" />
+                            <path d="M154.745 29.9651L157.145 28.1787V31.7512L154.745 29.9651Z" fill="white" />
+                            <path d="M153.269 38.8651C154.324 37.9943 155.446 37.1299 155.446 36.2934C155.446 35.933 155.283 35.7015 154.929 35.7015C154.582 35.7015 154.378 35.9736 154.378 36.4433H153.256C153.29 35.2388 154.072 34.7221 154.977 34.7221C156.106 34.7221 156.609 35.382 156.609 36.2186C156.609 37.3069 155.637 38.1777 154.848 38.7835H156.685V39.7291H153.27L153.269 38.8651Z" fill="white" />
+                            <path d="M159.508 38.9128H157.222V37.9737L159.372 34.8987H160.671V37.906H161.228V38.9132H160.671V39.7974H159.508L159.508 38.9128ZM159.589 37.9056V36.178L158.447 37.9056H159.589Z" fill="white" />
+                            <path class="theme-color" d="M128.697 55.6456C130.94 55.3928 132.47 52.6365 132.116 49.4892C131.761 46.3418 129.655 43.9953 127.413 44.248C125.17 44.5008 123.64 47.2571 123.994 50.4045C124.349 53.5519 126.455 55.8984 128.697 55.6456Z" fill="#0CAF60" />
+                            <path d="M129.442 54.3052C131.196 54.1074 132.393 51.9512 132.116 49.4891C131.838 47.027 130.191 45.1914 128.437 45.3891C126.682 45.5868 125.485 47.7431 125.763 50.2052C126.04 52.6673 127.687 54.5029 129.442 54.3052Z" fill="white" />
+                            <path d="M128.878 49.4068C128.878 49.4068 118.569 29.1136 109.56 28.6029C109.56 28.6029 112.904 26.9312 115.087 27.8134C117.269 28.6955 124.653 36.0174 130.318 47.7814" fill="#E7E7F7" />
+                            <path d="M129.235 50.258C129.235 50.258 125.829 59.8552 117.099 63.1367" stroke="#2E2C41" stroke-width="1.343" stroke-miterlimit="10" />
+                            <path d="M130.287 51.8159C131.152 51.7185 131.741 50.656 131.605 49.4429C131.468 48.2297 130.656 47.3252 129.792 47.4226C128.928 47.52 128.338 48.5825 128.475 49.7956C128.612 51.0088 129.423 51.9133 130.287 51.8159Z" fill="#E7E7F7" />
+                            <path class="theme-color" d="M116.39 65.0188C117.54 64.6778 118.284 63.7633 118.051 62.9764C117.817 62.1894 116.695 61.8279 115.545 62.1689C114.394 62.51 113.651 63.4244 113.884 64.2114C114.117 64.9984 115.239 65.3599 116.39 65.0188Z" fill="#0CAF60" />
+                        </svg>
                     </div>
-                    <div class="col-xxl-4 col-md-6 col-12">
-                        <div class="add-on-banner-content text-center ">
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="add-on-banner-content text-center">
+                        <div class="add-on-btn-wrp d-flex align-items-center justify-content-center mb-3">
+                            <div class="btn-img">
+                                <img src="{{ asset('assets/images/addon-manager/light-favicon.png') }}" alt="">
+                            </div>
                             <a href="https://workdo.io/product-category/ticketgo-add-ons/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
-                                class="btn btn-light mb-md-3 mb-2" target="new">
-                                <img src="https://workdo.io/wp-content/uploads/2023/03/favicon.jpg" alt="">
-                                <span>{{ __('Click Here') }}</span>
+                                class="btn btn-light" target="new">
+                                {{ __('Click Here') }}
                             </a>
-                            <h2>{{ __('Buy More Add-on') }}</h2>
-                            <p>+{{ count($exploreAddons) }}<span>{{ __('Premium Add-on') }}</span></p>
                         </div>
-                    </div>
-                    <div class="col-xxl-4 col-12">
-                        <div
-                            class="add-on-btn d-flex flex-wrap align-items-center justify-content-xxl-end justify-content-center gap-2">
-                            <a class="btn btn-primary"
-                                href="https://workdo.io/product-category/ticketgo-add-ons/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
-                                target="new">
-                                {{ __('Buy More Add-on') }}
-                            </a>
+                        <h2 class="text-white">{{ __('Buy More Add-on') }}</h2>
+                        <div class="addon-count"><span>+{{ count($modules) }}</span>
+                            <h3 class="mb-0">{{ __('Premium Add-on') }}</h3>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-
-        <div class="event-cards row px-0">
-            <h2 class="mb-4">{{ __('Installed Add-on') }}</h2>
-
-            @foreach ($modules as $module)
-                @php
-                    $id = strtolower(preg_replace('/\s+/', '_', $module->name));
-                @endphp
-                @if (!isset($module->display) || $module->display == true)
-                    <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 product-card ">
-                        <div class="card {{ $module->isEnabled() ? 'enable_module' : 'disable_module' }}">
-                            <div class="product-img">
-                                <div class="theme-main">
-                                    <div class="theme-avtar">
-                                        <img src="{{ $module->image }}" alt="{{ $module->name }}" class="img-user"
-                                            style="max-width: 100%">
-                                    </div>
-                                    <div class="center-text">
-                                        <small class="text-muted">
-                                            @if ($module->isEnabled())
-                                                <span class="badge bg-success">{{ __('Enable') }}</span>
-                                            @else
-                                                <span class="badge bg-danger">{{ __('Disable') }}</span>
-                                            @endif
-                                        </small>
-                                        <small
-                                            class="text-primary">{{ __('V') }}{{ sprintf('%.1f', $module->version) }}</small>
-                                    </div>
-                                </div>
-                                <div class="checkbox-custom">
-                                    <div class="btn-group card-option">
-                                        <button type="button" class="btn p-0" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="ti ti-dots-vertical"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" style="">
-                                            @if ($module->isEnabled())
-                                                <a href="#!" class="dropdown-item module_change"
-                                                    data-id="{{ $id }}">
-                                                    <span>{{ __('Disable') }}</span>
-                                                </a>
-                                            @else
-                                                <a href="#!" class="dropdown-item module_change"
-                                                    data-id="{{ $id }}">
-                                                    <span>{{ __('Enable') }}</span>
-                                                </a>
-                                            @endif
-                                            <form action="{{ route('admin.addon.enable') }}" method="POST"
-                                                id="form_{{ $id }}">
-                                                @csrf
-                                                <input type="hidden" name="name" value="{{ $module->name }}">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <h4 class="text-capitalize mb-0"> {{ $module->alias }}</h4>
-                                <p class="text-muted text-sm mt-2 mb-0">
-                                    {{ $module->description ?? '' }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        </div>
-
-
-        <div class="col-12">
-            <h2 class="mb-4 mt-2">{{ __('Explore Add-on') }}</h2>
-
-            <div class="card">
-                <div class="card-header">
-                    <h5>{{ __('Premium Add-on') }}</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach ($exploreAddons as $module)
-                            @php
-                                $id = strtolower(preg_replace('/\s+/', '_', $module->name));
-                            @endphp
-
-                            <div class="col-xxl-3 col-lg-4 col-sm-6 col-12">
-                                <div class="product-card">
-                                    <a href="#">
-                                        <div class="addon-card">
-                                            <div class="product-img">
-                                                <div class="theme-main">
-                                                    <div class="theme-avtar">
-                                                        <img src="{{ $module->image }}" alt="{{ $module->name }}"
-                                                            class="img-user" style="max-width: 100%">
-                                                    </div>
-                                                </div>
-                                                <h5 class="text-capitalize mb-0">{{ $module->name }}</h5>
-                                            </div>
-                                            <div class="product-content p-3">
-                                                <a class="btn btn-primary w-100" href="{{ $module->url }}"
-                                                    target="_blank">View Details</a>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        @endforeach
+                <div class="col-md-4 col-12">
+                    <div
+                        class="add-on-btn d-flex flex-wrap align-items-center justify-content-xxl-end justify-content-center gap-2">
+                        <a class="btn btn-primary"
+                            href="https://workdo.io/product-category/ticketgo-add-ons/?utm_source=demo&utm_medium=ticketgo&utm_campaign=btn"
+                            target="new">
+                            {{ __('Buy More Add-on') }}
+                        </a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="system-version">
+
+
+    <div class="event-cards row px-0">
+        <h2 class="mb-4 h4">{{ __('Installed Add-on') }}</h2>
+
+        @foreach ($modules as $module)
         @php
-            $version = config('verification.system_version');
+        $id = strtolower(preg_replace('/\s+/', '_', $module->name));
         @endphp
-        <h5 class="text-muted">{{ !empty($version) ? 'V' . $version : '' }}</h5>
+        @if (!isset($module->display) || $module->display == true)
+        <div class="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 product-card ">
+            <div class="card {{ $module->isEnabled() ? 'enable_module' : 'disable_module' }}">
+                <div class="product-img">
+                    <div class="theme-main">
+                        <div class="theme-avtar">
+                            <img src="{{ $module->image }}" alt="{{ $module->name }}" class="img-user"
+                                style="max-width: 100%">
+                        </div>
+                        <div class="center-text">
+                            <small class="text-muted">
+                                @if ($module->isEnabled())
+                                <span class="badge bg-success">{{ __('Enable') }}</span>
+                                @else
+                                <span class="badge bg-danger">{{ __('Disable') }}</span>
+                                @endif
+                            </small>
+                            <small
+                                class="text-primary">{{ __('V') }}{{ sprintf('%.1f', $module->version) }}</small>
+                        </div>
+                    </div>
+                    <div class="checkbox-custom">
+                        <div class="btn-group card-option">
+                            <button type="button" class="btn p-0" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="ti ti-dots-vertical"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" style="">
+                                @if ($module->isEnabled())
+                                <a href="#!" class="dropdown-item module_change"
+                                    data-id="{{ $id }}">
+                                    <span>{{ __('Disable') }}</span>
+                                </a>
+                                @else
+                                <a href="#!" class="dropdown-item module_change"
+                                    data-id="{{ $id }}">
+                                    <span>{{ __('Enable') }}</span>
+                                </a>
+                                @endif
+                                <form action="{{ route('admin.addon.enable') }}" method="POST"
+                                    id="form_{{ $id }}">
+                                    @csrf
+                                    <input type="hidden" name="name" value="{{ $module->name }}">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-content">
+                    <h4 class="text-capitalize mb-0"> {{ $module->alias }}</h4>
+                    <p class="text-muted text-sm mt-2 mb-0">
+                        {{ $module->description ?? '' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endforeach
     </div>
+
+
+    <div class="col-12">
+        <h2 class="mb-4 mt-2">{{ __('Explore Add-on') }}</h2>
+
+        <div class="card">
+            <div class="card-header">
+                <h5>{{ __('Premium Add-on') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @foreach ($exploreAddons as $module)
+                    @php
+                    $id = strtolower(preg_replace('/\s+/', '_', $module->name));
+                    @endphp
+
+                    <div class="col-xxl-3 col-lg-4 col-sm-6 col-12">
+                        <div class="product-card">
+                            <a href="#">
+                                <div class="addon-card">
+                                    <div class="product-img">
+                                        <div class="theme-main">
+                                            <div class="theme-avtar">
+                                                <img src="{{ $module->image }}" alt="{{ $module->name }}"
+                                                    class="img-user" style="max-width: 100%">
+                                            </div>
+                                        </div>
+                                        <h5 class="text-capitalize mb-0">{{ $module->name }}</h5>
+                                    </div>
+                                    <div class="product-content p-3">
+                                        <a class="btn btn-primary w-100" href="{{ $module->url }}"
+                                            target="_blank">View Details</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="system-version">
+    @php
+    $version = config('verification.system_version');
+    @endphp
+    <h5 class="text-muted">{{ !empty($version) ? 'V' . $version : '' }}</h5>
+</div>
 @endsection
 @push('scripts')
-    <script>
-        $(document).on('click', '.module_change', function() {
-            var id = $(this).attr('data-id');
-            $('#form_' + id).submit();
-        });
-    </script>
+<script>
+    $(document).on('click', '.module_change', function() {
+        var id = $(this).attr('data-id');
+        $('#form_' + id).submit();
+    });
+</script>
 @endpush

@@ -27,11 +27,9 @@ break;
 @endphp
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end mb-4">
-                <div class="col-md-auto">
-                    <ul class="nav nav-pills nav-fill cust-nav information-tab" id="pills-tab" role="tablist">
+   
+<div class="information-tab-wrp ms-auto my-md-4 mb-4 mt-2">
+                    <ul class="nav nav-pills nav-fill cust-nav information-tab p-2" id="pills-tab" role="tablist">
                         @foreach ($notifications as $key => $value)
                             @if (moduleIsActive($key) && $key == 'Slack')
                             <li class="nav-item" role="presentation">
@@ -114,14 +112,10 @@ break;
                         @endforeach
                     </ul>
                 </div>
-            </div>
-        </div>
-    </div>
-
 
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card overflow-auto">
                 <div class="card-body">
                     @if($activeModule == '')
                     <div class="text-center">

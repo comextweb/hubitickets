@@ -36,7 +36,7 @@ use Exception;
 
 class HomeController extends Controller
 {
-    private  $language;
+    private $language;
     public function __construct()
     {
         // $this->middleware('2fa');
@@ -44,31 +44,30 @@ class HomeController extends Controller
         if (!file_exists(storage_path() . "/installed")) {
             return redirect('install');
         }
-        if(moduleIsActive('CustomerLogin'))
-        {
+        if (moduleIsActive('CustomerLogin')) {
             $this->middleware('CustomerLogin')->only(['index']);
         }
 
 
-        $language =  getActiveLanguage();
+        $language = getActiveLanguage();
         App::setLocale(isset($language) ? $language : 'en');
     }
     public function index()
     {
-        
+
         $this->middleware('2fa');
-        
+
         if (!file_exists(storage_path() . "/installed")) {
             return redirect('install');
         }
 
         $customFields = CustomField::orderBy('order')->get();
-        $categories   = Category::get();
+        $categories = Category::get();
         $categoryTree = buildCategoryTree($categories);
         $priorities = Priority::get();
 
-        $settings      = getCompanyAllSettings();
-        $language =  isset($settings['default_language']) ? $settings['default_language'] : 'en';
+        $settings = getCompanyAllSettings();
+        $language = isset($settings['default_language']) ? $settings['default_language'] : 'en';
         Session::put('default_language', $language);
         $ticket = null;
         return view('home', compact('categoryTree', 'customFields', 'settings', 'priorities', 'ticket'));
@@ -77,7 +76,7 @@ class HomeController extends Controller
 
     public function search($lang = '')
     {
-        $settings      = getCompanyAllSettings();
+        $settings = getCompanyAllSettings();
         if ($lang == '') {
             $lang = getActiveLanguage();
         } else {
@@ -90,7 +89,7 @@ class HomeController extends Controller
 
     public function faq()
     {
-        $settings      = getCompanyAllSettings();
+        $settings = getCompanyAllSettings();
         if ($settings['faq'] == 'on') {
             $faqs = Faq::get();
             return view('faq', compact('faqs', 'settings'));
@@ -112,7 +111,7 @@ class HomeController extends Controller
             $ticketPrefix = $settings["ticket_number_prefix"] ?? '';
             $ticketId = str_replace($ticketPrefix, '', $request->ticket_id); // Prefix remove karo
             $ticketId = ltrim($ticketId, '0');
-            $ticket_id = Ticket::find($ticketId);
+            $ticket_id = Ticket::where('id', $ticketId)->where('email', $request->email)->first();
             if (!$ticket_id) {
                 return redirect()->back()->with('info', __('Ticket not found'));
             }
@@ -188,7 +187,7 @@ class HomeController extends Controller
                     $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
                     $extention = $file->getClientOriginalExtension();
                     $filenameToStore = $fileName . '_' . time() . '.' . $extention;
-                    $dir        = ('tickets/' . $ticket->ticket_id);
+                    $dir = ('tickets/' . $ticket->ticket_id);
                     $path = multipleFileUpload($file, 'attachments', $filenameToStore, $dir);
                     if ($path['flag'] == 1) {
                         $data[] = $path['url'];
@@ -200,6 +199,10 @@ class HomeController extends Controller
             }
             $ticket->attachments = json_encode($data);
             $ticket->save();
+
+            CustomField::saveData($ticket, $request->customField);
+            event(new CreateTicket($ticket, $request));
+
 
             // pusher
             if (
@@ -223,26 +226,24 @@ class HomeController extends Controller
                 );
 
                 $data = [
-                    'id'        => $ticket->id,
+                    'id' => $ticket->id,
                     'tikcet_id' => $ticket->ticket_id,
-                    'name'      => $ticket->name,
-                    'subject'   => $ticket->subject,
-                    'status'    => $ticket->status,
+                    'name' => $ticket->name,
+                    'subject' => $ticket->subject,
+                    'status' => $ticket->status,
                     'created_at' => $ticket->created_at->diffForHumans(),
                     'latestMessage' => $ticket->latestMessages($ticket->id),
                     'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
-                    'type'        => $ticket->type,                  
+                    'type' => $ticket->type,
 
-                ];                
-
+                ];
+            
                 $channel = "new-ticket-1";
                 $event = "new-ticket-event-1";
                 $pusher->trigger($channel, $event, $data);
             }
 
-            CustomField::saveData($ticket, $request->customField);
 
-            event(new CreateTicket($ticket, $request));
 
             $error_msg = '';
 
@@ -282,19 +283,21 @@ class HomeController extends Controller
             $ticket->description = $request->description;
             $ticket->attachments = json_encode([]);
             $ticket->created_by = 1;
-
             $ticket->save();
 
+            event(new CreateTicket($ticket, $request));
+
+
             $data = [
-                'id'        => $ticket->id,
+                'id' => $ticket->id,
                 'tikcet_id' => $ticket->ticket_id,
-                'name'      => $ticket->name,
-                'subject'   => $ticket->subject,
-                'status'    => $ticket->status,
+                'name' => $ticket->name,
+                'subject' => $ticket->subject,
+                'status' => $ticket->status,
                 'created_at' => $ticket->created_at->diffForHumans(),
                 'latestMessage' => $ticket->latestMessages($ticket->id),
                 'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
-                'type'        => $ticket->type,
+                'type' => $ticket->type,
             ];
 
             // pusher
@@ -323,9 +326,6 @@ class HomeController extends Controller
                 $pusher->trigger($channel, $event, $data);
             }
 
-
-            event(new CreateTicket($ticket, $request));
-
             $error_msg = '';
 
             // send Email To The Customer
@@ -344,13 +344,13 @@ class HomeController extends Controller
     {
         try {
             $ticket_id = decrypt($ticket_id);
-            $ticket    = Ticket::where('ticket_id', '=', $ticket_id)->first();
+            $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
             $settings = getCompanyAllSettings();
 
             if ($ticket) {
                 return view('show', compact('ticket', 'settings'));
             } else {
-                return redirect()->back()->with('error', __('Ticket Not Found.'));
+                return redirect()->back()->with('error', __('Ticket Not Found 123.'));
             }
         } catch (\Throwable $th) {
             return redirect()->back();
@@ -359,27 +359,20 @@ class HomeController extends Controller
 
     public function reply(Request $request, $ticket_id)
     {
+        $rules = [
+            'reply_description' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $message = $validator->getMessageBag();
+            return redirect()->back()->with('error', $message->first())->withInput();
+        }
+
         $ticket_id = decrypt($ticket_id);
         $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
         if ($ticket) {
-            // $validation = ['reply_description' => ['required']];
-            if ($request->hasfile('reply_attachments')) {
-                $validation['reply_attachments.*'] = 'mimes:zip,rar,jpeg,jpg,png,gif,svg,pdf,txt,doc,docx,application/octet-stream,audio/mpeg,mpga,mp3,wav|max:204800';
-                $this->validate($request, $validation);
-            }
-
             $summernoteContent = $request->reply_description;
-            // Extract images and save them
-            preg_match_all('/<img[^>]+src="data:image\/[^;]+;base64,([^"]+)"[^>]*data\-filename="([^"]+)"[^>]*>/', $summernoteContent, $matches);
-            $data = [];
-            foreach ($matches[1] as $index => $base64Image) {
-                $imageName = time() . '_summernote_image_' . $index . '.png';
-                Storage::put('/tickets/' . $ticket->ticket_id . '/' . $imageName, base64_decode($base64Image));
-                $summernoteContent = str_replace($matches[0][$index], '<img src="/storage/tickets/' . $ticket->ticket_id . '/' . $imageName . '">', $summernoteContent);
-            }
-
             if (!empty($summernoteContent) || $request->hasfile('reply_attachments')) {
-
                 $conversion = new Conversion();
                 $conversion->ticket_id = $ticket->id;
                 $conversion->description = $summernoteContent;
@@ -397,7 +390,7 @@ class HomeController extends Controller
                         if ($path['flag'] == 1) {
                             $data[] = $path['url'];
                         } elseif ($path['flag'] == 0) {
-                            $errors = __($path['msg']);
+                            return redirect()->back()->with('error', __($path['msg']));
                         }
                     }
                     $conversion->attachments = json_encode($data);
@@ -409,8 +402,10 @@ class HomeController extends Controller
                     $ticket->status = 'In Progress';
                     $ticket->update();
                 }
-                $settings = getCompanyAllSettings();
 
+                event(new TicketReply($conversion, $request));
+                
+                $settings = getCompanyAllSettings();
                 // pusher
                 if (
                     isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes' &&
@@ -433,14 +428,14 @@ class HomeController extends Controller
                     );
 
                     $data = [
-                        'id'        => $conversion->id,
+                        'id' => $conversion->id,
                         'tikcet_id' => $conversion->ticket_id,
                         'ticket_unique_id' => $ticket->id,
                         'new_message' => $conversion->description ?? '',
-                        'timestamp'   => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                        'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                         'sender_name' => $conversion->replyBy()->name,
                         'attachments' => json_decode($conversion->attachments),
-                        'baseUrl'     => env('APP_URL'),
+                        'baseUrl' => env('APP_URL'),
                         'latestMessage' => $ticket->latestMessages($ticket->id),
                         'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
                     ];
@@ -456,8 +451,8 @@ class HomeController extends Controller
                 }
 
                 $request->merge(['type' => 'frontend']);
+
                 
-                event(new TicketReply($conversion, $request));
 
                 // Send Email To Te Agent
                 $error_msg = '';
@@ -466,7 +461,7 @@ class HomeController extends Controller
                 // Send Email To The Admin
                 sendTicketEmail('Reply Mail To Admin', $settings, $ticket, $request, $error_msg);
 
-                return redirect()->back()->with('success', __('Reply added successfully') . ((isset($error_msg)) ? '<br> <span class="text-danger">' . $error_msg . '</span>' : ''));
+                return redirect()->back()->with('success', __('Reply Added Successfully'));
             } else {
                 return redirect()->back()->with('error', __('Please add a description or attachment.'));
             }
@@ -477,9 +472,9 @@ class HomeController extends Controller
 
     public function knowledge(Request $request)
     {
-        $settings      = getCompanyAllSettings();
+        $settings = getCompanyAllSettings();
         if (isset($settings['knowledge_base']) && $settings['knowledge_base'] == 'on') {
-            $knowledgeBaseCategory = Knowledgebasecategory::with('knowledgebase')->orderBy('id','desc')->get();
+            $knowledgeBaseCategory = Knowledgebasecategory::with('knowledgebase')->orderBy('id', 'desc')->get();
             $knowledgeBase = Knowledge::with('getCategoryInfo')->get();
 
             return view('knowledge', compact('knowledgeBaseCategory', 'knowledgeBase', 'settings'));

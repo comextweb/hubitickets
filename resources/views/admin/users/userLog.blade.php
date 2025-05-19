@@ -96,7 +96,7 @@
                                     @endphp
                                         <td>{{ $user->user_name }}</td>
                                         <th>
-                                            <div class="badge bg-primary p-2 px-3 status-btn ">{{ $user->role }}
+                                            <div class="badge bg-primary p-2 role-badge">{{ $user->role }}
                                             </div>
                                         </th>
                                         <td>{{ $user->user_email }}</td>

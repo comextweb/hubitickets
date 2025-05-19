@@ -32,7 +32,7 @@
                             @endforeach
                         </select>
 
-                        <div class=" text-xs">
+                        <div class=" text-xs mt-1">
                             {{ __('Please add Knowledgebase category. ') }}<a
                                 href="{{ route('admin.knowledgecategory') }}"><b>{{ __('Add Category') }}</b></a>
                         </div>

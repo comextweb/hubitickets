@@ -23,6 +23,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TicketConversionController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use App\Http\Controllers\MetaController;
+use App\Http\Controllers\Auth\LoginExternalController;
 
 require __DIR__ . '/auth.php';
 
@@ -79,7 +80,8 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(funct
     Route::get('ticketdetail/{id}', [TicketConversionController::class, 'getticketDetails'])->name('ticketdetail');
     Route::get('ticket/{id}/status/change', [TicketConversionController::class, 'statusChange'])->name('ticket.status.change');
     Route::post('ticketreply/{id}', [TicketConversionController::class, 'replystore'])->name('reply.store');
-    Route::post('ticketnote/{id}', [TicketConversionController::class, 'storeNote'])->name('tikcetnote.store');
+    Route::get('ticketnote/{ticketId}', [TicketConversionController::class, 'ticketNote'])->name('ticket.note');
+    Route::post('ticketnote/store/{ticketId}', [TicketConversionController::class, 'ticketNoteStore'])->name('ticket.note.store');
     Route::get('ticket/{id}/assign/change', [TicketConversionController::class, 'assignChange'])->name('ticket.assign.change');
     Route::get('ticket/{id}/category/change', [TicketConversionController::class, 'categoryChange'])->name('ticket.category.change');
     Route::get('ticket/{id}/priority/change', [TicketConversionController::class, 'priorityChange'])->name('ticket.priority.change');
@@ -150,16 +152,6 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(funct
     Route::post('addon-enable', [AddOnController::class, 'addonEnable'])->name('addon.enable');
     Route::get('addon/add', [AddOnController::class, 'addAddOn'])->name('addon.add');
     Route::post('addon-install', [AddOnController::class, 'installAddon'])->name('addon.install');
-
-
-     // Check TicketNumber Addon Active Or Not 
-     Route::get('ticket-number-format/{id}', function ($id) {
-        $ticketNumber = \Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($id);
-        return response()->json([
-            'status' => 'success',
-            'formatted' => $ticketNumber
-        ]);
-    })->name('convertTicketNumber');
 });
 
 Route::group(['middleware' => ['web', 'auth', 'verified','XSS']], function () {
@@ -249,4 +241,6 @@ Route::group(['prefix' => 'update', 'as' => 'LaravelUpdater::', 'namespace' => '
     ]);
 });
 
+// lOGIN EXTERNO DESDE LOGIGA
+Route::get('/loginExternal', [LoginExternalController::class, 'handle']);
 

@@ -1,18 +1,18 @@
 @php
-    use App\Models\Utility;
-    use App\Models\Languages;
-    $setting = getCompanyAllSettings();
+use App\Models\Utility;
+use App\Models\Languages;
+$setting = getCompanyAllSettings();
 
-    $color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
-    if (isset($setting['color_flag']) && $setting['color_flag'] == 'true') {
-        $themeColor = 'custom-color';
-    } else {
-        $themeColor = $color;
-    }
-    $currantLang = isset(Auth::user()->lang) ? Auth::user()->lang : 'en';
-    $language = Languages::where('code', $currantLang)->first();
-    $SITE_RTL = isset($setting['site_rtl']) ? $setting['site_rtl'] : 'off';
-    $customThemeBackground = isset($setting['cust_theme_bg']) ? $setting['cust_theme_bg'] : 'off';
+$color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
+if (isset($setting['color_flag']) && $setting['color_flag'] == 'true') {
+$themeColor = 'custom-color';
+} else {
+$themeColor = $color;
+}
+$currantLang = isset(Auth::user()->lang) ? Auth::user()->lang : 'en';
+$language = Languages::where('code', $currantLang)->first();
+$SITE_RTL = isset($setting['site_rtl']) ? $setting['site_rtl'] : 'off';
+$customThemeBackground = isset($setting['cust_theme_bg']) ? $setting['cust_theme_bg'] : 'off';
 @endphp
 
 
@@ -67,11 +67,11 @@
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
     <style>
         :root {
-            --color-customColor: <?=$color ?>;
+            --color-customColor: <?= $color ?>;
         }
 
         :root {
-            --support-svg-clr: <?=$color ?>;
+            --support-svg-clr: <?= $color ?>;
         }
     </style>
     <!-- vendor css -->
@@ -79,19 +79,19 @@
     <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
 
     @if ($SITE_RTL == 'on' && isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'off')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css') }}" id="main-style-link">
-    
+    <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css') }}" id="main-style-link">
+
     @elseif (isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'on' && $SITE_RTL == 'off')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css') }}" id="main-style-link">
-        <style>
-            :root {
-                --color-customColor: <?=$color ?>;
-            }
-        </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css') }}" id="main-style-link">
+    <style>
+        :root {
+            --color-customColor: <?= $color ?>;
+        }
+    </style>
     @elseif (isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'on' && $SITE_RTL == 'on')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-dark-rtl.css') }}" id="main-style-link">
+    <link rel="stylesheet" href="{{ asset('assets/css/style-dark-rtl.css') }}" id="main-style-link">
     @else
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">            
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
     @endif
 
 
@@ -155,40 +155,31 @@
     <div class="dash-container">
         <div class="dash-content">
             <div class="page-header">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="row page-header-title row-gap align-items-center justify-content-between">
-                            <div class="col-auto">
-                                @if (trim($__env->yieldContent('page-title')))
-                                    <h4 class="m-0">@yield('page-title')</h4>
-                                @endif
-                                <ul class="breadcrumb">
-                                    @yield('breadcrumb')
-                                </ul>
-                            </div>
-                            <div class="col-auto text-right">
-                                @if (trim($__env->yieldContent('action-button')))
-                                    <div class=" "
-                                        @if ($SITE_RTL == 'on') style=" float: left !important;" @endif>
-                                        <div class="all-button-box float-end mb-3" style="margin-right: -20px;">
-                                            @yield('action-button')
-                                        </div>
-                                    </div>
-                                @elseif(trim($__env->yieldContent('multiple-action-button')))
-                                    <div class=" "
-                                        @if ($SITE_RTL == 'on') style=" float: left !important;" @endif>
-                                        <div style="margin-right: -20px;" class="d-flex justify-content-end">
-                                            @yield('multiple-action-button')
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
+                <div class="page-block d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                    <div class="page-header-wrp">
+                        <div class="page-header-title">
+                            @if (trim($__env->yieldContent('page-title')))
+                            <h4 class="mb-0 h4 f-w-500">@yield('page-title')</h4>
+                            @endif
                         </div>
+                        <ul class="breadcrumb">
+                            @yield('breadcrumb')
+                        </ul>
+                    </div>
+                    <div class="page-header-icon d-flex flex-wrap gap-2">
+                        @if (trim($__env->yieldContent('action-button')))
+                        @yield('action-button')
+                        @elseif(trim($__env->yieldContent('multiple-action-button')))
+                        @yield('multiple-action-button')
+                        @endif
                     </div>
                 </div>
             </div>
 
             @yield('content')
+            {{-- <div class="loader-wrapper d-none">
+                <span class="site-loader"> </span>
+            </div> --}}
 
         </div>
     </div>
@@ -203,6 +194,7 @@
     <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
     <script src="{{ asset('assets/js/dash.js') }}"></script>
+    <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('public/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
     <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
@@ -260,10 +252,10 @@
         };
         var calender_header = {
             today: "{{ __('today') }}",
-            month: '{{ __('month') }}',
-            week: '{{ __('week') }}',
-            day: '{{ __('day') }}',
-            list: '{{ __('list') }}'
+            month: "{{ __(' month ') }}",
+            week: "{{ __('week ') }}",
+            day: "{{ __('day ') }}",
+            list: "{{ __('list ') }}"
         };
     </script>
 
@@ -287,36 +279,36 @@
 
 
     @if (isset($setting['gdpr_cookie']) && $setting['gdpr_cookie'] == 'on')
-        <script type="text/javascript">
-            var defaults = {
-                'messageLocales': {
-                    /*'en': 'We use cookies to make sure you can have the best experience on our website. If you continue to use this site we assume that you will be happy with it.'*/
-                    'en': "{{ $setting['cookie_text'] }}"
-                },
-                'buttonLocales': {
-                    'en': 'Ok'
-                },
-                'cookieNoticePosition': 'bottom',
-                'learnMoreLinkEnabled': false,
-                'learnMoreLinkHref': '/cookie-banner-information.html',
-                'learnMoreLinkText': {
-                    'it': 'Saperne di più',
-                    'en': 'Learn more',
-                    'de': 'Mehr erfahren',
-                    'fr': 'En savoir plus'
-                },
-                'buttonLocales': {
-                    'en': 'Ok'
-                },
-                'expiresIn': 30,
-                'buttonBgColor': '#d35400',
-                'buttonTextColor': '#fff',
-                'noticeBgColor': '#000000',
-                'noticeTextColor': '#fff',
-                'linkColor': '#009fdd'
-            };
-        </script>
-        <script src="{{ asset('js/cookie.notice.js') }}"></script>
+    <script type="text/javascript">
+        var defaults = {
+            'messageLocales': {
+                /*'en': 'We use cookies to make sure you can have the best experience on our website. If you continue to use this site we assume that you will be happy with it.'*/
+                'en': "{{ $setting['cookie_text'] }}"
+            },
+            'buttonLocales': {
+                'en': 'Ok'
+            },
+            'cookieNoticePosition': 'bottom',
+            'learnMoreLinkEnabled': false,
+            'learnMoreLinkHref': '/cookie-banner-information.html',
+            'learnMoreLinkText': {
+                'it': 'Saperne di più',
+                'en': 'Learn more',
+                'de': 'Mehr erfahren',
+                'fr': 'En savoir plus'
+            },
+            'buttonLocales': {
+                'en': 'Ok'
+            },
+            'expiresIn': 30,
+            'buttonBgColor': '#d35400',
+            'buttonTextColor': '#fff',
+            'noticeBgColor': '#000000',
+            'noticeTextColor': '#fff',
+            'linkColor': '#009fdd'
+        };
+    </script>
+    <script src="{{ asset('js/cookie.notice.js') }}"></script>
     @endif
 
     <script>

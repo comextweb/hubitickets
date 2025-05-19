@@ -54,7 +54,6 @@ if (!function_exists(function: 'generateMenu')) {
         foreach ($filteredItems as $item) {
             // check the current menu have a children or not
             $hasChildren = hasChildren($menuItems, $item['name']);
-            // dump($hasChildren,$item['name']);
             if ($item['parent'] == null) {
                 $html .= '<li class="dash-item dash-hasmenu">';
             } else {
@@ -149,8 +148,9 @@ if (!function_exists('getCompanySetting')) {
         $user = Auth::user();
         $role = $user->roles->first();
         $settings = getCompanyAllSettings();
-        $html =  new CompanySetting($user, $settings);
-        event(new CompanySettingEvent($html));;
+        $html = new CompanySetting($user, $settings);
+        event(new CompanySettingEvent($html));
+        ;
         return generateCompanySettings($html->html);
     }
 }
@@ -175,9 +175,9 @@ if (!function_exists('getCompanyAllSettings')) {
     function getCompanyAllSettings($userId = null)
     {
         if (!empty($userId)) {
-            $user =  User::find($userId);
+            $user = User::find($userId);
         } elseif (Auth::check()) {
-            $user =  auth()->user();
+            $user = auth()->user();
         } else {
             $user = User::find(1);
         }
@@ -256,7 +256,7 @@ if (!function_exists('checkFile')) {
                     );
                 }
                 try {
-                    return  Storage::disk($storage_settings['storage_setting'])->exists($path);
+                    return Storage::disk($storage_settings['storage_setting'])->exists($path);
                 } catch (\Throwable $th) {
                     return 0;
                 }
@@ -289,7 +289,7 @@ if (!function_exists('uploadFile')) {
                     );
 
                     $max_size = !empty($settings['wasabi_max_upload_size']) ? $settings['wasabi_max_upload_size'] : '2048';
-                    $mimes =  !empty($settings['wasabi_storage_validation']) ? $settings['wasabi_storage_validation'] : '';
+                    $mimes = !empty($settings['wasabi_storage_validation']) ? $settings['wasabi_storage_validation'] : '';
                 } else if ($settings['storage_setting'] == 's3') {
                     config(
                         [
@@ -301,10 +301,10 @@ if (!function_exists('uploadFile')) {
                         ]
                     );
                     $max_size = !empty($settings['s3_max_upload_size']) ? $settings['s3_max_upload_size'] : '2048';
-                    $mimes =  !empty($settings['s3_storage_validation']) ? $settings['s3_storage_validation'] : '';
+                    $mimes = !empty($settings['s3_storage_validation']) ? $settings['s3_storage_validation'] : '';
                 } else {
                     $max_size = !empty($settings['local_storage_max_upload_size']) ? $settings['local_storage_max_upload_size'] : '2048';
-                    $mimes =  !empty($settings['local_storage_validation']) ? $settings['local_storage_validation'] : '';
+                    $mimes = !empty($settings['local_storage_validation']) ? $settings['local_storage_validation'] : '';
                 }
                 $file = $request->$key_name;
 
@@ -345,12 +345,12 @@ if (!function_exists('uploadFile')) {
                     } else if ($settings['storage_setting'] == 's3') {
                         $path = $saveImage;
                     } else {
-                        $path =  'uploads/' . $saveImage;
+                        $path = 'uploads/' . $saveImage;
                     }
                     $res = [
                         'flag' => 1,
-                        'msg'  => 'success',
-                        'url'  => $path
+                        'msg' => 'success',
+                        'url' => $path
                     ];
                     return $res;
                 }
@@ -391,7 +391,7 @@ if (!function_exists('multipleFileUpload')) {
                         ]
                     );
                     $max_size = !empty($storage_settings['wasabi_max_upload_size']) ? $storage_settings['wasabi_max_upload_size'] : '2048';
-                    $mimes =  !empty($storage_settings['wasabi_storage_validation']) ? $storage_settings['wasabi_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $mimes = !empty($storage_settings['wasabi_storage_validation']) ? $storage_settings['wasabi_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } else if ($storage_settings['storage_setting'] == 's3') {
                     config(
                         [
@@ -404,14 +404,14 @@ if (!function_exists('multipleFileUpload')) {
                         ]
                     );
                     $max_size = !empty($storage_settings['s3_max_upload_size']) ? $storage_settings['s3_max_upload_size'] : '2048';
-                    $mimes =  !empty($storage_settings['s3_storage_validation']) ? $storage_settings['s3_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $mimes = !empty($storage_settings['s3_storage_validation']) ? $storage_settings['s3_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 } else {
                     $max_size = !empty($storage_settings['local_storage_max_upload_size']) ? $storage_settings['local_storage_max_upload_size'] : '2048';
-                    $mimes =  !empty($storage_settings['local_storage_validation']) ? $storage_settings['local_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
+                    $mimes = !empty($storage_settings['local_storage_validation']) ? $storage_settings['local_storage_validation'] : 'jpeg,jpg,png,svg,zip,txt,gif,docx';
                 }
 
                 $file = $request;
-        
+
                 $extension = strtolower($file->getClientOriginalExtension());
                 $allowed_extensions = explode(',', $mimes);
                 if (empty($extension) || !in_array($extension, $allowed_extensions)) {
@@ -420,7 +420,7 @@ if (!function_exists('multipleFileUpload')) {
                         'msg' => 'The ' . $key_name . ' must be a file of type: ' . implode(', ', $allowed_extensions) . '.',
                     ];
                 }
-                
+
                 $key_validation = $key_name . '*';
 
                 if (count($custom_validation) > 0) {
@@ -459,8 +459,8 @@ if (!function_exists('multipleFileUpload')) {
                     }
                     $res = [
                         'flag' => 1,
-                        'msg'  => 'success',
-                        'url'  => $url
+                        'msg' => 'success',
+                        'url' => $url
                     ];
                     return $res;
                 }
@@ -591,6 +591,25 @@ if (!function_exists('getSidebarLogo')) {
 }
 
 
+// Get Favicon
+if (!function_exists('getFavIcon')) {
+    function getFavIcon()
+    {
+        $companySettings = getCompanyAllSettings();
+        if (!empty($companySettings['favicon'])) {
+            if (checkFile($companySettings['favicon'])) {
+                return $companySettings['favicon'];
+            } else {
+                return 'uploads/logo/favicon.png';
+            }
+        } else {
+            return 'uploads/logo/favicon.png';
+        }
+    }
+}
+
+
+
 // Count Cache Size
 if (!function_exists('getCacheSize')) {
     function getCacheSize()
@@ -610,7 +629,7 @@ if (!function_exists('languages')) {
     {
         $settings = getCompanyAllSettings();
         try {
-            $disableLanguages = isset($settings['disable_lang']) && !empty($settings['disable_lang'])  ? explode(',', $settings['disable_lang'])  : [];
+            $disableLanguages = isset($settings['disable_lang']) && !empty($settings['disable_lang']) ? explode(',', $settings['disable_lang']) : [];
             $languages = Languages::whereNotIn('code', $disableLanguages)->pluck('fullName', 'code')->toArray();
         } catch (Exception $e) {
             $languages = [
@@ -644,7 +663,7 @@ if (!function_exists('getActiveLanguage')) {
             $language = Auth::user()->lang;
         } else {
             $settings = getCompanyAllSettings();
-            $language = isset($settings['default_language']) ?  $settings['default_language'] : 'en';
+            $language = isset($settings['default_language']) ? $settings['default_language'] : 'en';
         }
 
         return $language;
@@ -659,14 +678,14 @@ if (!function_exists('setSMTPConfig')) {
         $settings = getCompanyAllSettings();
         if ($settings) {
             config([
-                'mail.default'                   => isset($settings['mail_driver'])       ? $settings['mail_driver']       : '',
-                'mail.mailers.smtp.host'         => isset($settings['mail_host'])         ? $settings['mail_host']         : '',
-                'mail.mailers.smtp.port'         => isset($settings['mail_port'])         ? $settings['mail_port']         : '',
-                'mail.mailers.smtp.encryption'   => isset($settings['mail_encryption'])   ? $settings['mail_encryption']   : '',
-                'mail.mailers.smtp.username'     => isset($settings['mail_username'])     ? $settings['mail_username']     : '',
-                'mail.mailers.smtp.password'     => isset($settings['mail_password'])     ? $settings['mail_password']     : '',
-                'mail.from.address'              => isset($settings['mail_from_address']) ? $settings['mail_from_address'] : '',
-                'mail.from.name'                 => isset($settings['mail_from_name'])    ? $settings['mail_from_name']    : '',
+                'mail.default' => isset($settings['mail_driver']) ? $settings['mail_driver'] : '',
+                'mail.mailers.smtp.host' => isset($settings['mail_host']) ? $settings['mail_host'] : '',
+                'mail.mailers.smtp.port' => isset($settings['mail_port']) ? $settings['mail_port'] : '',
+                'mail.mailers.smtp.encryption' => isset($settings['mail_encryption']) ? $settings['mail_encryption'] : '',
+                'mail.mailers.smtp.username' => isset($settings['mail_username']) ? $settings['mail_username'] : '',
+                'mail.mailers.smtp.password' => isset($settings['mail_password']) ? $settings['mail_password'] : '',
+                'mail.from.address' => isset($settings['mail_from_address']) ? $settings['mail_from_address'] : '',
+                'mail.from.name' => isset($settings['mail_from_name']) ? $settings['mail_from_name'] : '',
             ]);
         } else {
             return redirect()->back()->with('Email SMTP settings does not configured so please contact to your site admin.');
@@ -937,7 +956,7 @@ if (!function_exists('sideMenuCacheForget')) {
         if (!empty($user_id)) {
             $user = User::find($user_id);
         } else {
-            $user =  auth()->user();
+            $user = auth()->user();
         }
         if ($user->hasRole('admin')) {
             $users = User::select('id')->where('created_by', $user->id)->pluck('id');
@@ -973,11 +992,11 @@ if (!function_exists('sideMenuCacheForget')) {
 if (!function_exists('error_res')) {
     function error_res($msg = "", $args = array())
     {
-        $msg       = $msg == "" ? "error" : $msg;
-        $msg_id    = 'error.' . $msg;
+        $msg = $msg == "" ? "error" : $msg;
+        $msg_id = 'error.' . $msg;
         $converted = \Lang::get($msg_id, $args);
-        $msg       = $msg_id == $converted ? $msg : $converted;
-        $json      = array(
+        $msg = $msg_id == $converted ? $msg : $converted;
+        $json = array(
             'flag' => 0,
             'msg' => $msg,
         );
@@ -990,8 +1009,8 @@ if (!function_exists('error_res')) {
 if (!function_exists('success_res')) {
     function success_res($msg = "", $args = array())
     {
-        $msg       = $msg == "" ? "success" : $msg;
-        $json      = array(
+        $msg = $msg == "" ? "success" : $msg;
+        $json = array(
             'flag' => 1,
             'msg' => $msg,
         );
@@ -1021,7 +1040,7 @@ if (!function_exists('moduleAliasName')) {
         }
         $module = AddOnFacade::find($module_name);
         if (isset($resultArray)) {
-            $module_name =  array_key_exists($module_name, $resultArray) ? $resultArray[$module_name] : (!empty($module) ? $module->alias : $module_name);
+            $module_name = array_key_exists($module_name, $resultArray) ? $resultArray[$module_name] : (!empty($module) ? $module->alias : $module_name);
         } elseif (!empty($module)) {
             $module_name = $module->alias;
         }
@@ -1035,13 +1054,13 @@ if (!function_exists('makeEmailLang')) {
     {
         $templates = NotificationTemplates::all();
         foreach ($templates as $template) {
-            $default_lang  = NotificationTemplateLangs::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
-            $emailTemplateLang              = new NotificationTemplateLangs();
-            $emailTemplateLang->parent_id   = $template->id;
-            $emailTemplateLang->lang        = $lang;
-            $emailTemplateLang->subject     = $default_lang->subject;
-            $emailTemplateLang->content     = $default_lang->content;
-            $emailTemplateLang->variables   = $default_lang->variables;
+            $default_lang = NotificationTemplateLangs::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
+            $emailTemplateLang = new NotificationTemplateLangs();
+            $emailTemplateLang->parent_id = $template->id;
+            $emailTemplateLang->lang = $lang;
+            $emailTemplateLang->subject = $default_lang->subject;
+            $emailTemplateLang->content = $default_lang->content;
+            $emailTemplateLang->variables = $default_lang->variables;
             $emailTemplateLang->save();
         }
     }
@@ -1059,12 +1078,13 @@ if (!function_exists('sendTicketEmail')) {
             'ticket_name' => $ticket->name,
             'ticket_id' => $ticketNumber,
             'ticket_url' => route('home.view', ['id' => encrypt($ticketNumber)]),
-            'originalTicketId' =>  $ticket->id,
+            'originalTicketId' => $ticket->id,
         ];
         switch ($templateName) {
             case 'Send Mail To Agent':
                 $agent = User::where('id', $ticket->is_assign)->first();
-                if (!$agent) return;
+                if (!$agent)
+                    return;
                 $uArr['email'] = $request->email;
                 $recipientEmail = $agent->email;
                 break;
@@ -1075,7 +1095,8 @@ if (!function_exists('sendTicketEmail')) {
             case 'Send Mail To Admin':
                 $agent = User::where('id', $ticket->is_assign)->first();
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
-                if (!$admin) return;
+                if (!$admin)
+                    return;
                 $uArr['customer_email'] = $request->email;
                 $uArr['agent_email'] = isset($agent->email) ? $agent->email : '---';
                 $recipientEmail = $admin->email;
@@ -1087,7 +1108,8 @@ if (!function_exists('sendTicketEmail')) {
                 break;
             case 'Reply Mail To Agent':
                 $agent = User::where('id', $ticket->is_assign)->first();
-                if (!$agent) return;
+                if (!$agent)
+                    return;
                 unset($uArr['ticket_url']);
                 $uArr['ticket_description'] = $request->reply_description;
                 $recipientEmail = $agent->email;
@@ -1095,7 +1117,8 @@ if (!function_exists('sendTicketEmail')) {
             case 'Reply Mail To Admin':
                 $agent = User::where('id', $ticket->is_assign)->first();
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
-                if (!$admin) return;
+                if (!$admin)
+                    return;
                 $uArr['customer_email'] = $ticket->email;
                 $uArr['agent_email'] = isset($agent->email) ? $agent->email : '---';
                 $uArr['ticket_description'] = $request->reply_description;

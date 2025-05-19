@@ -199,7 +199,6 @@ class AiTemplateSeeder extends Seeder
                 "updated_at" => date('Y-m-d H:i:s'),
             ],
         ];
-        // Template::insert($template);
 
         foreach ($templates as $key => $template) {
             $ntfy = Template::where('template_name', $template['template_name'])->where('module', $template['module'])->count();

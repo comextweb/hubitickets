@@ -10,13 +10,9 @@
 @endsection
 @section('multiple-action-button')
     @permission('category create')
-        <div class="float-end">
-            <div class="col-auto">
                 <a href="#" class="btn btn-sm btn-primary btn-icon" title="{{ __('Create') }}" data-bs-toggle="tooltip"
                     data-bs-placement="top" data-ajax-popup="true" data-title="{{ __('Create Category') }}"
                     data-url="{{ route('admin.category.create') }}" data-size="lg"><i class="ti ti-plus"></i></a>
-            </div>
-        </div>
     @endpermission
 @endsection
 

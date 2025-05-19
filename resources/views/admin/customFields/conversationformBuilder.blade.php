@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('css/summernote/summernote-bs4.css') }}">
 
 @if ($customFields)
-    <form method="post" class="needs-validation"  enctype="multipart/form-data"  novalidate action="{{ route('admin.ticketcustomfield.update', $ticket->id) }}">
+    <form method="post" class="needs-validation update-customfield-data"  enctype="multipart/form-data"  novalidate action="{{ route('admin.ticketcustomfield.update', $ticket->id) }}">
         @csrf
         @foreach ($customFields as $customField)
             @if ($customField->custom_id == '1')
@@ -324,10 +324,9 @@
             <div class="form-group col-md-12">
                 <label class="form-label"></label>
                 <div class="col-sm-12 col-md-12 text-end">
-                    <button class="btn btn-primary btn-block btn-submit"><span>{{ __('Update') }}</span></button>
                     <button class="btn btn-secondary" data-bs-dismiss="modal"
-                        type="button"><span>{{ __('Close') }}</span></button>
-
+                    type="button"><span>{{ __('Close') }}</span></button>
+                    <button class="btn btn-primary btn-block btn-submit"><span>{{ __('Update') }}</span></button>
                 </div>
             </div>
         </div>
@@ -361,4 +360,29 @@
             height: 150,
         });
     }
+
+     // submit custom field form via Ajax
+     $('.update-customfield-data').off('submit').on('submit', function (e) {   
+        e.preventDefault();
+        let form = $(this)[0];
+        let formData = new FormData(form);        
+        $.ajax({
+            url: form.action,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('input[name="csrf-token"]').val()
+            },
+            success: function (response) {
+                if(response.status == true){
+                    show_toastr('success', response.message, 'success');
+                }else{
+                    show_toastr('Error', response.message, 'error');  
+                }
+                $('#commonModal').modal('hide');
+            }
+        });
+    });
 </script>

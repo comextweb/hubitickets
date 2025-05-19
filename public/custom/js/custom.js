@@ -3,7 +3,6 @@
 $(function () {
     commonLoader();
 });
-
 function show_toastr(title, message, type) {
     var o, i;
     var icon = '';
@@ -121,7 +120,6 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
 });
 
 $(document).on('click', 'a[data-ajax-popup-over="true"], button[data-ajax-popup-over="true"], div[data-ajax-popup-over="true"]', function () {
-
     var validate = $(this).attr('data-validate');
     var id = '';
     if (validate) {
