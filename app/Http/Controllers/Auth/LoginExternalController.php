@@ -15,13 +15,11 @@ class LoginExternalController extends Controller
 {
     public function handle(Request $request)
     {
-        // 1. Cerrar sesión existente SIEMPRE al inicio (nuevo)
         auth()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         $token = $request->query('token');
-        //$token = $request->input('token');
 
         if (!$token) {
             return redirect()->route('login')->with('error', 'Token no proporcionado.');
@@ -32,7 +30,6 @@ class LoginExternalController extends Controller
             $decrypted = Crypt::decryptString($token);
             $decoded = JWT::decode($decrypted, new Key(env('JWT_HUBITICKETS_SHARED_SECRET'), 'HS256'));
         
-            // ✅ Buscar usuario por email en lugar de ID
             $email = $decoded->email ?? null;
             if (!$email) {
                 return redirect()->route('login')->with('error', 'Token inválido: email no presente.');
@@ -59,7 +56,6 @@ class LoginExternalController extends Controller
                 return redirect()->route('login')->with('error', 'El módulo de login para clientes está deshabilitado.');
             }
     
-            // ✅ Iniciar sesión y regenerar sesión
             Auth::login($user);
             $request->session()->regenerate();
     
