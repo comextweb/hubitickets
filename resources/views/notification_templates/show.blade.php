@@ -39,7 +39,7 @@
                     <div class="card-header card-body">
                         <h5 class="font-weight-bold">{{ __('Variables') }}</h5>
                     </div>
-                    <div class="text-xs p-md-4 p-3">
+                    <div class="text-xs p-3">
                         @foreach ($templateVariables as $key => $var)
                             <p class="mb-2">{{ __($key) }} : <span class="pull-right text-primary">{{ '{' . $var . '}' }}</span></p>
                         @endforeach

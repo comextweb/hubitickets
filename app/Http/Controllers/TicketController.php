@@ -23,8 +23,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Priority;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Exception;
-
+use Exception;
 
 class TicketController extends Controller
 {
@@ -84,10 +83,10 @@ class TicketController extends Controller
                 $errors = [];
                 foreach ($request->file('attachments') as $filekey => $file) {
                     $filenameWithExt = $file->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $file->getClientOriginalExtension();
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $file->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                    $dir        = ('tickets/' . $ticket->ticket_id);
+                    $dir = ('tickets/' . $ticket->ticket_id);
                     $path = multipleFileUpload($file, 'attachments', $fileNameToStore, $dir);
                     if ($path['flag'] == 1) {
                         $data[] = $path['url'];
@@ -107,7 +106,7 @@ class TicketController extends Controller
 
             CustomField::saveData($ticket, $request->customField);
 
-            $settings  = getCompanyAllSettings();
+            $settings = getCompanyAllSettings();
 
             event(new CreateTicket($ticket, $request));
 
@@ -132,7 +131,12 @@ class TicketController extends Controller
     public function destroy($id)
     {
         if (Auth::user()->isAbleTo('ticket delete')) {
-            $ticket = Ticket::with('conversions')->find($id);
+            try {
+                $id = decrypt($id);
+            } catch (Exception $e) {
+                return redirect()->back()->with('error', __($e->getMessage()));
+            }
+            $ticket = Ticket::with('conversions')->where('ticket_id',$id)->first();
             if ($ticket) {
                 event(new DestroyTicket($ticket));
                 $ticketImageDirectory = ('uploads/tickets/' . $ticket->ticket_id);
@@ -158,7 +162,7 @@ class TicketController extends Controller
     public function attachmentDestroy($ticket_id, $id)
     {
         if (Auth::user()->isAbleTo('ticket edit')) {
-            $ticket      = Ticket::find($ticket_id);
+            $ticket = Ticket::find($ticket_id);
             $attachments = json_decode($ticket->attachments);
             if (isset($attachments[$id])) {
                 if (asset(Storage::exists('tickets/' . $ticket->ticket_id . "/" . $attachments[$id]))) {

@@ -49,10 +49,10 @@ class DashboardController extends Controller
                 }
 
 
-                $categories      = Category::count();
-                $open_ticket     = Ticket::whereIn('status', ['On Hold', 'In Progress'])->count();
-                $close_ticket    = Ticket::where('status', '=', 'Closed')->count();
-                $agents          = User::where('created_by', creatorId())->count();
+                $categories = Category::count();
+                $open_ticket = Ticket::whereIn('status', ['On Hold', 'In Progress'])->count();
+                $close_ticket = Ticket::where('status', '=', 'Closed')->count();
+                $agents = User::where('created_by', creatorId())->where('type', 'agent')->count();
 
                 // Category Wise Total Ticket Number Chart
                 // $categoriesChart = Category::withCount('getTickets')->get();
@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
                 $chartData = ['color' => [], 'name' => [], 'value' => []];
                 foreach ($categoriesChart as $category) {
-                    $chartData['name'][]  = $category->name;
+                    $chartData['name'][] = $category->name;
                     $chartData['value'][] = $category->get_tickets_count;
                     $chartData['color'][] = $category->color;
                 }
@@ -116,7 +116,7 @@ class DashboardController extends Controller
                 $totalTicketCount = [];
                 foreach ($allAgents as $agent) {
                     $agentNames[] = $agent->name;
-                    $totalTicketCount[] =  $agent->get_assign_tickets_count;
+                    $totalTicketCount[] = $agent->get_assign_tickets_count;
                 }
                 $totalTicketAgentWise = [
                     'agent_names' => $agentNames,
@@ -124,12 +124,12 @@ class DashboardController extends Controller
                 ];
 
 
-                return view('admin.dashboard.index', compact('categories',  'open_ticket', 'close_ticket', 'agents', 'chartData', 'monthData', 'statusData', 'priorityData', 'totalTicketAgentWise'));
+                return view('admin.dashboard.index', compact('categories', 'open_ticket', 'close_ticket', 'agents', 'chartData', 'monthData', 'statusData', 'priorityData', 'totalTicketAgentWise'));
             } else {
 
                 $totalAssignTickets = Ticket::where('is_assign', Auth::user()->id)->count();
-                $openTicket     = Ticket::whereIn('status', ['On Hold', 'In Progress'])->where('is_assign', Auth::user()->id)->count();
-                $closeTickets    = Ticket::where('status', '=', 'Closed')->where('is_assign', Auth::user()->id)->count();
+                $openTicket = Ticket::whereIn('status', ['On Hold', 'In Progress'])->where('is_assign', Auth::user()->id)->count();
+                $closeTickets = Ticket::where('status', '=', 'Closed')->where('is_assign', Auth::user()->id)->count();
 
                 // Category Wise Total Ticket Number Chart
                 $categoriesChart = Category::withCount('getTickets')
@@ -138,7 +138,7 @@ class DashboardController extends Controller
                     })->get();
                 $chartData = ['color' => [], 'name' => [], 'value' => []];
                 foreach ($categoriesChart as $category) {
-                    $chartData['name'][]  = $category->name;
+                    $chartData['name'][] = $category->name;
                     $chartData['value'][] = $category->get_tickets_count;
                     $chartData['color'][] = $category->color;
                 }
@@ -158,7 +158,7 @@ class DashboardController extends Controller
 
                 // Ticket Priority Wise Total Number Of Tickets
                 $priorityChart = Ticket::where('is_assign', Auth::user()->id)
-                    ->whereNotNull('priority') 
+                    ->whereNotNull('priority')
                     ->with('getPriority')
                     ->get()
                     ->groupBy('priority');

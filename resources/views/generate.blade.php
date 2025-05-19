@@ -1,12 +1,12 @@
 @php
     $currantLang = !empty(\Auth::user()->lang) ? \Auth::user()->lang : 'en';
 @endphp
-<form action="" id="myForm">
+<form action="" id="myForm" class="needs-validation" novalidate>
     @csrf
     <div class="row">
         <div class="col-12">
             <div class="form-group radio-btn-wrp">
-                <label for="template" class="col-form-label">{{ __('For What') }}</label><br>
+                <label for="template" class="form-label">{{ __('For What') }}</label><br>
                 @foreach ($templateName as $key => $value)
                     <div class="form-check form-check-inline">
                         <input class="form-check-input template_name" type="radio" name="template_name"
@@ -21,7 +21,7 @@
         </div>
         <div class="col-12">
             <div class="form-group">
-                <label for="language" class="col-form-label">{{ __('Language') }}</label>
+                <label for="language" class="form-label">{{ __('Language') }}</label>
                 <select name="language" class="form-select" id="language">
                     @foreach (flagOfCountry() as $lang)
                         <option value="{{ $lang }}">{{ Str::upper($lang) }}</option>
@@ -33,7 +33,7 @@
 
         <div class="col-6 tone">
             <div class="form-group">
-                <label for="tone" class="col-form-label">{{ __('Tone') }}</label>
+                <label for="tone" class="form-label">{{ __('Tone') }}</label>
                 @php
                     $tone = [
                         'funny' => 'funny',
@@ -59,7 +59,7 @@
         </div>
         <div class="col-6">
             <div class="form-group">
-                <label for="ai_creativity" class="col-form-label">{{ __('AI Creativity') }}</label>
+                <label for="ai_creativity" class="form-label">{{ __('AI Creativity') }}</label>
                 <select name="ai_creativity" id="ai_creativity" class="form-select">
                     <option value="1">{{ __('High') }}</option>
                     <option value="0.5">{{ __('Medium') }}</option>
@@ -69,7 +69,7 @@
         </div>
         <div class="col-6">
             <div class="form-group">
-                <label for="num_of_result" class="col-form-label">{{ __('Number of Result') }}</label>
+                <label for="num_of_result" class="form-label">{{ __('Number of Result') }}</label>
                 <select name="num_of_result" id="" class="form-select">
                     @for ($i = 1; $i <= 10; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
@@ -79,8 +79,8 @@
         </div>
         <div class="col-6">
             <div class="form-group">
-                <label for="result_length" class="col-form-label">{{ __('Maximum Result Length') }}</label>
-                <input type="number" name="result_length" class="form-control" value="10">
+                <label for="result_length" class="form-label">{{ __('Maximum Result Length') }}</label>
+                <input type="number" name="result_length" class="form-control" value="10" required>
             </div>
         </div>
         <div class="col-12" id="getkeywords">
@@ -90,13 +90,14 @@
     <div class="response">
         <a class="btn btn-primary btn-sm float-left" href="#!" id="generate">{{ __('Generate') }}</a>
         <a href="#!" onclick="copyText()" class="btn btn-primary btn-sm float-end"><i
-                class="ti ti-copy"></i>{{ __('Copy Text') }}</a>
+                class="ti ti-copy me-1"></i>{{ __('Copy Text') }}</a>
         <a href="#!" onclick="copySelectedText()" class="btn btn-primary btn-sm float-end me-2"><i
-                class="ti ti-copy"></i>{{ __('Copy Selected Text') }}</a>
+                class="ti ti-copy me-1"></i>{{ __('Copy Selected Text') }}</a>
     </div>
 </form>
 <div class="form-group mt-3">
-    <textarea name="description" class="form-control" rows="5" placeholder="{{__('Description')}}" id="ai-description">{{__('Description')}}</textarea>
+    <textarea name="description" class="form-control" rows="5" placeholder="{{__('Description')}}"
+        id="ai-description">{{__('Description')}}</textarea>
 </div>
 
 <script>
@@ -108,11 +109,11 @@
         if (input > 0) {
             $('input[name=' + selected + ']').val(copied)
         } else {
-           if ($('textarea[name=' + selected + ']').hasClass('summernote-simple')) {
-              $('textarea[name=' + selected + ']').summernote('code', copied);
+            if ($('textarea[name=' + selected + ']').hasClass('summernote-simple')) {
+                $('textarea[name=' + selected + ']').summernote('code', copied);
 
-          
-            }   else if ($('textarea[name=content').hasClass('pc-tinymce-2')) {
+
+            } else if ($('textarea[name=content').hasClass('pc-tinymce-2')) {
                 tinymce.get('content').setContent(copied);
             } else {
                 $('textarea[name=' + selected + ']').val(copied)
@@ -143,10 +144,16 @@
 
     }
 
-    $('body').on('shown.bs.modal', function() {
-        $("#commonModalOver input:radio:first").prop("checked", true).trigger("change");
+    $(document).ready(function () {
+        selectDefaultBtn();
     });
-    $('body').on('change', '.template_name', function() {
+
+
+    function selectDefaultBtn() {
+        $("#commonModalOver input:radio:first").prop("checked", true).trigger("change");
+    }
+
+    $('body').off('change').on('change', '.template_name', function () {
         var templateId = $(this).val();
         var url =
             $.ajax({
@@ -158,7 +165,7 @@
                     '_token': '{{ csrf_token() }}',
                     'template_id': templateId,
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data.tone == 1) {
                         $('.tone').removeClass('d-none');
                         $('.tone select').attr('name', 'tone');
@@ -166,42 +173,81 @@
                         $('.tone').addClass('d-none');
                         $('.d-none select').removeAttr('name');
                     }
-
                     $('#getkeywords').empty();
                     $('#getkeywords').append(data.template)
                 },
             })
     });
 
-    $(document).off('click', '#generate').on('click', '#generate', function() {
+
+    // $(document).off('click', '#generate').on('click', '#generate', function () {
+    //     var form = $("#myForm");
+    //     $.ajax({
+    //         type: 'post',
+    //         url: '{{ route('generate.response') }}',
+    //         datType: 'json',
+    //         data: form.serialize(),
+    //         beforeSend: function (msg) {
+    //             $("#generate").empty();
+    //             var html = '<span class="spinner-grow spinner-grow-sm" role="status"></span>';
+    //             $("#generate").append(html);
+    //         },
+    //         afterSend: function (msg) {
+    //             $("#generate2").empty();
+    //             var html =
+    //                 `<a class="btn btn-primary" href="#!" id="generate">{{ __('Generate') }}</a>`;
+    //             $("#generate2").replaceWith(html);
+
+    //         },
+    //         success: function (data) {
+    //             $('.response').removeClass('d-none');
+    //             $('#generate').text('Re-Generate');
+    //             if (data.message) {
+    //                 show_toastr('error', data.message, 'error');
+    //                 $('#commonModalOver').modal('hide');
+    //             } else {
+    //                 $('#ai-description').val(data)
+    //             }
+    //         },
+    //     });
+    // });
+
+    $(document).off('click', '#generate').on('click', '#generate', function () {
         var form = $("#myForm");
         $.ajax({
             type: 'post',
             url: '{{ route('generate.response') }}',
-            datType: 'json',
+            dataType: 'json',
             data: form.serialize(),
-            beforeSend: function(msg) {
-                $("#generate").empty();
-                var html = '<span class="spinner-grow spinner-grow-sm" role="status"></span>';
-                $("#generate").append(html);
+            beforeSend: function () {
+                $("#generate").html('<span class="spinner-grow spinner-grow-sm" role="status"></span>');
             },
-            afterSend: function(msg) {
-                $("#generate2").empty();
-                var html =
-                    `<a class="btn btn-primary" href="#!" id="generate">{{ __('Generate') }}</a>`;
-                $("#generate2").replaceWith(html);
-
-            },
-            success: function(data) {
+            success: function (data) {
                 $('.response').removeClass('d-none');
                 $('#generate').text('Re-Generate');
-                if (data.message) {
+
+                if (data.status === 'error') {
                     show_toastr('error', data.message, 'error');
                     $('#commonModalOver').modal('hide');
                 } else {
-                    $('#ai-description').val(data)
+                    $('#ai-description').val(data.data); // Note: updated to match the new format
                 }
             },
+            error: function (xhr) {
+                $('#generate').text('Generate');
+
+                if (xhr.status === 422) {
+                    let errors = xhr.responseJSON.errors;
+                    let errorMessages = '';
+                    for (let field in errors) {
+                        errorMessages += `${errors[field].join(', ')}\n`;
+                    }
+                    show_toastr('Validation Error', errorMessages, 'error');
+                } else {
+                    show_toastr('Error', xhr.responseJSON.message, 'error');
+                }
+            }
         });
     });
+
 </script>

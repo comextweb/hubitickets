@@ -631,7 +631,6 @@ function scrolltargetmenu(value) {
 // Menu click for tab Layout start
 var tablayclick = document.querySelector(".tab-sidemenu > ul > li");
 if (tablayclick) {
-  console.log("condition");
   var tc = document.querySelectorAll(".tab-sidemenu > ul > li");
   for (var t = 0; t < tc.length; t++) {
     var c = tc[t];
@@ -651,7 +650,6 @@ if (tablayclick) {
         .querySelector(".tab-sidemenu > ul > li.active")
         .classList.remove("active");
       targetElement.classList.add("active");
-      console.log(tempcont);
       document
         .querySelector(
           '.navbar-content .dash-tabcontent[data-value="' + tempcont + '"]'
@@ -819,7 +817,6 @@ for (var t = 0; t < tc.length; t++) {
   prodlike.addEventListener("change", function (event) {
     if (event.currentTarget.checked) {
       prodlike = event.target;
-      // console.log(prodlike.parentNode);
       prodlike.parentNode.insertAdjacentHTML(
         "beforeend",
         '<div class="dash-like"><div class="like-wrapper"><span><span class="dash-group"><span class="dash-dots"></span><span class="dash-dots"></span><span class="dash-dots"></span><span class="dash-dots"></span></span></span></div></div>'

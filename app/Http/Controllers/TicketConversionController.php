@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Exception;
 use App\Models\Ticket;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
 use Workdo\FacebookChat\Http\Controllers\SendFacebookMessageController;
 use Workdo\InstagramChat\Http\Controllers\SendInstagramMessageController;
@@ -28,39 +29,38 @@ class TicketConversionController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {     
+    {
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
-
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
             } elseif (Auth::user()->hasRole('customer')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where('email', Auth::user()->email);
             } else {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where(function ($query) {
                     $query->where('is_assign', Auth::user()->id)
-                          ->orWhere('created_by', Auth::user()->id);
-                });            
+                        ->orWhere('created_by', Auth::user()->id);
+                });
             }
 
             if ($request->tikcettype != null) {
                 $tickets->where('type', $request->tikcettype);
             }
-            
+
             if ($request->priority != null) {
                 $tickets->where('priority', $request->priority);
             }
-            
+
             if ($request->status != null) {
                 $tickets->where('status', $request->status);
             }
-            
+
             if ($request->tags != null) {
                 $tickets->whereRaw("FIND_IN_SET(?, tags_id)", [$request->tags]);
             }
-            
-            
+
+
             $tickets = $tickets->orderBy('id', 'desc')->get();
 
             $totalticket = $tickets->count();
@@ -83,7 +83,7 @@ class TicketConversionController extends Controller
             $priorities = Priority::where('created_by', creatorId())->get();
 
 
-            return view('admin.chats.new-chat', compact('tickets', 'tikcettype', 'totalticket', 'settings','priorities'));
+            return view('admin.chats.new-chat', compact('tickets', 'tikcettype', 'totalticket', 'settings', 'priorities'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
         }
@@ -136,14 +136,23 @@ class TicketConversionController extends Controller
             $customFields = CustomField::where('id', '>', '7')->get();
             $settings = getCompanyAllSettings();
 
+            if (moduleIsActive('TicketNumber')) {
+                $ticketNumber = TicketNumber::ticketNumberFormat($ticket->id);
+            } else {
+                $ticketNumber = $ticket->ticket_id;
+            }
+
             $tickethtml = view('admin.chats.new-chat-messge', compact('ticket', 'users', 'categoryTree', 'priorities', 'tikcettype', 'customFields', 'settings'))->render();
 
 
             $response = [
                 'tickethtml' => $tickethtml,
-                'status'     => $status,
+                'status' => $status,
                 'unread_message_count' => $ticket->unreadMessge($ticket_id)->count(),
                 'tag' => $ticket->getTagsAttribute(),
+                'ticketNumber' => $ticketNumber,
+                'currentTicket' => $ticket,
+                'encryptedTicketId' => encrypt($ticket->ticket_id),
             ];
             return json_encode($response);
         } else {
@@ -157,8 +166,8 @@ class TicketConversionController extends Controller
     {
         $user = Auth::user();
         if (Auth::user()->isAbleTo('ticket edit')) {
-            $status         = $request->status;
-            $ticket         = Ticket::find($id);
+            $status = $request->status;
+            $ticket = Ticket::find($id);
             $settings = getCompanyAllSettings();
             if ($ticket) {
                 $ticket->status = $status;
@@ -220,11 +229,9 @@ class TicketConversionController extends Controller
                         }
 
                         $conversion = new Conversion();
-                        if(moduleIsActive('CustomerLogin') && Auth::user()->hasRole('customer'))
-                        {
+                        if (moduleIsActive('CustomerLogin') && Auth::user()->hasRole('customer')) {
                             $conversion->sender = 'user';
-                        }
-                        else{
+                        } else {
                             $conversion->sender = isset($user) ? $user->id : 'user';
                         }
                         $conversion->ticket_id = $ticket->id;
@@ -247,17 +254,17 @@ class TicketConversionController extends Controller
 
                         event(new TicketReply($conversion, $request));
 
-
                         // Manage Pusher
                         $this->managePusherAndEmailNotification($conversion, $ticket, $request);
 
 
                         return response()->json([
+                            'converstation' =>  $conversion,
                             'new_message' => $conversion->description ?? '',
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                             'sender_name' => $conversion->replyBy()->name,
                             'attachments' => json_decode($conversion->attachments),
-                            'baseUrl'     => env('APP_URL'),
+                            'baseUrl' => env('APP_URL'),
                         ]);
                     }
                 }
@@ -326,18 +333,24 @@ class TicketConversionController extends Controller
             );
 
             $data = [
-                'id'        => $conversion->id,
+                'converstation' => $conversion,
+                'replyByRole' => $conversion->replyBy()->type,
+                'id' => $conversion->id,
                 'ticket_id' => $conversion->ticket_id,
                 'ticket_number' => $ticket->ticket_id,
                 'new_message' => $conversion->description ?? '',
                 'sender_name' => $conversion->replyBy()->name,
                 'attachments' => json_decode($conversion->attachments),
-                'timestamp'   => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
-                'baseUrl'     => env('APP_URL'),
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                'baseUrl' => env('APP_URL'),
             ];
             $channel = "ticket-reply-send-$ticket->ticket_id";
             $event = "ticket-reply-send-event-$ticket->ticket_id";
-            $pusher->trigger($channel, $event, $data);
+            if (strlen(json_encode($data)) > 10240) {
+                Log::warning('Pusher payload too large for ticket: ' . $ticket->ticket_id);
+            } else {
+                $pusher->trigger($channel, $event, $data);
+            }
         }
 
         // **Email Notifications**
@@ -347,42 +360,54 @@ class TicketConversionController extends Controller
 
 
 
-    public function storeNote(Request $request, $id)
+    public function ticketNote(Request $request, $ticketId)
     {
-
         if (Auth::user()->isAbleTo('tiketnote store')) {
-            $validation = [
-                'note' => ['required'],
-            ];
-            $this->validate($request, $validation);
-            $ticket         = Ticket::find($id);
+            $ticket = Ticket::where('id', $ticketId)->first();
             if ($ticket) {
-                $ticket->note = $request->note;
-                $ticket->save();
-
-                $data['status'] = 'success';
-                $data['message'] = __('Ticket note saved successfully');
-                return $data;
+                $settings = getCompanyAllSettings();
+                return view('admin.chats.private-note', compact('ticket', 'settings'));
             } else {
-                $data['status'] = 'error';
-                $data['message'] = __('Ticket not found');
-                return $data;
+                return response()->json(['error' => __('Ticket Not Found.')], 401);
             }
         } else {
-            $data['status'] = 'error';
-            $data['message'] = __('Permission Denied');
-            return $data;
+            return response()->json(['error' => __('Permission Denied.')], 401);
+        }
+    }
+
+    public function ticketNoteStore(Request $request, $ticketId)
+    {
+        if (Auth::user()->isAbleTo('tiketnote store')) {
+            $ticket = Ticket::where('id', $ticketId)->first();
+            if ($ticket) {
+                $ticket->note = $request->ticketPrivatnote ?? '';
+                $ticket->save();
+                return response()->json([
+                    'status' => true,
+                    'message' => __('Private Note Save Successfully.')
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => __('Ticket Not Found.')
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => __('Permission Denied.')
+            ]);
         }
     }
 
     public function assignChange(Request $request, $id)
     {
-        $assign         = $request->assign;
-        $ticket         = Ticket::find($id);
+        $assign = $request->assign;
+        $ticket = Ticket::find($id);
         if ($ticket) {
             $ticket->is_assign = $assign;
+            $ticket->type = "Assigned";
             $ticket->save();
-
             $data['status'] = 'success';
             $data['message'] = __('Ticket assign successfully.');
             return $data;
@@ -397,8 +422,8 @@ class TicketConversionController extends Controller
     public function categoryChange(Request $request, $id)
     {
 
-        $category         = $request->category;
-        $ticket         = Ticket::find($id);
+        $category = $request->category;
+        $ticket = Ticket::find($id);
         if ($ticket) {
 
             $ticket->category_id = $category;
@@ -416,8 +441,8 @@ class TicketConversionController extends Controller
 
     public function priorityChange(Request $request, $id)
     {
-        $priority         = $request->priority;
-        $ticket         = Ticket::find($id);
+        $priority = $request->priority;
+        $ticket = Ticket::find($id);
         if ($ticket) {
 
             $ticket->priority = $priority;
@@ -555,7 +580,7 @@ class TicketConversionController extends Controller
         $cookie_val = json_decode($_COOKIE['ticket_user']);
         $ticket_id = $cookie_val->id;
         $settings = getCompanyAllSettings();
-        $my_id   = 'user';
+        $my_id = 'user';
 
         $ticket = Ticket::find($ticket_id);
 
@@ -588,10 +613,10 @@ class TicketConversionController extends Controller
                         $query->where('ticket_id', $ticket_id)->where('sender', $my_id);
                     }
                 )->oRwhere(
-                    function ($query) use ($ticket_id, $my_id) {
-                        $query->where('ticket_id', $ticket_id)->where('sender', '1');
-                    }
-                )->get();
+                        function ($query) use ($ticket_id, $my_id) {
+                            $query->where('ticket_id', $ticket_id)->where('sender', '1');
+                        }
+                    )->get();
             } else {
                 $messages = Conversion::where(function ($query) use ($ticket_id, $my_id) {
                     $query->where('ticket_id', $ticket_id)->where('sender', $my_id);
@@ -619,7 +644,7 @@ class TicketConversionController extends Controller
 
         $cookie_val = json_decode($_COOKIE['ticket_user']);
 
-        $ticket_id    = empty($_COOKIE['ticket_user']) ? 0 : $cookie_val->id;
+        $ticket_id = empty($_COOKIE['ticket_user']) ? 0 : $cookie_val->id;
         $message = $request->message;
 
         $ticket = Ticket::find($ticket_id);
@@ -662,14 +687,14 @@ class TicketConversionController extends Controller
                 );
 
                 $data = [
-                    'id'        => $conversion->id,
+                    'id' => $conversion->id,
                     'tikcet_id' => $conversion->ticket_id,
                     'ticket_unique_id' => $ticket->id,
                     'new_message' => $conversion->description ?? '',
-                    'timestamp'   => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                    'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                     'sender_name' => $conversion->replyBy()->name,
                     'attachments' => json_decode($conversion->attachments),
-                    'baseUrl'     => env('APP_URL'),
+                    'baseUrl' => env('APP_URL'),
                     'latestMessage' => $ticket->latestMessages($ticket->id),
                     'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
                 ];
@@ -693,7 +718,6 @@ class TicketConversionController extends Controller
     {
         if (Auth::user()->isAbleTo('custom field edit')) {
             $ticket = Ticket::find($id);
-
             if ($ticket) {
                 $customFields = CustomField::where('id', '>', '7')->get();
                 return view('admin.customFields.conversationformBuilder', compact('ticket', 'customFields'));
@@ -701,7 +725,7 @@ class TicketConversionController extends Controller
                 return redirect()->back()->with('error', 'Ticket Not Found.');
             }
         } else {
-            return response()->json(['error' => 'Permission Denied.'], 401);
+            return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
 
@@ -710,9 +734,15 @@ class TicketConversionController extends Controller
         $ticket = Ticket::find($ticket_id);
         if ($ticket) {
             CustomField::saveData($ticket, $request->customField);
-            return redirect()->back()->with('success',  __('Customfield Updated Successfully.'));
+            return response()->json([
+                'status' => true,
+                'message' => __('Customfield Updated Successfully.')
+            ]);
         } else {
-            return redirect()->back()->with('error', 'Ticket Not Found');
+            return response()->json([
+                'status' => false,
+                'message' => __('Ticket Not Found.')
+            ]);
         }
     }
 }

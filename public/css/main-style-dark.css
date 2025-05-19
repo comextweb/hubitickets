@@ -1,6 +1,9 @@
 :root {
     --border-color: #3E3F4A;
 }
+body {
+    background-color: #22242c;
+}
 h1, h2, h3, h4, h5, h6 {
     color: var(--white);
 }
@@ -32,10 +35,16 @@ input:-webkit-autofill:active {
   transition: background-color 9999s ease-in-out 0s;
   -webkit-text-fill-color: #808191 !important;
 }
-.nice-select .list-wrp {
+.nice-select .list-wrp,
+.chat-main-wrapper,
+.chat-header-left-wrp,
+.chat-wrapper-left .user,
+.chat-wrapper-left #load-btn {
     background-color: #22242c;
 }
-.nice-select .option {
+.nice-select .option,
+.tag-wrp li span,
+.chat-right-body .msg-card-bottom label {
     color: #808191;
 }
 .nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
@@ -53,11 +62,15 @@ input:-webkit-autofill:active {
     color: #808191;
    border: 1px solid var(--border-color);
 }
+.chat-wrapper-left .social-icon-wrp a{
+    border-color: transparent;
+}
 .chat-wrapper-left .input-wrp .search-btn svg path {
     stroke: #808191;
 }
-.chat-right-body,
-.choose-file-col {
+
+.choose-file-col,
+.chat-main-wrapper .chat-wrapper-left {
     background-color: #292A33;
 }
 .note-editor .note-dropzone,
@@ -84,13 +97,21 @@ input:-webkit-autofill:active {
 .msg-card-wrp {
     background-color: #22242c;
 }
-.chat-container .msg-box .msg-box-content {
-    background-color: #212129;
+.chat-container .msg-box .msg-box-inner p,
+.chat-footer {
     color: var(--white);
 }
-.chat-container .right-msg .msg-box .msg-box-content {
+.chat-container .msg-box .msg-box-inner {
     background-color: #37373e;
 }
-.chat-footer-wrp ul.list li a:not(:hover, :focus) {
+.chat-container .msg-box span,
+.chat-wrapper-right .header-right-col .label-wrp span{
+    color:#808191;
+}
+.chat-right-body .msg-box.bookmark-active .msg-box-inner p,
+.chat-container .right-msg .msg-box .msg-box-inner p {
     color: var(--black);
+}
+.chat-footer-btn-wrp .footer-btn svg path{
+    fill: #808191;
 }

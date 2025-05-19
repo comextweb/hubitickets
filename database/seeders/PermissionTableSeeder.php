@@ -65,6 +65,7 @@ class PermissionTableSeeder extends Seeder
             'language delete',
             // tickets
             'ticket manage',
+            'ticket manage all',
             'ticket create',
             'ticket edit',
             'ticket show',

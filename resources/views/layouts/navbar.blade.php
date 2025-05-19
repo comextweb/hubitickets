@@ -67,6 +67,7 @@
         </svg>
     </div>
     <ul class="d-flex gap-3 list-unstyled mb-0 flex-column">
+        @yield('language-bar')
         @if(!moduleIsActive('CustomerLogin'))
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('home') }}">{{ __('Create Ticket') }}</a>
@@ -86,7 +87,6 @@
                 <a class="nav-link" href="{{ route('knowledge') }}">{{ __('Knowledge') }}</a>
             @endif
         </li>
-        @yield('language-bar')
     </ul>
 
 </div>

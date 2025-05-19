@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     <div class="dashboard-page mt-md-3 mt-2">
-        <div class="dashboard-page-wrp dashboard-page-card row mb-4">
+        <div class="dashboard-page-wrp dashboard-page-card row-gap-1 row mb-4">
             <div class="col-md-4 col-sm-6 col-12">
                 <div class="card total-category">
                     <div class="card-body d-flex flex-column justify-content-between gap-3">

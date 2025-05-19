@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -58,7 +56,7 @@ $.ajaxSetup({
 
 function summernote() {
     $(".summernote-simple").each(function () {
-        if (!$(this).hasClass('summernote-initialized')) { 
+        if (!$(this).hasClass('summernote-initialized')) {
             $(this).addClass('summernote-initialized');
             $(this).summernote({
                 dialogsInBody: true,
@@ -71,7 +69,7 @@ function summernote() {
                 ],
                 height: 250,
                 callbacks: {
-                    onKeyup: function() {  
+                    onKeyup: function () {
                         setTimeout(() => validateSummernote(null, null, this), 0);
                     }
                 }
@@ -167,7 +165,7 @@ function validation() {
 
             // Custom validation for file input
             let fileInput = form.querySelector('input[type="file"][required]');
-            
+
             if (fileInput && fileInput.files.length === 0) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -177,7 +175,7 @@ function validation() {
             }
 
             $(form).find('.summernote-simple').each(function () {
-                validateSummernote(event, submitButton, this);                
+                validateSummernote(event, submitButton, this);
             });
             form.classList.add('was-validated');
         }, false);
@@ -213,7 +211,7 @@ $(document).ready(function () {
 
 
 function validateSummernote(event = null, submitButton = null, element = null) {
-    var $summernote = $(element); 
+    var $summernote = $(element);
     var isRequired = $summernote.attr('required') !== undefined;
     var service = $('<div>').html($summernote.summernote('code')).text().trim();
     var $errorElement = $summernote.closest('.form-group').find('.summernote_text');
@@ -235,7 +233,7 @@ function validateSummernote(event = null, submitButton = null, element = null) {
 $(document).ready(function () {
     $(window).resize();
 
-    loadConfirm();
+    // loadConfirm();
 
     if ($("#selection-datatable").length) {
         $("#selection-datatable").DataTable({
@@ -299,7 +297,6 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
         url: url,
         cache: false,
         success: function (data) {
-            // $('#commonModal .modal-body .card-box').html(data);
             $('#commonModal .modal-body ').html(data);
             $("#commonModal").modal('show');
             commonLoader();
@@ -477,21 +474,36 @@ $(document).on('click', '.show_confirm', function () {
     })
 });
 
-$(document).ready(function () {
-   
-    $(".chat-header .setting-icon").click(function(){
-        $(".msg-card-wrp").addClass("active")   
-        $(this).hide()
-        $(".chat-header .close-icon").show()
-    });
-    $(".chat-header .close-icon").click(function(){
-        $(".msg-card-wrp").removeClass("active")
-        $(this).hide()
-        $(".chat-header .setting-icon").show()
-    });
+// $(document).ready(function () {
 
-    // alert close js
-    $(".alert .close-alert").click(function(){
-        $(".alert").hide()
-    })
+//     $(".chat-header .setting-icon").click(function(){
+//         $(".msg-card-wrp").addClass("active")   
+//         $(this).hide()
+//         $(".chat-header .close-icon").show()
+//     });
+//     $(".chat-header .close-icon").click(function(){
+//         $(".msg-card-wrp").removeClass("active")
+//         $(this).hide()
+//         $(".chat-header .setting-icon").show()
+//     });
+
+//     // alert close js
+//     $(".alert .close-alert").click(function(){
+//         $(".alert").hide()
+//     })
+// });
+
+$(".chat-header .info-icon").on('click', function () {
+    $(".msg-card-wrp").addClass("active")
+    $(".chat-main-wrapper .chat-wrapper-right").addClass('info-active');
+    $(this).hide()
+    $(".msg-card-wrp .close-icon").show();
 });
+
+$(document).on('click', '.msg-card-wrp .close-icon', function () {
+    $(".msg-card-wrp").removeClass("active")
+    $(".chat-main-wrapper .chat-wrapper-right").removeClass('info-active');
+    $(this).hide()
+    $(".chat-header .info-icon").show();
+});
+

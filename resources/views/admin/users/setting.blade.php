@@ -139,20 +139,20 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
             <div class="col-xl-9 setting-menu-div">
                 {{-- Brand Settings --}}
                 <div id="logo-settings" class="card">
-                    <div class="card-header p-3">
+                    <div class="card-header">
                         <h5>{{ __('Brand settings') }}</h5>
                     </div>
                     <form action="{{ route('admin.settings.store') }}" method="post" enctype="multipart/form-data"
                         class="needs-validation" novalidate>
                         @csrf
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="row row-gap-1 mb-4">
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="card mb-0">
-                                        <div class="card-header p-3">
+                                        <div class="card-header">
                                             <h5 class="small-title">{{ __('Dark Logo') }}</h5>
                                         </div>
-                                        <div class="card-body p-3">
+                                        <div class="card-body">
                                             <div class="setting-card setting-logo-box">
                                                 <a href="{{ isset($setting['dark_logo']) && checkFile($setting['dark_logo']) ? getFile($setting['dark_logo']) : getFile('uploads/logo/logo-dark.png') . '?' . time() }}"
                                                     target="_blank" class="logo-content">
@@ -179,10 +179,10 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="card mb-0">
-                                        <div class="card-header p-3">
+                                        <div class="card-header">
                                             <h5 class="small-title">{{ __('Light Logo') }}</h5>
                                         </div>
-                                        <div class="card-body p-3">
+                                        <div class="card-body">
                                             <div class="setting-card setting-logo-box">
                                                 <a href="{{ isset($setting['light_logo']) && checkFile($setting['light_logo']) ? getFile($setting['light_logo']) : getFile('uploads/logo/logo-light.png') . '?' . time() }}"
                                                     target="_blank" class="logo-content">
@@ -210,10 +210,10 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="card mb-0">
-                                        <div class="card-header p-3">
+                                        <div class="card-header">
                                             <h5 class="small-title">{{ __('Favicon') }}</h5>
                                         </div>
-                                        <div class="card-body p-3 ">
+                                        <div class="card-body ">
                                             <div class="setting-card setting-logo-box">
                                                 <a href="{{ isset($setting['favicon']) && checkFile($setting['favicon']) ? getFile($setting['favicon']) : getFile('uploads/logo/favicon.png') . '?' . time() }}"
                                                     target="_blank" class="logo-content">
@@ -323,18 +323,18 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                         </div>
 
 
-                        <div class="card-body border-1 border-top  p-3">
+                        <div class="card-body border-1 border-top ">
                             <div class="setting-card setting-logo-box">
                                 <h4 class="small-title h5 mb-3">{{ __('Theme Customizer') }}</h4>
                                 <div class="row row-gap-1">
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center gap-2 mb-0">
                                                     <i data-feather="credit-card"></i>{{ __('Primary color settings') }}
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="color-wrp m-0">
                                                     <div class="theme-color themes-color">
                                                         <a href="#!"
@@ -402,12 +402,12 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     </div>
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center mb-0 gap-2">
                                                     <i data-feather="layout"></i>{{ __('Sidebar settings') }}
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="form-check form-switch d-flex gap-2 flex-column p-0">
                                                     <label class="form-check-label f-w-600"
                                                         for="cust-theme-bg">{{ __('Transparent layout') }}
@@ -422,12 +422,12 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     </div>
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center mb-0 gap-2">
                                                     <i data-feather="sun"></i>{{ __('Layout settings') }}
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="form-check form-switch d-flex gap-2 flex-column p-0">
                                                     <label class="form-check-label f-w-600"
                                                         for="cust-darklayout">{{ __('Dark Layout') }}
@@ -441,12 +441,12 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     </div>
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center mb-0 gap-2">
                                                     <i class="ti ti-align-right"></i>Enable RTL
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="form-check form-switch d-flex gap-2 flex-column p-0">
                                                     <label class="form-check-label f-w-600" for="site_rtl">RTL
                                                         Layout</label>
@@ -460,12 +460,12 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
 
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center mb-0 gap-2">
                                                     <i class="ti ti-align-right"></i>Enable FAQ
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="form-check form-switch d-flex gap-2 flex-column p-0">
                                                     <label class="form-check-label f-w-600" for="faq">FAQ
                                                     </label>
@@ -479,12 +479,12 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
 
                                     <div class="col-lg-4 col-sm-6 col-12">
                                         <div class="card h-100 mb-0">
-                                            <div class="card-header p-3">
+                                            <div class="card-header">
                                                 <h6 class="d-flex align-items-center mb-0 gap-2">
                                                     <i class="ti ti-align-right"></i>Knowledge Base setting
                                                 </h6>
                                             </div>
-                                            <div class="card-body p-3">
+                                            <div class="card-body">
                                                 <div class="form-check form-switch d-flex gap-2 flex-column p-0">
                                                     <label class="form-check-label f-w-600"
                                                         for="knowledge">{{ __('Knowledge Base') }}
@@ -502,7 +502,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer p-3 text-end">
+                        <div class="card-footer text-end">
                             <button class="btn btn-primary" type="submit">{{ __('Save Changes') }}</button>
                         </div>
                     </form>
@@ -510,14 +510,14 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
 
                 {{-- Email Settings --}}
                 <div id="email-settings" class="card">
-                    <div class="card-header p-3">
+                    <div class="card-header">
                         <h5 class="mb-2">{{ __('Email Settings') }}</h5>
                         <small>{{ __('Edit your Email settings') }}</small>
                     </div>
                     <form action="{{ route('admin.email.settings.store') }}" class="needs-validation" novalidate
                         method="POST">
                         @csrf
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="row row-gap-1">
                                 <div class="col-md-4">
                                     <div class="form-group mb-0">
@@ -644,7 +644,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer p-3 d-flex justify-content-end gap-3 align-items-center flex-wrap">
+                        <div class="card-footer d-flex justify-content-end gap-3 align-items-center flex-wrap">
                             <div class="form-group mb-0">
                                 <a href="#" data-url="{{ route('admin.test.email') }}"
                                     data-title="{{ __('Send Test Mail') }}" class="btn btn-primary send_email ">
@@ -665,11 +665,11 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                     <form action="{{ route('status.email.language') }}" method="post">
                         @csrf
                         <div class="col-md-12">
-                            <div class="card-header p-3">
+                            <div class="card-header ">
                                 <h5>{{ __('Email Notification Settings') }}</h5>
                             </div>
 
-                            <div class="card-body  p-3 pb-0">
+                            <div class="card-body   pb-0">
                                 <ul class="nav nav-pills gap-2 mb-3" id="pills-tab" role="tablist">
                                     @php
                                     $active = 'active';
@@ -726,7 +726,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="card-footer p-3 text-end pb-3">
+                            <div class="card-footer text-end pb-3">
                                 <input class="btn btn-print-invoice  btn-primary" type="submit"
                                     value="{{ __('Save Changes') }}">
                             </div>
@@ -753,10 +753,10 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                     <form action="{{ route('storage.setting.store') }}" method="post" enctype="multipart/form-data"
                         class="needs-validation" novalidate>
                         @csrf
-                        <div class="card-header p-3">
+                        <div class="card-header">
                             <h5>{{ __('Storage Settings') }}</h5>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="d-flex">
                                 <div class="pe-2">
                                     <input type="radio" class="btn-check" name="storage_setting" id="local-outlined"
@@ -960,7 +960,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </div>
 
                         </div>
-                        <div class="card-footer p-3 pb-3 text-end">
+                        <div class="card-footer pb-3 text-end">
                             <input class="btn btn-print-invoice  btn-primary" type="submit"
                                 value="{{ __('Save Changes') }}">
                         </div>
@@ -972,7 +972,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                     <form method="POST" action="{{ route('admin.recaptcha.settings.store') }}" accept-charset="UTF-8"
                         class="needs-validation" novalidate>
                         @csrf
-                        <div class="card-header p-3  d-flex align-items-center gap-2 justify-content-between flex-wrap">
+                        <div class="card-header  d-flex align-items-center gap-2 justify-content-between flex-wrap">
                             <div class="d-flex flex-column">
                                 <h5 class="mb-1">{{ __('ReCaptcha Settings') }}</h5>
                                 <a href="https://phppot.com/php/how-to-get-google-recaptcha-site-and-secret-key/"
@@ -988,7 +988,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 <label class="custom-control-label" for="recaptcha_module"></label>
                             </div>
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="row row-gap-1">
                                 <div class="col-12">
                                     <div class="row">
@@ -1026,7 +1026,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer p-3 pb-3 text-end">
+                        <div class="card-footer pb-3 text-end">
                             <input type="submit" value="{{ __('Save Changes') }}"
                                 class="btn btn-primary btn-block btn-submit text-white">
                         </div>
@@ -1038,7 +1038,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                     <form action="{{ route('seo.settings') }}" method="POST" enctype="multipart/form-data"
                         class="needs-validation" novalidate>
                         @csrf
-                        <div class="card-header p-3 flex-wrap d-flex align-items-center gap-2 justify-content-between">
+                        <div class="card-header flex-wrap d-flex align-items-center gap-2 justify-content-between">
                             <h5>{{ __('SEO Settings') }}</h5>
                             @if (isset($setting['is_enabled']) && $setting['is_enabled'] == 'on')
                             <a class="btn btn-primary btn-sm float-end" href="#" data-size="lg"
@@ -1049,7 +1049,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </a>
                             @endif
                         </div>
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -1095,7 +1095,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer p-3  text-end">
+                        <div class="card-footer  text-end">
                             <button class="btn-submit btn btn-primary abcd"
                                 type="submit">{{ __('Save Changes') }}</button>
                         </div>
@@ -1107,7 +1107,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                 <div id="cookie-settings" class="card mb-3">
                     <form action="{{ route('cookie.setting') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
-                        <div class="card-header p-3 flex-wrap d-flex align-items-center gap-3 justify-content-between">
+                        <div class="card-header flex-wrap d-flex align-items-center gap-3 justify-content-between">
                             <h5>{{ __('Cookie Settings') }}</h5>
                             <div class="d-flex align-items-center">
                                 <label for="enable_cookie"
@@ -1121,7 +1121,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </div>
                         </div>
                         <div
-                            class="card-body p-3 cookieDiv {{ isset($setting['enable_cookie']) && $setting['enable_cookie'] == 'off' ? 'disabledCookie' : '' }}">
+                            class="card-body cookieDiv {{ isset($setting['enable_cookie']) && $setting['enable_cookie'] == 'off' ? 'disabledCookie' : '' }}">
                             @if (isset($setting['is_enabled']) && $setting['is_enabled'] == 'on')
                             <div class="d-flex justify-content-end mb-3">
                                 <a class="btn btn-primary btn-sm" href="#" data-size="lg"
@@ -1135,7 +1135,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             <div class="row row-gap-1">
                                 <div class="col-md-6">
                                     <div class="card mb-3">
-                                        <div class="card-body p-3">
+                                        <div class="card-body">
                                             <div class="form-check form-switch custom-switch-v1" id="cookie_log">
                                                 <input type="checkbox" name="cookie_logging"
                                                     class="form-check-input input-primary cookie_setting"
@@ -1165,7 +1165,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card mb-3">
-                                        <div class="card-body p-3">
+                                        <div class="card-body">
                                             <div class="form-check form-switch custom-switch-v1">
                                                 <input type="checkbox" name="necessary_cookies"
                                                     class="form-check-input input-primary" id="necessary_cookies"
@@ -1216,7 +1216,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex align-items-center gap-3 flex-wrap justify-content-between p-3">
+                        <div class="card-footer d-flex align-items-center gap-3 flex-wrap justify-content-between">
                             <div class="d-flex align-items-center gap-2 flex-wrap">
                                 @if (isset($setting['cookie_logging']) && $setting['cookie_logging'] == 'on')
                                 <label for="file"
@@ -1239,7 +1239,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             novalidate>
                             @csrf
                             <div
-                                class="card-header p-3 flex-column flex-lg-row d-flex align-items-lg-center gap-2 justify-content-between">
+                                class="card-header flex-column flex-lg-row d-flex align-items-lg-center gap-2 justify-content-between">
                                 <h5>{{ __('Chat GPT Key Settings') }}</h5>
                                 <div class="d-flex align-items-center">
                                     <div class="form-check custom-control custom-switch p-0">
@@ -1250,7 +1250,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body p-3">
+                            <div class="card-body">
                                 <div class="row row-gap-1">
                                     <div class="form-group mb-0 col-md-12">
                                         <label for="chatgpt_key" class="col-form-label">{{ __('Chat GPT Key') }}</label>
@@ -1267,7 +1267,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer p-3 pb-3 text-end">
+                            <div class="card-footer pb-3 text-end">
                                 <button class="btn btn-primary" type="submit">{{ __('Save Changes') }}</button>
                             </div>
                         </form>
@@ -1278,7 +1278,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
 
                 {{-- Cache Setting --}}
                 <div id="cache-settings" class="card mb-3">
-                    <div class="card-header p-3">
+                    <div class="card-header">
                         <div class="row">
                             <div class="col-lg-8 col-md-8 col-sm-8">
                                 <h5 class="mb-1">{{ __('Cache Setting') }}</h5>
@@ -1288,7 +1288,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </div>
                         </div>
                     </div>
-                    <div class="card-body p-3">
+                    <div class="card-body">
 
                         <div class="row">
                             <div class="col-md-12">
@@ -1307,7 +1307,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer p-3 text-end">
+                    <div class="card-footer text-end">
                         <a href="{{ route('cache.clear') }}"
                             class="btn btn-print-invoice btn-primary m-r-10">{{ __('Clear Cache') }}</a>
                     </div>
@@ -1320,7 +1320,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                         @csrf
 
 
-                        <div class="card-header p-3 flex-wrap d-flex align-items-center gap-3 justify-content-between">
+                        <div class="card-header flex-wrap d-flex align-items-center gap-3 justify-content-between">
                             <div class="d-flex flex-column gap-1">
                                 <h5>{{ __('Pusher Settings') }}</h5>
                                 <small
@@ -1334,7 +1334,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
                             </div>
                         </div>
 
-                        <div class="card-body p-3">
+                        <div class="card-body">
                             <div class="row row-gap-1">
                                 <div class="col-md-6 col-12 form-group mb-0">
                                     <label for="pusher_app_id" class="form-label">{{ __('Pusher App Id') }}</label>
@@ -1369,7 +1369,7 @@ $flag = isset($setting['color_flag']) ? $setting['color_flag'] : 'false';
 
                             </div>
                         </div>
-                        <div class="card-footer p-3 text-end ">
+                        <div class="card-footer text-end ">
                             <button type="submit"
                                 class="btn btn-primary btn-block btn-submit text-white">{{ __('Save Changes') }}</button>
                         </div>
