@@ -1077,7 +1077,7 @@ if (!function_exists('sendTicketEmail')) {
         $uArr = [
             'ticket_name' => $ticket->name,
             'ticket_id' => $ticketNumber,
-            'ticket_url' => route('home.view', ['id' => encrypt($ticketNumber)]),
+            'ticket_url' => route('home.view', ['id' => encrypt($ticket->ticket_id)]),
             'originalTicketId' => $ticket->id,
         ];
         switch ($templateName) {
