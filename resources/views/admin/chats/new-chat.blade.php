@@ -1055,7 +1055,6 @@
             var status = this.value;
             var url = $(this).data('url');
             var Url = url.replace('{{ $ticket->id ?? 0 }}', id);
-
             $.ajax({
                 url: Url + '?status=' + status,
                 type: 'GET',
@@ -1074,9 +1073,8 @@
         $(document).on('change', '#agents', function () {
             var id = $('.user_chat.active').attr('id');
             var user = this.value;
-            var url = $(this).data('url');
+            var Url = $(this).data('url');
 
-            var Url = url.replace('{{ $ticket->id ?? 0 }}', id);
             $.ajax({
                 url: Url + '?assign=' + user,
                 type: 'GET',
@@ -1096,8 +1094,7 @@
         $(document).on('change', '#category', function () {
             var id = $('.user_chat.active').attr('id');
             var category = this.value;
-            var url = $(this).data('url');
-            var Url = url.replace('{{ $ticket->id ?? 0 }}', id);
+            var Url = $(this).data('url');
             $.ajax({
                 url: Url + '?category=' + category,
                 type: 'GET',
@@ -1117,8 +1114,8 @@
         $(document).on('change', '#priority', function () {
             var id = $('.user_chat.active').attr('id');
             var priority = this.value;
-            var url = $(this).data('url');
-            var Url = url.replace('{{ $ticket->id ?? 0 }}', id);
+            var Url = $(this).data('url');
+
             $.ajax({
                 url: Url + '?priority=' + priority,
                 type: 'GET',
