@@ -538,10 +538,10 @@
             <ul class="tag-wrp mb-0">
                 @if (count($customFields) > 0)
                     <li class="d-flex align-items-center gap-2 justify-content-between">
-                        <span> {{ __('Custom Field') }} </span>
-                        <a href="#" title="{{ __('View Custom Field') }}"
+                        <span> {{ __('Extra Info') }} </span>
+                        <a href="#" title="{{ __('View Extra Info') }}"
                             data-ajax-popup="true"
-                            data-title="{{ __('Custom Field') }}"
+                            data-title="{{ __('Extra Info') }}"
                             data-url="{{ route('admin.ticketcustomfield.show', $ticket->id) }}" data-size="lg">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_1107_6629)">

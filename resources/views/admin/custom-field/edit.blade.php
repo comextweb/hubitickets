@@ -65,17 +65,40 @@
                 @endforeach
             </select>
         </div>
+        <!--div class="col-md-12">
+            <div class="form-group">
+                <label name="is_core" class="form-label">{{__('Is Core')}}</label><x-required></x-required>
+                <input type="hidden" name="is_core" value="{{ $customField->is_core }}">
+                <select class="form-control"
+                    name="is_core">
+                    <option value="1" {{ $customField->is_core == 1 ? 'selected' : ''}}>{{ __('Yes') }}</option>
+                    <option value="0" {{ $customField->is_core == 0 ? 'selected' : ''}}>{{ __('No') }}</option>
+                </select>
+            </div>
+        </div-->
         <div class="col-md-12">
             <div class="form-group">
                 <label name="is_required" class="form-label">{{__('Required')}}</label><x-required></x-required>
                 <input type="hidden" name="is_required" value="{{ $customField->is_required }}">
                 <select class="form-control"
-                    name="is_required" {{ ($customField->id == 7 || $customField->id == 8 || $customField->id > 8) ? '' : 'disabled' }}>
+                    name="is_required" {{ ($customField->is_core == 1) ? 'disabled' : '' }}>
                     <option value="1" {{ $customField->is_required == 1 ? 'selected' : ''}}>{{ __('Yes') }}</option>
                     <option value="0" {{ $customField->is_required == 0 ? 'selected' : ''}}>{{ __('No') }}</option>
                 </select>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label name="is_public" class="form-label">{{__('Is Public')}}</label><x-required></x-required>
+                <input type="hidden" name="is_public" value="{{ $customField->is_public }}">
+                <select class="form-control"
+                    name="is_public">
+                    <option value="1" {{ $customField->is_public == 1 ? 'selected' : ''}}>{{ __('Yes') }}</option>
+                    <option value="0" {{ $customField->is_public == 0 ? 'selected' : ''}}>{{ __('No') }}</option>
+                </select>
+            </div>
+        </div>
+        
     </div>
 
     <div class="modal-footer p-0 pt-3">

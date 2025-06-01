@@ -133,7 +133,7 @@ class TicketConversionController extends Controller
             $categoryTree = buildCategoryTree($categories);
             $priorities = Priority::where('created_by', creatorId())->get();
             $tikcettype = Ticket::getTicketTypes();
-            $customFields = CustomField::where('id', '>', '7')->get();
+            $customFields = CustomField::where('is_core', false)->orderBy('order')->get();
             $settings = getCompanyAllSettings();
 
             if (moduleIsActive('TicketNumber')) {
@@ -720,7 +720,7 @@ class TicketConversionController extends Controller
         if (Auth::user()->isAbleTo('custom field edit')) {
             $ticket = Ticket::find($id);
             if ($ticket) {
-                $customFields = CustomField::where('id', '>', '7')->get();
+                $customFields = CustomField::where('is_core', false)->orderBy('order')->get();
                 return view('admin.customFields.conversationformBuilder', compact('ticket', 'customFields'));
             } else {
                 return redirect()->back()->with('error', 'Ticket Not Found.');

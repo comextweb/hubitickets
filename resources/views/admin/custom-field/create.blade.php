@@ -72,6 +72,26 @@
                 </select>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label name="is_core" class="form-label">{{__('Is Core')}}</label><x-required></x-required>
+                <select class="form-control"
+                    name="is_core">
+                    <option value="1">{{ __('Yes') }}</option>
+                    <option value="0">{{ __('No') }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label name="is_public" class="form-label">{{__('Is Public')}}</label><x-required></x-required>
+                <select class="form-control"
+                    name="is_public">
+                    <option value="1">{{ __('Yes') }}</option>
+                    <option value="0">{{ __('No') }}</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="modal-footer p-0 pt-3">
