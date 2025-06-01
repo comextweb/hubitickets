@@ -17,6 +17,7 @@ class CustomField extends Model
         'custom_id',
         'is_public',
         'is_core',  
+        'description',
         'created_by',
     ];
 
