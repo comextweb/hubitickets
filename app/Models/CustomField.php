@@ -15,6 +15,8 @@ class CustomField extends Model
         'status',
         'is_required',
         'custom_id',
+        'is_public',
+        'is_core',  
         'created_by',
     ];
 
@@ -37,6 +39,13 @@ class CustomField extends Model
         '8' => '66%',
         '12' => '100%',
     ];
+
+    // Scopes para los nuevos campos
+    public function scopePublicForm($query)
+    {
+        return $query->where('is_public', true);
+    }
+
 
     public static function saveData($obj, $data)
     {

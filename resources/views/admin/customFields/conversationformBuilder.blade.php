@@ -125,6 +125,37 @@
                       {{ $errors->first('attachments.*') }}
                   </div>
               </div>
+            @elseif($customField->custom_id == '8')
+                @if (moduleIsActive('OutOfOffice'))
+                    @stack('is_available')
+                @else
+                    <div class="col-lg-{{ $customField->width }}">
+                        <div class="form-group mb-3 {{ $customField->width }}">
+                            <label for="agent" class="form-label">{{ __($customField->name) }}</label>
+                            @if ($customField->is_required == 1)
+                                <x-required></x-required>
+                            @endif
+                            <select class="form-control @error('agent') is-invalid @enderror" 
+                                id="agent" name="agent" required
+                                data-placeholder="{{ __($customField->placeholder) }}">
+                                <option value="">{{ __($customField->placeholder) }}</option>
+                                @isset($users) {{-- Verifica que la variable exista --}}
+                                    @foreach ($users as $agent)
+                                        <option value="{{ $agent->id }}" 
+                                            {{ old('agent') == $agent->id ? 'selected' : '' }}>
+                                            {{ $agent->name }}
+                                        </option>
+                                    @endforeach
+                                @endisset
+                            </select>
+                            @error('agent')
+                                <div class="invalid-feedback d-block">
+                                    {{ $errors->first('agent') }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                @endif
             @elseif($customField->type == 'text')
                 <div class="col-lg-{{ $customField->width }}">
                     <div class="form-group mb-3{{ $customField->width }}">

@@ -14,7 +14,7 @@ class CustomFieldController extends Controller
 
     public function getCoustomField()
     {
-        $customFields = CustomField::where('id', '>', '7')->get();
+        $customFields = CustomField::orderBy('order')->get();
 
         $data = [
             'custom_fields' => $customFields,

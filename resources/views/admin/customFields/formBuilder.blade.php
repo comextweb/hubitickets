@@ -109,38 +109,59 @@
                 </div>
             </div>
         @elseif($customField->custom_id == '7')
-                <div class="">
-                    <label
-                        class="form-label form-bottom-content mb-3 f-w-400">{{ $customField->name }}<b class="f-w-400">({{ $customField->placeholder }})</b></label>
-                    @if ($customField->is_required == 1)
-                        <x-required></x-required>
-                    @endif
+            {{-- <x-mobile divClass="col-md-6"></x-mobile> --}}
+
+            <div class="form-group col-md-12">
+                <label class="require form-label"> {{ $customField->name}}
+                    <small>({{ $customField->placeholder }})</small> </label>
+                <div class="choose-file form-group">
+                    <label for="file" class="form-label d-block">
+                        <input type="file" name="attachments[]" id="file"
+                            class="form-control  @error('attachments') is-invalid @enderror"
+                            multiple="" data-filename="multiple_file_selection"
+                            onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" >
+                        
+                        @error('attachments')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </label>
                 </div>
+                <p class="multiple_file_selection mb-0"></p>
+            </div>
+            
+        @elseif($customField->custom_id == '8')
+            @if (moduleIsActive('OutOfOffice'))
+                @stack('is_available')
+            @else
                 <div class="col-lg-{{ $customField->width }}">
                     <div class="form-group mb-3 {{ $customField->width }}">
-                        <div class="choose-file form-group">
-                            <label for="file" class="form-label">
-                                <div class="mb-2">{{ __('Choose File Here') }}</div>
-                                <div class="file-upload">
-                                    <div class="file-select">
-                                        <div class="file-select-button btn btn-primary btn-block" id="fileName">Choose File
-                                        </div>
-                                        <div class="file-select-name" id="noFile">No file chosen...</div>
-                                        <input type="file"
-                                            class="form-control {{ $errors->has('attachments.') ? 'is-invalid' : '' }}"
-                                            multiple="" name="attachments[]" id="chooseFile"
-                                            data-filename="multiple_file_selection"
-                                            {{ $customField->is_required == 1 ? 'required' : '' }}>
-                                    </div>
-                                </div>
-                            </label>
-                            <p class="multiple_file_selection"></p>
-                        </div>
-                    </div>
-                    <div class="invalid-feedback d-block">
-                        {{ $errors->first('attachments.*') }}
+                        <label for="agent" class="form-label">{{ __($customField->name) }}</label>
+                        @if ($customField->is_required == 1)
+                            <x-required></x-required>
+                        @endif
+                        <select class="form-control @error('agent') is-invalid @enderror" 
+                            id="agent" name="agent" required
+                            data-placeholder="{{ __($customField->placeholder) }}">
+                            <option value="">{{ __($customField->placeholder) }}</option>
+                            @isset($users) {{-- Verifica que la variable exista --}}
+                                @foreach ($users as $agent)
+                                    <option value="{{ $agent->id }}" 
+                                        {{ old('agent') == $agent->id ? 'selected' : '' }}>
+                                        {{ $agent->name }}
+                                    </option>
+                                @endforeach
+                            @endisset
+                        </select>
+                        @error('agent')
+                            <div class="invalid-feedback d-block">
+                                {{ $errors->first('agent') }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
+            @endif
         @elseif($customField->type == 'text')
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3{{ $customField->width }}">

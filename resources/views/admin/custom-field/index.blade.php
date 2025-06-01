@@ -31,6 +31,7 @@
                                     <th>{{ __('Placeholder') }}</th>
                                     <th>{{ __('Type') }}</th>
                                     <th>{{ __('Require') }}</th>
+                                    <th>{{ __('Type Form') }}</th>
                                     <th>{{ __('Width') }}</th>
                                     <th class="text-end me-3">{{ __('Action') }}</th>
                                 </tr>
@@ -53,6 +54,16 @@
                                                     class="badge bg-danger p-2 px-3 status-badge7">{{ __('Not Required') }}</span>
                                             </td>
                                         @endif
+                                        @if ($customField->is_public == 1)
+                                            <td><span
+                                                    class="badge bg-warning p-2 px-3 status-badge7">{{ __('Is Public') }}</span>
+                                            </td>
+                                        @else
+                                            <td><span
+                                                    class="badge bg-secondary p-2 px-3 status-badge7">{{ __('Is Not Public') }}</span>
+                                            </td>
+                                        @endif
+                                        
                                         <td>{{ $customField->width }}</td>
                                         <td class="text-end me-3">
                                             @permission('faq edit')
@@ -66,7 +77,7 @@
                                                 </div>
                                             @endpermission
                                             @permission('user delete')
-                                                @if ($customField->id > 6)
+                                                @if ($customField->is_core == false)
                                                     <div class="action-btn me-2">
                                                         <form method="POST"
                                                             action="{{ route('admin.custom-field.destroy', $customField->id) }}"

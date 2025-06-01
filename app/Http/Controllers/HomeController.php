@@ -61,7 +61,7 @@ class HomeController extends Controller
             return redirect('install');
         }
 
-        $customFields = CustomField::orderBy('order')->get();
+        $customFields = CustomField::publicForm()->orderBy('order')->get();
         $categories = Category::get();
         $categoryTree = buildCategoryTree($categories);
         $priorities = Priority::get();
@@ -200,7 +200,18 @@ class HomeController extends Controller
             $ticket->attachments = json_encode($data);
             $ticket->save();
 
-            CustomField::saveData($ticket, $request->customField);
+            // Preparamos los datos para los campos personalizados
+            $customFieldsData = $request->customField ?? [];
+
+            // Buscamos el campo 'tipoUsuario' en la tabla custom_fields
+            $tipoUsuarioField = CustomField::where('name', 'Tipo de Usuario')->first();
+            
+            // Si existe el campo, agregamos el valor "Externo"
+            if ($tipoUsuarioField) {
+                $customFieldsData[$tipoUsuarioField->id] = 'Externo';
+            }
+
+            CustomField::saveData($ticket, $customFieldsData);
             event(new CreateTicket($ticket, $request));
 
 

@@ -36,7 +36,7 @@ class TicketController extends Controller
     public function create()
     {
         if (Auth::user()->isAbleTo('ticket create')) {
-            $customFields = CustomField::where('id', '>', '7')->get();
+            $customFields = CustomField::orderBy('order')->get();
             $categories = Category::where('created_by', creatorId())->get();
             $categoryTree = buildCategoryTree($categories);
             $priorities = Priority::where('created_by', creatorId())->get();
@@ -57,7 +57,6 @@ class TicketController extends Controller
                 'category' => 'required',
                 'priority' => 'required',
                 'subject' => 'required|string|max:255',
-                'status' => 'required|string|max:100',
                 'description' => 'required',
                 'priority' => 'required',
                 'agent' => 'required',
@@ -73,7 +72,7 @@ class TicketController extends Controller
             $ticket->is_assign = $request->agent;
             $ticket->priority = $request->priority;
             $ticket->subject = $request->subject;
-            $ticket->status = $request->status;
+            $ticket->status = "New Ticket";
             $ticket->description = $request->description;
             $ticket->type = "Assigned";
             $ticket->created_by = Auth::check() ? Auth::user()->id : creatorId();
