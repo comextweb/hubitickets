@@ -11,6 +11,11 @@
             <input type="text" class="form-control" name="placeholder" placeholder="{{__('Enter Placeholder')}}" value="{{ $customField->placeholder }}" required>
         </div>
         <div class="form-group col-md-12">
+            <label name="description" class="form-label">{{__('Description')}}</label><x-required></x-required>
+            <input type="text" class="form-control" name="description" placeholder="{{__('Enter Description')}}" value="{{ $customField->description }}" required>
+        </div>
+        
+        <div class="form-group col-md-12">
             <label name="type" class="form-label">{{__('Type')}}</label><x-required></x-required>
             <input type="hidden" name="type" value="{{ $customField->type }}">
             <select class="form-control field_type"

@@ -37,8 +37,9 @@ class CustomFieldController extends Controller
                 'type'        => 'required',
                 'width'       => 'required',
                 'is_required' => 'required',
-                'is_core' => 'required',
-                'is_public' => 'required'
+                'is_core'     => 'required',
+                'is_public'   => 'required',
+                'description' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -56,6 +57,7 @@ class CustomFieldController extends Controller
             $customField->is_required = $request->is_required;
             $customField->is_core     = $request->is_core;
             $customField->is_public   = $request->is_public;
+            $customField->description = $request->description;
             $customField->order       = $order + 1;
             $customField->created_by  = creatorId();
             $customField->save();
@@ -90,7 +92,8 @@ class CustomFieldController extends Controller
                 'type' => 'required',
                 'width' => 'required',
                 'is_required' => 'required',
-                'is_public' => 'required'
+                'is_public' => 'required',
+                'description' => 'required'
             ]);
 
 
@@ -107,7 +110,8 @@ class CustomFieldController extends Controller
                 $customField->width       = $request->width;
                 $customField->fieldValue  = json_encode($request->field_value);
                 $customField->is_required = $request->is_required;
-                $customField->is_public = $request->is_public;
+                $customField->is_public   = $request->is_public;
+                $customField->description = $request->description;
                 $customField->save();
                 return redirect()->route('admin.custom-field.index')->with('success', __('Custom Field Updated Successfully.'));
             } else {

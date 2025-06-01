@@ -4,6 +4,7 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="name" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -21,6 +22,7 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="email" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -38,6 +40,7 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="subject" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -55,6 +58,8 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="category" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
+
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -76,6 +81,7 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="priority" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -96,6 +102,7 @@
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label for="description" class="form-label">{{ __('Description') }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -114,6 +121,7 @@
             <div class="form-group col-md-12">
                 <label class="require form-label"> {{ $customField->name}}
                     <small>({{ $customField->placeholder }})</small> </label>
+                <x-tooltip :description="$customField->description ?? null" />
                 <div class="choose-file form-group">
                     <label for="file" class="form-label d-block">
                         <input type="file" name="attachments[]" id="file"
@@ -138,6 +146,7 @@
                 <div class="col-lg-{{ $customField->width }}">
                     <div class="form-group mb-3 {{ $customField->width }}">
                         <label for="agent" class="form-label">{{ __($customField->name) }}</label>
+                        <x-tooltip :description="$customField->description ?? null" />
                         @if ($customField->is_required == 1)
                             <x-required></x-required>
                         @endif
@@ -167,6 +176,7 @@
                 <div class="form-group mb-3{{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -186,6 +196,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -205,6 +216,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -224,6 +236,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -243,6 +256,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -263,6 +277,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -308,6 +323,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -346,6 +362,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif
@@ -382,6 +399,7 @@
                 <div class="form-group mb-3 {{ $customField->width }}">
                     <label name="{{ 'customField-' . $customField->id }}"
                         class="form-label">{{ $customField->name }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
                     @if ($customField->is_required == 1)
                         <x-required></x-required>
                     @endif

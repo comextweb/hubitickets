@@ -29,6 +29,7 @@
                                     <th scope="col">#</th>
                                     <th>{{ __('Labels') }}</th>
                                     <th>{{ __('Placeholder') }}</th>
+                                    <th>{{ __('Description') }}</th>
                                     <th>{{ __('Type') }}</th>
                                     <th>{{ __('Require') }}</th>
                                     <th>{{ __('Type Form') }}</th>
@@ -44,6 +45,7 @@
                                         </td>
                                         <td>{{ $customField->name }}</td>
                                         <td>{{ $customField->placeholder }}</td>
+                                        <td>{{ $customField->description }}</td>
                                         <td>{{ $customField->type }}</td>
                                         @if ($customField->is_required == 1)
                                             <td><span

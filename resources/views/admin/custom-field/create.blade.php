@@ -10,6 +10,10 @@
             <input type="text" class="form-control" name="placeholder" placeholder="{{__('Enter Placeholder')}}" required>
         </div>
         <div class="form-group col-md-12">
+            <label name="description" class="form-label">{{__('Description')}}</label><x-required></x-required>
+            <input type="text" class="form-control" name="description" placeholder="{{__('Enter Description')}}" required>
+        </div>
+        <div class="form-group col-md-12">
             <label name="type" class="form-label">{{__('Type')}}</label><x-required></x-required>
             <select class="form-control field_type"
                 name="type">
