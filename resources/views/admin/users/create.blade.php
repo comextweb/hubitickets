@@ -52,6 +52,23 @@
                                             {{ $errors->first('role') }}
                                         </div>
                                     </div>
+                                    
+                                    <div class="form-group col-12">
+                                        <label class="form-label">{{ __('Departments') }}</label>
+                                        <select name="department_ids[]" id="department_ids" multiple
+                                                class="form-control select2 {{ $errors->has('department_ids') ? ' is-invalid' : '' }}">
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}" 
+                                                    {{ in_array($department->id, old('department_ids', [])) ? 'selected' : '' }}>
+                                                    {{ $department->name }} ({{ $department->code }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('department_ids') }}
+                                        </div>
+                                    </div>
+
                                     <x-mobile required></x-mobile>
                                     <div class="col-12 mb-3">
                                         <span class="me-1">{{ __('Login is enabled') }}</span>
@@ -533,5 +550,17 @@
             }
 
         })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#department_ids').select2();
+
+            $('#department_ids').on('select2:select select2:unselect', function () {
+                setTimeout(() => {
+                $('.select2-selection__choice').addClass('bg-primary text-white');
+                }, 0);
+            });
+        });
     </script>
 @endpush

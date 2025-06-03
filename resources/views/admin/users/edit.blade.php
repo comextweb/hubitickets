@@ -61,6 +61,23 @@
                                             {{ $errors->first('role') }}
                                         </div>
                                     </div>
+
+                                    <div class="form-group col-12">
+                                        <label class="form-label">{{ __('Department') }}</label>
+                                        <select name="department_ids[]" id="department_ids" multiple
+                                                class="form-control select2 {{ $errors->has('department_ids') ? ' is-invalid' : '' }}">
+                                            @foreach($departments as $department)
+                                                <option value="{{ $department->id }}" 
+                                                    {{ in_array($department->id, old('department_ids', $userDepartments ?? [])) ? 'selected' : '' }}>
+                                                    {{ $department->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('department_ids') }}
+                                        </div>
+                                    </div>
+
                                     <x-mobile required value="{{ $user->mobile_number }}"></x-mobile>
                                 </div>
 
@@ -483,3 +500,26 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+     <script>
+        $(document).ready(function () {
+            const $select = $('#department_ids');
+
+            // Inicializar select2
+            $select.select2();
+
+            // Aplicar estilos a los elementos ya seleccionados al cargar
+            function aplicarEstiloSeleccionados() {
+                $('.select2-selection__choice').addClass('bg-primary text-white');
+            }
+
+            // Ejecutar al cargar
+            aplicarEstiloSeleccionados();
+
+            // Volver a aplicar cuando se seleccione o deseleccione
+            $select.on('select2:select select2:unselect', function () {
+                setTimeout(aplicarEstiloSeleccionados, 0);
+            });
+        });
+    </script>
+@endpush

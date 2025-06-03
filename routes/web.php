@@ -83,6 +83,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(funct
     Route::get('ticketnote/{ticketId}', [TicketConversionController::class, 'ticketNote'])->name('ticket.note');
     Route::post('ticketnote/store/{ticketId}', [TicketConversionController::class, 'ticketNoteStore'])->name('ticket.note.store');
     Route::get('ticket/{id}/assign/change', [TicketConversionController::class, 'assignChange'])->name('ticket.assign.change');
+    Route::get('ticket/{id}/department/change', [TicketConversionController::class, 'departmentChange'])->name('ticket.department.change');
     Route::get('ticket/{id}/category/change', [TicketConversionController::class, 'categoryChange'])->name('ticket.category.change');
     Route::get('ticket/{id}/priority/change', [TicketConversionController::class, 'priorityChange'])->name('ticket.priority.change');
     Route::post('ticket/{id}/name/change', [TicketConversionController::class, 'ticketnameChange'])->name('ticket.name.change');

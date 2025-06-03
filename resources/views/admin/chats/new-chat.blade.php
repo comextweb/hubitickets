@@ -1109,6 +1109,28 @@
             });
         });
 
+        // ticket department change
+
+        $(document).on('change', '#department', function () {
+            var id = $('.user_chat.active').attr('id');
+            var department = this.value;
+            var Url = $(this).data('url');
+
+            $.ajax({
+                url: Url + '?department=' + department,
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    if (data.status == 'success') {
+                        show_toastr('Success', data.message, 'success');
+                    } else {
+                        show_toastr('Error', data.message, 'error');
+                    }
+                }
+            });
+        });
+
+
         // ticket priority change
 
         $(document).on('change', '#priority', function () {

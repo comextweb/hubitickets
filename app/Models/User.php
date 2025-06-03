@@ -10,6 +10,8 @@ use Laratrust\Traits\HasRolesAndPermissions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Contracts\LaratrustUser;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements LaratrustUser
 {
@@ -140,6 +142,19 @@ class User extends Authenticatable implements LaratrustUser
     {
         return $this->hasMany(Ticket::class, 'is_assign', 'id');
     }
+
+    
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'department_user', 'user_id', 'department_id');
+    }
+
+
+    public function managedDepartments(): HasMany
+    {
+        return $this->hasMany(Department::class, 'manager_id');
+    }
+
 
     public static $nonEditableRoles = [
         'agent',

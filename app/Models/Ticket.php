@@ -24,6 +24,7 @@ class Ticket extends Model
         'attachments',
         'note',
         'type',
+        'department_id'
     ];
 
 

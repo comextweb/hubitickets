@@ -361,7 +361,7 @@ class HomeController extends Controller
             if ($ticket) {
                 return view('show', compact('ticket', 'settings'));
             } else {
-                return redirect()->back()->with('error', __('Ticket Not Found 123.'));
+                return redirect()->back()->with('error', __('Ticket Not Found.'));
             }
         } catch (\Throwable $th) {
             return redirect()->back();
