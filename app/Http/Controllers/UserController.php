@@ -15,6 +15,7 @@ use App\Models\Utility;
 use App\Models\LoginDetails;
 use App\Models\Role;
 use App\Models\SubCategory;
+use App\Models\Department;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,24 @@ class UserController extends Controller
         }
     }
 
+    /*public function index()
+    {
+        if (Auth::user()->isAbleTo('user manage')) {
+            $users = Auth::user()->hasRole('admin') 
+                ? User::where('created_by', creatorId())->get()
+                : User::where('created_by', creatorId())
+                    ->where('id', '!=', Auth::id()) 
+                    ->whereHas('departments', function($q) {
+                        $q->whereIn('departments.id', Auth::user()->departments()->pluck('id'));
+                    })
+                    ->get();
+
+            return view('admin.users.index', compact('users'));
+        }
+        
+        return redirect()->back()->with('error', 'Permission Denied.');
+    }*/
+
 
     public function create()
     {
@@ -49,7 +68,8 @@ class UserController extends Controller
             // $categories = Category::where('created_by', creatorId())->get();
             // $categoryTree = buildCategoryTree($categories);
             $roles = Role::where('created_by', creatorId())->get();
-            return view('admin.users.create', compact('roles'));
+            $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
+            return view('admin.users.create', compact('roles','departments'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
         }
@@ -67,6 +87,8 @@ class UserController extends Controller
                 'name'    => 'required|string|max:255',
                 'email'   => 'required|string|email|max:255|unique:users',
                 'role' => 'required',
+                'department_ids' => 'nullable|array',
+                'department_ids.*' => 'exists:departments,id' // Valida cada ID del array
             ]);
             if ($request->avatar) {
                 $request->validate([
@@ -113,6 +135,11 @@ class UserController extends Controller
             if ($role) {
                 $user->addRole($role);
             }
+            
+            if ($request->has('department_ids')) {
+                $user->departments()->sync($request->department_ids);
+            }
+
             event(new CreateUser($user, $request));
 
             if (isset($settings['New User']) && $settings['New User'] == 1) {
@@ -134,7 +161,13 @@ class UserController extends Controller
             $categories = Category::where('created_by', creatorId())->get();
             // $categoryTree = buildCategoryTree($categories);
             $roles = Role::where('created_by', creatorId())->get();
-            return view('admin.users.edit', compact('user',   'roles', 'categories'));
+            // Traer todos los departamentos activos
+            $departments = Department::where('is_active', true)->get();
+
+            // IDs de los departamentos que ya tiene el usuario
+            $userDepartments = $user->departments()->pluck('departments.id')->toArray();
+
+            return view('admin.users.edit', compact('user',   'roles', 'categories','userDepartments', 'departments'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
         }
@@ -152,6 +185,7 @@ class UserController extends Controller
                     }),
 
                 ],
+                'department_id' => 'nullable|exists:departments,id'
             ]);
             $role = Role::where('id', $request->role)->first();
             $user->name  = $request->name;
@@ -184,6 +218,15 @@ class UserController extends Controller
             }
             $user->save();
             event(new UpdateUser($user, $request));
+            
+            // Por esto (para que coincida con el nombre del campo en el formulario):
+            if ($request->has('department_ids')) {
+                $user->departments()->sync($request->department_ids);
+            } else {
+                $user->departments()->detach();
+            }
+
+            
             if ($role) {
                 $user->roles()->sync($role);
             }

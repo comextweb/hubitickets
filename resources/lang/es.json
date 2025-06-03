@@ -524,6 +524,7 @@
   "Thu": "Jue",
   "Ticket": "Ticket",
   "Ticket assign successfully.": "Asignación de ticket con éxito.",
+  "Ticket department successfully.": "Departamento actualizado con éxito.",
   "Ticket Attachments": "Tickets Adjuntos",
   "Ticket category change successfully.": "Cambio de categoría de tickets con éxito.",
   "Ticket Create Successfully": "Ticket crea con éxito",
@@ -618,6 +619,9 @@
   "Is Public": "Público",
   "Is Not Public": "Interno",
   "Extra Info": "Información Extra",
-  "View Extra Info": "Ver Información Extra"
-  
+  "View Extra Info": "Ver Información Extra",
+  "Department": "Departamento",
+  "Select Department": "Seleccione Departamento",  
+  "Departments": "Departamentos",
+  "No Departments": "No tiene Departamentos"
 }

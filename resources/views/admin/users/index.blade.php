@@ -37,6 +37,7 @@
                                     <th scope="col">{{ __('Name') }}</th>
                                     <th scope="col">{{ __('Email') }}</th>
                                     <th scope="col">{{ __('Role') }}</th>
+                                    <th scope="col">{{ __('Department') }}</th>
                                     @if(moduleIsActive('OutOfOffice'))
                                         <th scope="col">{{ __('Available') }}</th>
                                     @endif
@@ -61,6 +62,15 @@
                                             <span class="badge bg-primary p-2 text-center role-badge">
                                                 {{ $user->type }}
                                             </span>
+                                        </td>
+                                        <td>
+                                            @if($user->departments && $user->departments->count())
+                                                @foreach($user->departments as $department)
+                                                    <span class="badge bg-primary p-2  role-badge">{{ $department->name }}</span>
+                                                @endforeach
+                                            @else
+                                                <span class="text-muted">{{ __('No Departments') }}</span>
+                                            @endif
                                         </td>
                                         @if(isset($isUserActive) && $isUserActive)
                                             <td>

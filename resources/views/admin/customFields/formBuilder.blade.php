@@ -171,6 +171,37 @@
                     </div>
                 </div>
             @endif
+
+        @elseif($customField->custom_id == '9')
+            <div class="col-lg-{{ $customField->width }}">
+                <div class="form-group mb-3 {{ $customField->width }}">
+                    <label for="department_id" class="form-label">{{ __($customField->name) }}</label>
+                    <x-tooltip :description="$customField->description ?? null" />
+                    @if ($customField->is_required == 1)
+                        <x-required></x-required>
+                    @endif
+                    <select class="form-control @error('department_id') is-invalid @enderror" 
+                        id="department_id" name="department_id" 
+                        @if($customField->is_required == 1) required @endif
+                        data-placeholder="{{ __($customField->placeholder) }}">
+                        <option value="">{{ __($customField->placeholder) }}</option>
+                        @isset($departments)
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" 
+                                    {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        @endisset
+                    </select>
+                    @error('department_id')
+                        <div class="invalid-feedback d-block">
+                            {{ $errors->first('department_id') }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+        
         @elseif($customField->type == 'text')
             <div class="col-lg-{{ $customField->width }}">
                 <div class="form-group mb-3{{ $customField->width }}">

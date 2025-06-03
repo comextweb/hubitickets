@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Exports\TicketsExport;
 use App\Models\Conversion;
+use App\Models\Department;
+
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Priority;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +44,10 @@ class TicketController extends Controller
             $priorities = Priority::where('created_by', creatorId())->get();
             $settings = getCompanyAllSettings();
             $users = User::where('type', 'agent')->get();
+            $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
+
             $ticket = null;
-            return view('admin.tickets.create', compact('categories', 'customFields', 'priorities', 'settings', 'categoryTree', 'ticket', 'users'));
+            return view('admin.tickets.create', compact('categories', 'customFields', 'priorities', 'settings', 'categoryTree', 'ticket', 'users','departments'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
         }
@@ -75,6 +79,8 @@ class TicketController extends Controller
             $ticket->status = "New Ticket";
             $ticket->description = $request->description;
             $ticket->type = "Assigned";
+            $ticket->department_id = $request->department_id; // Asignar department_id
+
             $ticket->created_by = Auth::check() ? Auth::user()->id : creatorId();
             $data = [];
 

@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Exception;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Models\Department;
+
 use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
 use Workdo\FacebookChat\Http\Controllers\SendFacebookMessageController;
@@ -33,6 +35,17 @@ class TicketConversionController extends Controller
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
+            /*if (Auth::user()->hasRole('admin')) {
+                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
+
+            }elseif (Auth::user()->isAbleTo('ticket manage all')) {
+                // Obtiene IDs de departamentos del usuario
+                $userDepartmentIds = Auth::user()->departments->pluck('id')->toArray();
+                
+                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
+                    ->whereIn('department_id', $userDepartmentIds); // Solo tickets de sus departamentos
+            
+            }*/ 
             if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
             } elseif (Auth::user()->hasRole('customer')) {
@@ -134,6 +147,7 @@ class TicketConversionController extends Controller
             $priorities = Priority::where('created_by', creatorId())->get();
             $tikcettype = Ticket::getTicketTypes();
             $customFields = CustomField::where('is_core', false)->orderBy('order')->get();
+            $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
             $settings = getCompanyAllSettings();
 
             if (moduleIsActive('TicketNumber')) {
@@ -142,8 +156,7 @@ class TicketConversionController extends Controller
                 $ticketNumber = $ticket->ticket_id;
             }
 
-            $tickethtml = view('admin.chats.new-chat-messge', compact('ticket', 'users', 'categoryTree', 'priorities', 'tikcettype', 'customFields', 'settings'))->render();
-
+            $tickethtml = view('admin.chats.new-chat-messge', compact('ticket', 'users', 'categoryTree', 'priorities', 'tikcettype', 'customFields','departments', 'settings'))->render();
 
             $response = [
                 'tickethtml' => $tickethtml,
@@ -418,6 +431,26 @@ class TicketConversionController extends Controller
             return $data;
         }
     }
+
+    public function departmentChange(Request $request, $id)
+    {
+
+        $department = $request->department;
+        $ticket = Ticket::find($id);
+        if ($ticket) {
+            $ticket->department_id = $department;
+            $ticket->save();
+            $data['status'] = 'success';
+            $data['message'] = __('Ticket department successfully.');
+            return $data;
+        } else {
+            $data['status'] = 'error';
+            $data['message'] = __('Ticket not found');
+            return $data;
+        }
+    }
+
+    
 
 
     public function categoryChange(Request $request, $id)

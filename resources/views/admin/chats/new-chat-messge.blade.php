@@ -534,6 +534,21 @@
                         @endif
                     </div>
                 </li>
+                <li>
+                    <label>{{ __('Department') }} :</label>
+                    <div class="badge-wrp assign-select-wrp d-flex align-items-center gap-1">
+                        <select id="department" class="form-select" name="department_id"
+                            data-url="{{ route('admin.ticket.department.change', ['id' => isset($ticket) ? $ticket->id : '0']) }}"
+                            required>
+                            <option selected disabled value="">{{ __('Select Department') }}</option>
+                            @foreach ($departments as $department)
+                            <option value="{{ $department->id }}" {{ $ticket->department_id == $department->id ? 'selected' : '' }}>
+                                {{ $department->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </li>
             </ul>
             <ul class="tag-wrp mb-0">
                 @if (count($customFields) > 0)
