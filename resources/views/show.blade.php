@@ -136,7 +136,7 @@
                     <h3 class="mb-3 f-w-400 h5">{{ __('reply to this ticket') }}</h3>
                     <div class="card mb-0 message-card overflow-hidden">
                         <div class="card-body p-0">
-                            <form method="post" action="{{route('home.reply', encrypt($ticket->ticket_id))}}"
+                            <form method="post" action="{{route('home.reply', encrypt($ticket->ticket_id))}}{{ ($is_agent ?? null) == 1 ? '?is_agent=1' : '' }}"
                                 enctype="multipart/form-data" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="form-group">
