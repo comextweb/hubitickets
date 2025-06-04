@@ -366,6 +366,37 @@ class TicketConversionController extends Controller
             } else {
                 $pusher->trigger($channel, $event, $data);
             }
+
+            // CODIGO AGREGADO PARA ACTIVAR EL REAL TIME CHAT ENTRE AGENTES   6/4/2025 bloor OJO: Mientras se use Pusher van a ser mas moensajes enviados
+            $data = [
+                'id' => $conversion->id,
+                'tikcet_id' => $conversion->ticket_id,
+                'ticket_unique_id' => $ticket->id,
+                'new_message' => $conversion->description ?? '',
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                'sender_name' => $conversion->replyBy()->name,
+                'attachments' => json_decode($conversion->attachments),
+                'baseUrl' => env('APP_URL'),
+                'latestMessage' => $ticket->latestMessages($ticket->id),
+                'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
+            ];
+
+
+            // Obtener el ID del usuario que está enviando el mensaje
+            $senderId = $conversion->replyBy()->id;
+
+            // Enviar al creador del ticket, solo si no es el remitente
+            if ($ticket->created_by != $senderId) {
+                $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
+            }
+
+            // Enviar al agente asignado, solo si existe y no es el remitente
+            if (!empty($ticket->is_assign) && $ticket->is_assign != $senderId) {
+                $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
+            }
+
+            // FIN CODIGO AGREGADO PARA ACTIVAR EL REAL TIME CHAT ENTRE AGENTES    
+
         }
 
         // **Email Notifications**
