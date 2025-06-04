@@ -597,49 +597,49 @@
 
                             const messageList = $('.messages-container');
                             let avatarSrc = LetterAvatar(data.sender_name, 100);
-
-                            $('#reply_description').summernote('code', '');
+                            const currentUserEmail = "{{ Auth::user()->email }}";
+                            const isLeftSide = data.ticket_email === currentUserEmail;
+                            const messageClass = isLeftSide ? 'left-msg' : 'right-msg';
+                            const avatarHtml = `
+                                                <div class="msg-user-info">
+                                                    <div class="msg-img">
+                                                        <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
+                                                    </div>
+                                                </div>`;
+                            
+                                $('#reply_description').summernote('code', '');
                             $('.multiple_reply_file_selection').text('');
                             $('#file').val('');
 
                             var newMessage =
-                                `
-                                                                                                                                                        <div class="msg right-msg" data-id="${data.converstation.id}">
-                                                                                                                                                            <div class="msg-box" data-conversion-id="${data.converstation.id}">
-                                                                                                                                                                <div class="msg-box-content">
-                                                                                                                                            <div class="msg-box-inner">
-
-                                                                                                                                                                    <p>${data.new_message}</p>
-                                                                                                                                                                    ${data.attachments ? `
-                                                                                                                                                                                                                        <div class="attachments-wrp">
-                                                                                                                                                                                                                            <h6>Attachments:</h6>
-                                                                                                                                                                                                                                <ul class="attachments-list">
-                                                                                                                                                                                                                                    ${data.attachments.map(function (attachment) {
-                                    var filename = attachment.split('/').pop(); // Extract filename
-                                    var fullUrl = data.baseUrl + attachment;
-                                    return `
-                                                                                                                                                                                            <li>
-                                                                                                                                                                                                ${filename}
-                                                                                                                                                                                                <a download href="${fullUrl}" class="edit-icon py-1 ml-2" title="Download">
-                                                                                                                                                                                                    <i class="fa fa-download ms-2"></i>
-                                                                                                                                                                                                </a>
-                                                                                                                                                                                            </li>
-                                                                                                                                                                                            `;
-                                }).join('')}
-                                                                                                                                                                                                                                </ul>
-                                                                                                                                                                                                                         </div>
-                                                                                                                                                                                                                        ` : ''}
-                                                                                                                                                                                                                </div>
-                                                                                                                                                                    <span>${data.timestamp}</span>
-                                                                                                                                                                </div>
-                                                                                                                                                                <div class="msg-user-info">
-                                                                                                                                                                    <div class="msg-img">
-                                                                                                                                                                        <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
-                                                                                                                                                                    </div>
-                                                                                                                                                                </div>
-                                                                                                                                                            </div>
-                                                                                                                                                        </div>
-                                                                                                                                                    `;
+                                `<div class="msg ${messageClass}" data-id="${data.converstation.id}">
+                                    <div class="msg-box" data-conversion-id="${data.converstation.id}">
+                                            ${isLeftSide ? avatarHtml : ''}
+                                            <div class="msg-box-content">
+                                            <div class="msg-box-inner">
+                                                <p>${data.new_message}</p>
+                                                ${data.attachments ? `
+                                                    <div class="attachments-wrp">
+                                                        <h6>Attachments:</h6>
+                                                        <ul class="attachments-list">
+                                                            ${data.attachments.map(function (attachment) {
+                                                                var filename = attachment.split('/').pop(); // Extract filename
+                                                                var fullUrl = data.baseUrl + attachment;
+                                                                return `<li>
+                                                                            ${filename}
+                                                                            <a download href="${fullUrl}" class="edit-icon py-1 ml-2" title="Download">
+                                                                            <i class="fa fa-download ms-2"></i>
+                                                                            </a>
+                                                                        </li>`;
+                                                            }).join('')}
+                                                        </ul>
+                                                    </div>` : ''} 
+                                            </div>
+                                            <span>${data.timestamp}</span>
+                                        </div>
+                                        ${!isLeftSide ? avatarHtml : ''}
+                                    </div>
+                                </div>`;
                             messageList.append(newMessage);
                             $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
 
@@ -1659,43 +1659,54 @@
                 if (ticket_id == data.ticket_unique_id) {
                     var ticketItem = $('#myUL').find('li#' + data.ticket_unique_id);
                     ticketItem.find('.chat-user').text(data.latestMessage);
-
+                    var isSenderUserExterno = (data.sender === 'user');
+                    
                     const messageList = $('.messages-container');
                     var newMessage = `
-                                                <div class="msg left-msg">
-                                                    <div class="msg-box" data-conversion-id="${data.id}">
-                                                        <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top" title="${data.sender_name}">
-                                                            <div class="msg-img">
-                                                                <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
-                                                            </div>
+                                    <div class="msg ${isSenderUserExterno ? 'left-msg' : 'right-msg'}">
+
+                                        <div class="msg-box" data-conversion-id="${data.id}">
+                            
+                                            ${isSenderUserExterno ? `
+                                            <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top" title="${data.sender_name}">
+                                                <div class="msg-img">
+                                                    <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
+                                                </div>
+                                            </div>` : ''}
+
+                                            <div class="msg-box-content">
+                                                <div class="msg-box-inner">
+                                                <p>${data.new_message}</p>
+                                                    ${data.attachments ? `
+                                                        <div class="attachments-wrp">
+                                                            <h6>Attachments:</h6>
+                                                            <ul class="attachments-list">
+                                                                ${data.attachments.map(function (attachment) {
+                                                                    var filename = attachment.split('/').pop(); // Extract filename
+                                                                    var fullUrl = data.baseUrl + attachment;
+                                                                    return `
+                                                                        <li>
+                                                                            ${filename}
+                                                                            <a download href="${fullUrl}" class="edit-icon py-1 ml-2" title="Download">
+                                                                                <i class="fa fa-download ms-2"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    `;
+                                                                }).join('')}
+                                                            </ul>
                                                         </div>
-                                                        <div class="msg-box-content">
-                                                            <div class="msg-box-inner">
-                                                            <p>${data.new_message}</p>
-                                                                ${data.attachments ? `
-                                                                    <div class="attachments-wrp">
-                                                                        <h6>Attachments:</h6>
-                                                                        <ul class="attachments-list">
-                                                                            ${data.attachments.map(function (attachment) {
-                        var filename = attachment.split('/').pop(); // Extract filename
-                        var fullUrl = data.baseUrl + attachment;
-                        return `
-                                                                                    <li>
-                                                                                        ${filename}
-                                                                                        <a download href="${fullUrl}" class="edit-icon py-1 ml-2" title="Download">
-                                                                                            <i class="fa fa-download ms-2"></i>
-                                                                                        </a>
-                                                                                    </li>
-                                                                                `;
-                    }).join('')}
-                                                                        </ul>
-                                                                    </div>
-                                                                ` : ''}
-                                                            </div>
-                                                           <span>${data.timestamp}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>`;
+                                                    ` : ''}
+                                                </div>
+                                                <span>${data.timestamp}</span>
+                                            </div>
+                                             ${!isSenderUserExterno ? `
+                                            <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top" title="${data.sender_name}">
+                                                <div class="msg-img">
+                                                    <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
+                                                </div>
+                                            </div>` : ''}
+                                        </div>
+                                    </div>`;
 
                     messageList.append(newMessage);
                     $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);

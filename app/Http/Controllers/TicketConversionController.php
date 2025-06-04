@@ -276,6 +276,8 @@ class TicketConversionController extends Controller
                             'new_message' => $conversion->description ?? '',
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                             'sender_name' => $conversion->replyBy()->name,
+                            'sender_email' => $conversion->replyBy()->email,
+                            'ticket_email' => $ticket->email,
                             'attachments' => json_decode($conversion->attachments),
                             'baseUrl' => env('APP_URL'),
                         ]);
@@ -733,15 +735,22 @@ class TicketConversionController extends Controller
                     'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
                 ];
 
-                if ($ticket->is_assign == null) {
+
+                /*if ($ticket->is_assign == null) {
                     $channel = "ticket-reply-$ticket->created_by";
                     $event = "ticket-reply-event-$ticket->created_by";
                 } else {
                     $channel = "ticket-reply-$ticket->is_assign";
                     $event = "ticket-reply-event-$ticket->is_assign";
-                }
+                }*/
+                // Siempre enviar al creador del ticket
+                $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
 
-                $pusher->trigger($channel, $event, $data);
+                // Enviar al agente asignado si existe
+                if (!empty($ticket->is_assign)) {
+                    $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
+                }
+                //$pusher->trigger($channel, $event, $data);
             }
 
             return true;

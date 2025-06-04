@@ -1086,6 +1086,7 @@ if (!function_exists('sendTicketEmail')) {
                 if (!$agent)
                     return;
                 $uArr['email'] = $request->email;
+                $uArr['ticket_url'] .= '?is_agent=1';
                 $recipientEmail = $agent->email;
                 break;
             case 'Send Mail To Customer':

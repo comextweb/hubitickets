@@ -357,9 +357,10 @@ class HomeController extends Controller
             $ticket_id = decrypt($ticket_id);
             $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
             $settings = getCompanyAllSettings();
+            $is_agent = request()->query('is_agent', null); // null si no viene
 
             if ($ticket) {
-                return view('show', compact('ticket', 'settings'));
+                return view('show', compact('ticket', 'settings','is_agent'));
             } else {
                 return redirect()->back()->with('error', __('Ticket Not Found.'));
             }
@@ -382,12 +383,20 @@ class HomeController extends Controller
         $ticket_id = decrypt($ticket_id);
         $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
         if ($ticket) {
+
+            $is_agent = $request->get('is_agent');
+            // determinar sender según is_agent
+            $sender = 'user';
+            if (!empty($is_agent) && intval($is_agent) === 1) {
+                $sender = $ticket->is_assign ?? 'user';
+            }
+
             $summernoteContent = $request->reply_description;
             if (!empty($summernoteContent) || $request->hasfile('reply_attachments')) {
                 $conversion = new Conversion();
                 $conversion->ticket_id = $ticket->id;
                 $conversion->description = $summernoteContent;
-                $conversion->sender = 'user';
+                $conversion->sender = $sender;
 
                 if ($request->hasfile('reply_attachments')) {
                     foreach ($request->file('reply_attachments') as $filekey => $file) {
@@ -445,20 +454,29 @@ class HomeController extends Controller
                         'new_message' => $conversion->description ?? '',
                         'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                         'sender_name' => $conversion->replyBy()->name,
+                        'sender' => $conversion->sender,
                         'attachments' => json_decode($conversion->attachments),
                         'baseUrl' => env('APP_URL'),
                         'latestMessage' => $ticket->latestMessages($ticket->id),
                         'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
                     ];
 
-                    if ($ticket->is_assign == null) {
+                    /*if ($ticket->is_assign == null) {
                         $channel = "ticket-reply-$ticket->created_by";
                         $event = "ticket-reply-event-$ticket->created_by";
                     } else {
                         $channel = "ticket-reply-$ticket->is_assign";
                         $event = "ticket-reply-event-$ticket->is_assign";
+                    }*/
+                    
+                    // Siempre enviar al creador del ticket
+                    $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
+
+                    // Enviar al agente asignado si existe
+                    if (!empty($ticket->is_assign)) {
+                        $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
                     }
-                    $pusher->trigger($channel, $event, $data);
+                    //$pusher->trigger($channel, $event, $data);
                 }
 
                 $request->merge(['type' => 'frontend']);
