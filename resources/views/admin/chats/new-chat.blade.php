@@ -559,14 +559,16 @@
             // reply store
             $('#reply_submit').click(function (e) {
                 e.preventDefault();
+                var $submitBtn = $(this);
+                $submitBtn.prop('disabled', true);
                 var formData = new FormData($('#your-form-id')[0]);
                 var description = $('#reply_description').val();
                 var file = $('#file').val();
 
                 // when description and attchment null
                 if (description.trim() === '' && file.trim() === '') {
-                    show_toastr('Error', "{{ __('Please add a description or attachment.') }}",
-                        'error');
+                    show_toastr('Error', "{{ __('Please add a description or attachment.') }}",'error');
+                    $submitBtn.prop('disabled', false);
                 } else {
                     $.ajax({
                         // url: "{{ url('/admin/ticketreply') }}" + '/' + ticket_id,
@@ -655,6 +657,9 @@
                                 }
                                 show_toastr('Error', errorMessage, 'error');
                             }
+                        },
+                        complete: function() {
+                            $submitBtn.prop('disabled', false);
                         }
                     });
                 }

@@ -167,7 +167,7 @@
 
                                     <div class="text-center">
                                         <input type="hidden" name="status" value="New Ticket" />
-                                        <button
+                                        <button id="submitBtn"
                                             class="btn ticket-auth-btn btn-submit btn-primary btn-block">{{ __('Submit') }}</button>
                                     </div>
                                 </div>
@@ -356,6 +356,20 @@
                 } else {
                     fileNamesDisplay.innerHTML = 'No files selected';
                     fileNamesDisplay.classList.remove('has-files');
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('form.needs-validation');
+                const submitBtn = document.getElementById('submitBtn');
+
+                if (form && submitBtn) {
+                    form.addEventListener('submit', function () {
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = 'Enviando...'; 
+                    });
                 }
             });
         </script>
