@@ -367,8 +367,10 @@
 
                 if (form && submitBtn) {
                     form.addEventListener('submit', function () {
-                        submitBtn.disabled = true;
-                        submitBtn.innerText = 'Enviando...'; 
+                        if (form.checkValidity()) {
+                            submitBtn.disabled = true;
+                            submitBtn.innerText = 'Enviando...'; 
+                        }
                     });
                 }
             });
