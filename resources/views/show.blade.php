@@ -98,7 +98,7 @@
                                 <div class="user-info">
                                     <h3 class="mb-2 fs-5 d-flex gap-1">{{$conversion->replyBy()->name}}
                                         @if ($conversion->sender != 'user')
-                                            <span class="staff-badge">{{$conversion->replyBy()->type}}</span>
+                                            <span class="staff-badge">{{$conversion->getReplyByRoleName()}}</span>
                                         @endif
                                     </h3>
                                     <span>({{$conversion->created_at->diffForHumans()}})</span>
@@ -133,7 +133,7 @@
 
                 @if($ticket->status != 'Closed')
                 <div class="reply-wrp p-md-4 p-3 pt-0">
-                    <h3 class="mb-3 f-w-400 h5">{{ __('reply to this ticket') }}</h3>
+                    <h3 class="mb-3 f-w-400 h5">Responder este ticket</h3>
                     <div class="card mb-0 message-card overflow-hidden">
                         <div class="card-body p-0">
                             <form method="post" action="{{route('home.reply', encrypt($ticket->ticket_id))}}{{ ($is_agent ?? null) == 1 ? '?is_agent=1' : '' }}"
@@ -160,7 +160,7 @@
                                                         d="M22.7674 8.73571L10.5702 20.7974C8.54925 22.7962 5.27228 22.7962 3.25129 20.7974C1.2303 18.7987 1.2303 15.5586 3.25129 13.5599L14.2293 2.70444C15.5769 1.37222 17.7607 1.37222 19.1083 2.70444C20.456 4.03662 20.456 6.19729 19.1083 7.52947L8.1303 18.3849C7.45692 19.0515 6.3646 19.0515 5.69036 18.3849C5.01699 17.7193 5.01699 16.639 5.69036 15.9724L15.4484 6.32319L14.2284 5.11695L4.47128 14.767C3.12366 16.0992 3.12366 18.2599 4.47128 19.592C5.81889 20.9243 8.00268 20.9243 9.35029 19.592L20.3283 8.73657C22.3493 6.73787 22.3493 3.49776 20.3283 1.49902C18.3073 -0.499674 15.0304 -0.499674 13.0094 1.49902L1.42135 12.9576L1.46334 12.9996C-0.641633 15.6759 -0.456583 19.5449 2.03134 22.0045C4.51926 24.4642 8.43016 24.6484 11.1374 22.5657L11.1794 22.6077L23.9865 9.94281L22.7674 8.73571Z"
                                                         fill="black" />
                                                 </svg>
-                                            </span>{{ __('Attach Files') }}
+                                            </span>Archivos adjuntos
                                         </label>
                                         <div class="file-names" id="fileNames"></div>
                                     </div>
@@ -168,7 +168,7 @@
                                     <div class="text-center">
                                         <input type="hidden" name="status" value="New Ticket" />
                                         <button id="submitBtn"
-                                            class="btn ticket-auth-btn btn-submit btn-primary btn-block">{{ __('Submit') }}</button>
+                                            class="btn ticket-auth-btn btn-submit btn-primary btn-block">Enviar</button>
                                     </div>
                                 </div>
                             </form>

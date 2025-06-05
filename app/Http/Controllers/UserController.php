@@ -36,7 +36,7 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->isAbleTo('user manage')) {
-            $users = User::where('created_by', creatorId())->get();
+            $users = User::where('created_by', creatorId())->get()->load('roles');
             return view('admin.users.index', compact('users'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
@@ -112,7 +112,7 @@ class UserController extends Controller
             $user->password = !empty($request->password) ? Hash::make($request->password) : null;
             $user->parent = creatorId();
             $user->is_enable_login = $request->password_switch == 'on' ? '1' : '0';
-            $user->type = isset($role) ? $role->name : '';
+            $user->type = isset($role) ? $role->type : '';
             $user->lang = isset($settings['default_language']) ? $settings['default_language'] : 'en';
             $user->created_by = creatorId();
             if ($request->hasFile('avatar')) {
@@ -191,7 +191,7 @@ class UserController extends Controller
             $user->name  = $request->name;
             $user->email = $request->email;
             $user->mobile_number = $request->mobile_no;
-            $user->type = isset($role) ? $role->name : '';
+            $user->type = isset($role) ? $role->type : '';
 
 
             if ($request->hasfile('avatar')) {

@@ -55,6 +55,8 @@ class RoleController extends Controller
 
             $role = new Role();
             $role->name = $request->name;
+            $role->display_name = $request->name;
+            $role->type = 'agent';
             $role->created_by = creatorId();
             $role->save();
             $permissions = $request->permissions;
@@ -103,6 +105,7 @@ class RoleController extends Controller
                 }
 
                 $role->name = $request->name;
+                $role->display_name = $request->name;
                 $role->save();
 
                 $getAllPermissions = Permission::all();
