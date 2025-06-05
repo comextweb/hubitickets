@@ -196,9 +196,9 @@ class NotificationSeeder extends Seeder
 
     
                         'es' => '<p>Hola,&nbsp;<br>Bienvenido a {app_name}.</p> 
-                                <p><strong>Se le ha asignado un nuevo billete: </strong> Aquí están los detalles del billete.</p>
-                                <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                                <p><strong>Número de billete</strong> : {ticket_id}</p>
+                                <p><strong>Se le ha asignado un nuevo ticket: </strong> Aquí están los detalles del ticket.</p>
+                                <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                                <p><strong>Número de ticket</strong> : {ticket_id}</p>
                                 <p><strong>Correo electrónico</strong> : {email}<br></p>
                                 <p><strong>URL de la aplicación</strong> {app_url}</p>
                                 <p><a href="{ticket_url}" style="background-color: #2d3748; color: white; padding: 10px 20px; text-align: center; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Open Ticket</a></p>
@@ -348,8 +348,8 @@ class NotificationSeeder extends Seeder
                                 <p>Thanks,<br>{app_name}</p>',
     
                         'es' => '<p>Hola,&nbsp;<br>Bienvenido a {app_name}.</p>
-                                <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                                <p><strong>Número de billete</strong> : {ticket_id}</p>
+                                <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                                <p><strong>Número de ticket</strong> : {ticket_id}</p>
                                 <p><strong>Correo electrónico</strong> : {email}<br></p>
                                 <p><strong>URL de la aplicación</strong> {app_url}</p>
                                 <p><a href="{ticket_url}" style="background-color: #2d3748; color: white; padding: 10px 20px; text-align: center; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Open Ticket</a></p>
@@ -494,8 +494,8 @@ class NotificationSeeder extends Seeder
 
     
                         'es' => '<p>Hola,&nbsp;<br>Bienvenido a {app_name}.</p> 
-                                <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                                <p><strong>Número de billete</strong> : {ticket_id}</p>
+                                <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                                <p><strong>Número de ticket</strong> : {ticket_id}</p>
                                 <p><strong>Correo electrónico del cliente </strong>: {customer_email}<br></p>
                                 <p><strong>Correo electrónico del agente  </strong>: {agent_email}<br></p>
                                 <p><strong>URL de la aplicación</strong> {app_url}</p>
@@ -634,8 +634,8 @@ class NotificationSeeder extends Seeder
                             <p><strong>Description</strong> : {ticket_description} </p>
                             <p>Thanks,<br />{app_name}</p>',
                     'es' => '<p>Hola,&nbsp;<br/> Bienvenido a {app_name}.</p>
-                            <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                            <p><strong>Número de billete</strong> : {ticket_id} </p>
+                            <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                            <p><strong>Número de ticket</strong> : {ticket_id} </p>
                             <p><strong>Descripción</strong> : {ticket_description} </p>
                             <p>Gracias,<br />{app_name}</p>',
                     'fr' => '<p>Hola,&nbsp;<br/> Bienvenido a {app_name}. </p>
@@ -728,8 +728,8 @@ class NotificationSeeder extends Seeder
                             <p><strong>Description</strong> : {ticket_description} </p>
                             <p>Thanks,<br />{app_name}</p>',
                     'es' => '<p>Hola,&nbsp;<br/> Bienvenido a {app_name}.</p>
-                            <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                            <p><strong>Número de billete</strong> : {ticket_id} </p>
+                            <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                            <p><strong>Número de ticket</strong> : {ticket_id} </p>
                             <p><strong>Descripción</strong> : {ticket_description} </p>
                             <p>Gracias,<br />{app_name}</p>',
                     'fr' => '<p>Hola,&nbsp;<br/> Bienvenido a {app_name}. </p>
@@ -832,8 +832,8 @@ class NotificationSeeder extends Seeder
                             <p><strong>Description</strong> : {ticket_description} </p>
                             <p>Thanks,<br />{app_name}</p>',
                     'es' => '<p>Hola,&nbsp;<br/> Bienvenido a {app_name}.</p>
-                            <p><strong>Nombre del billete</strong> : {ticket_name} </p>
-                            <p><strong>Número de billete</strong> : {ticket_id} </p>
+                            <p><strong>Nombre del ticket</strong> : {ticket_name} </p>
+                            <p><strong>Número de ticket</strong> : {ticket_id} </p>
                             <p><strong>Correo electrónico del cliente </strong>: {customer_email}<br></p>
                             <p><strong>Correo electrónico del agente  </strong>: {agent_email}<br></p>
                             <p><strong>Descripción</strong> : {ticket_description} </p>

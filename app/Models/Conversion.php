@@ -19,6 +19,15 @@ class Conversion extends Model
         }
     }
 
+    public function getReplyByRoleName()
+    {
+        $replyBy = $this->replyBy();
+        if ($replyBy instanceof \App\Models\User) {
+            return $replyBy->roles->first()->display_name ?? '';
+        }
+        return '';
+    }
+
     public function ticket(){
         return $this->hasOne('App\Models\Ticket','id','ticket_id');
     }

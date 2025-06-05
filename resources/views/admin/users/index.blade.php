@@ -60,7 +60,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td>
                                             <span class="badge bg-primary p-2 text-center role-badge">
-                                                {{ $user->type }}
+                                                {{ $user->roles->first()?->name ?? 'Sin rol' }}
                                             </span>
                                         </td>
                                         <td>
