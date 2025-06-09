@@ -69,8 +69,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <small class="">{{__('Please upload a valid image file. Size of image should not be
-                                            more than 2MB.')}}</small>
+                                        <small class="">{{__('Please upload a valid image file. Size of image should not be more than 2MB.')}}</small>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
