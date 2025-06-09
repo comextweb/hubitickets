@@ -107,8 +107,7 @@
                                     </div>
                                     <div class="form-group col-12">
                                         <label class="form-label">{{ __('Picture') }}</label>
-                                        <span class="d-block mb-3 text-dark">Please upload a valid image file. Size of image
-                                            should not be more than 2MB.</span>
+                                        <span class="d-block mb-3 text-dark">{{__('Please upload a valid image file. Size of image should not be more than 2MB.')}}</span>
                                         <div class="choose-file col-xxl-6 col-12">
                                             <label class="form-label">{{ __('Choose File Here') }}</label>
                                             <input type="file" name="avatar" id="avatar"
