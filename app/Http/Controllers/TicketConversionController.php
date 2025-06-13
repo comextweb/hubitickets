@@ -35,10 +35,10 @@ class TicketConversionController extends Controller
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
-            if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
 
-            }elseif (Auth::user()->isAbleTo('ticket manage all')) {
+            }elseif (Auth::user()->isAbleTo('ticket manage department')) {
                 // Obtiene IDs de departamentos del usuario
                 $userDepartmentIds = Auth::user()->departments->pluck('id')->toArray();
                 
