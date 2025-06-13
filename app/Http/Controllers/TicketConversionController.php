@@ -280,7 +280,7 @@ class TicketConversionController extends Controller
                         return response()->json([
                             'converstation' =>  $conversion,
                             'new_message' => $conversion->description ?? '',
-                            'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                            'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                             'sender_name' => $conversion->replyBy()->name,
                             'sender_email' => $conversion->replyBy()->email,
                             'ticket_email' => $ticket->email,
@@ -362,7 +362,7 @@ class TicketConversionController extends Controller
                 'new_message' => $conversion->description ?? '',
                 'sender_name' => $conversion->replyBy()->name,
                 'attachments' => json_decode($conversion->attachments),
-                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                 'baseUrl' => env('APP_URL'),
             ];
             $channel = "ticket-reply-send-$ticket->ticket_id";
@@ -379,7 +379,7 @@ class TicketConversionController extends Controller
                 'tikcet_id' => $conversion->ticket_id,
                 'ticket_unique_id' => $ticket->id,
                 'new_message' => $conversion->description ?? '',
-                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                 'sender_name' => $conversion->replyBy()->name,
                 'attachments' => json_decode($conversion->attachments),
                 'baseUrl' => env('APP_URL'),
@@ -764,7 +764,7 @@ class TicketConversionController extends Controller
                     'tikcet_id' => $conversion->ticket_id,
                     'ticket_unique_id' => $ticket->id,
                     'new_message' => $conversion->description ?? '',
-                    'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                    'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                     'sender_name' => $conversion->replyBy()->name,
                     'attachments' => json_decode($conversion->attachments),
                     'baseUrl' => env('APP_URL'),

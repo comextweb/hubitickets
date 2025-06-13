@@ -452,7 +452,7 @@ class HomeController extends Controller
                         'tikcet_id' => $conversion->ticket_id,
                         'ticket_unique_id' => $ticket->id,
                         'new_message' => $conversion->description ?? '',
-                        'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
+                        'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                         'sender_name' => $conversion->replyBy()->name,
                         'sender' => $conversion->sender,
                         'attachments' => json_decode($conversion->attachments),

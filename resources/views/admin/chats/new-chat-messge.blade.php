@@ -34,7 +34,7 @@
                             </div>
                             @endif
                         </div>
-                        <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('l h:ia') }}</span>
+                        <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y, h:ia') }}</span>
                     </div>
                     <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="{{ $ticket->name }}">
@@ -73,7 +73,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('l h:ia') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($ticket->created_at)->format('d/m/Y, h:ia') }}</span>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia') }}</span>
                             {{-- save chat addon --}}
                             @stack('save-chat')
                             {{-- end --}}
@@ -170,7 +170,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia') }}</span>
                             {{-- save chat addon --}}
                             @stack('save-chat')
                             {{-- end --}}
@@ -222,7 +222,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia') }}</span>
                             {{-- savechat addon --}}
                             @stack('save-chat')
                             {{-- end --}}
@@ -256,7 +256,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span> 
+                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia') }}</span> 
                             {{-- save chat addon --}}
                             @stack('save-chat')
                             {{-- end --}}
