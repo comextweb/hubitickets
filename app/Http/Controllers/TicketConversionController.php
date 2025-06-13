@@ -35,7 +35,7 @@ class TicketConversionController extends Controller
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
-            /*if (Auth::user()->hasRole('admin')) {
+            if (Auth::user()->hasRole('admin')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
 
             }elseif (Auth::user()->isAbleTo('ticket manage all')) {
@@ -45,10 +45,11 @@ class TicketConversionController extends Controller
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
                     ->whereIn('department_id', $userDepartmentIds); // Solo tickets de sus departamentos
             
-            }*/ 
-            if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
-                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
-            } elseif (Auth::user()->hasRole('customer')) {
+            }
+            //if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
+            //    $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
+            //} 
+            elseif (Auth::user()->hasRole('customer')) {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where('email', Auth::user()->email);
             } else {
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where(function ($query) {
