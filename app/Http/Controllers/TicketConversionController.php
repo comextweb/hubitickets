@@ -43,7 +43,12 @@ class TicketConversionController extends Controller
                 $userDepartmentIds = Auth::user()->departments->pluck('id')->toArray();
                 
                 $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
-                    ->whereIn('department_id', $userDepartmentIds); // Solo tickets de sus departamentos
+                    //->whereIn('department_id', $userDepartmentIds); // Solo tickets de sus departamentos
+                    ->where(function ($query) use ($userDepartmentIds) {
+                        $query->whereIn('department_id', $userDepartmentIds)
+                            ->orWhere('is_assign', Auth::user()->id)
+                            ->orWhere('created_by', Auth::user()->id);
+                    });
             
             }
             //if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
