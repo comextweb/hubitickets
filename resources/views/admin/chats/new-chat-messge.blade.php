@@ -256,7 +256,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span>
+                            <span>{{ \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia') }}</span> 
                             {{-- save chat addon --}}
                             @stack('save-chat')
                             {{-- end --}}
