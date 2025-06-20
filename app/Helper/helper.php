@@ -27,7 +27,7 @@ if (!function_exists('getMenu')) {
     function getMenu()
     {
         $user = Auth::user();
-        return Cache::rememberForever('sidebar_menu_' . $user->id, function () use ($user) {
+        return Cache::rememberForever('sidebar_menu_' . $user->company_id . '_' . $user->id, function () use ($user) {
             $role = $user->roles->first();
             $menu = new Menu($user);
             event(new \App\Events\CompanyMenuEvent($menu));
@@ -179,7 +179,8 @@ if (!function_exists('getCompanyAllSettings')) {
         } elseif (Auth::check()) {
             $user = auth()->user();
         } else {
-            $user = User::find(1);
+            //$user = User::find(1);
+            $user = User::where('type', 'admin')->where('created_by', 0)->first();
         }
 
         // For Other roles Such as Agent
@@ -189,10 +190,14 @@ if (!function_exists('getCompanyAllSettings')) {
 
 
         if (!empty($user)) {
-            $key = 'company_settings_' . $user->id;
+            //$key = 'company_settings_' . $user->id;
+            $key = 'company_settings_'. $user->company_id . '_' . $user->id;
+           // dd($key);
             return Cache::rememberForever($key, function () use ($user) {
                 $settings = [];
-                $settings = Settings::where('created_by', $user->id)->pluck('value', 'name')->toArray();
+                //$settings = Settings::where('created_by', $user->id)->pluck('value', 'name')->toArray();
+                $settings = Settings::pluck('value', 'name')->toArray();
+                //dd($settings);
                 return $settings;
             });
         }
@@ -211,7 +216,8 @@ if (!function_exists('companySettingCacheForget')) {
                 $user = auth()->user();
             }
 
-            $key = 'company_settings_' . $user->id;
+            //$key = 'company_settings_' . $user->id;
+            $key = 'company_settings_'. $user->company_id . '_' . $user->id;
             Cache::forget($key);
         } catch (Exception $e) {
             Log::error('companySettingCacheForget', $e->getMessage());
@@ -338,7 +344,12 @@ if (!function_exists('uploadFile')) {
                     return $res;
                 } else {
                     $name = $fileNameToStore;
-
+                    /*dd([
+                        'storage_setting' => $settings['storage_setting'],
+                        'path' => $path,
+                        'file' => $file,
+                        'name' => $name
+                    ]);*/
                     $saveImage = Storage::disk($settings['storage_setting'])->putFileAs($path, $file, $name);
                     if ($settings['storage_setting'] == 'wasabi') {
                         $path = $saveImage;
@@ -768,11 +779,21 @@ if (!function_exists('creatorId')) {
     }
 }
 
+// get defaultSenderId
+if (!function_exists('defaultSenderId')) {
+    function defaultSenderId()
+    {
+        $admin = User::where('type', 'admin')->where('created_by', 0)->first();
+        return $admin ? $admin->id : null;
+    }
+}
+
 // Get The  Module Wise All Permisison
 if (!function_exists('getPermissionsByModule')) {
     function getPermissionsByModule($module)
     {
-        $permissions = Permission::where('module', $module)->where('created_by', creatorId())->get();
+        //$permissions = Permission::where('module', $module)->where('created_by', creatorId())->get();
+        $permissions = Permission::where('module', $module)->get();
         return $permissions;
     }
 }
@@ -962,14 +983,16 @@ if (!function_exists('sideMenuCacheForget')) {
             $users = User::select('id')->where('created_by', $user->id)->pluck('id');
             foreach ($users as $id) {
                 try {
-                    $key = 'sidebar_menu_' . $id;
+                    //$key = 'sidebar_menu_' . $id;
+                    $key = 'sidebar_menu_' . $user->company_id . '_' . $id;
                     Cache::forget($key);
                 } catch (\Exception $e) {
                     Log::error('comapnySettingCacheForget :' . $e->getMessage());
                 }
             }
             try {
-                $key = 'sidebar_menu_' . $user->id;
+                //$key = 'sidebar_menu_' . $user->id;
+                $key = 'sidebar_menu_' . $user->company_id . '_' . $user->id;
                 Cache::forget($key);
             } catch (\Exception $e) {
                 Log::error('comapnySettingCacheForget :' . $e->getMessage());
@@ -978,7 +1001,8 @@ if (!function_exists('sideMenuCacheForget')) {
         }
 
         try {
-            $key = 'sidebar_menu_' . $user->id;
+            //$key = 'sidebar_menu_' . $user->id;
+            $key = 'sidebar_menu_' . $user->company_id . '_' . $user->id;
             Cache::forget($key);
         } catch (\Exception $e) {
             Log::error('comapnySettingCacheForget :' . $e->getMessage());

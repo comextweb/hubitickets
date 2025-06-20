@@ -495,7 +495,7 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/custom-chat.js') }}"></script>
     <script src="{{ asset('css/summernote/summernote-bs4.js') }}"></script>
-    <script src="{{ asset('public/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
     <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
     <script>
         $(document).ready(function () {
@@ -600,7 +600,7 @@
                             const messageList = $('.messages-container');
                             let avatarSrc = LetterAvatar(data.sender_name, 100);
                             const currentUserEmail = "{{ Auth::user()->email }}";
-                            const isLeftSide = data.ticket_email === currentUserEmail;
+                            const isLeftSide = data.ticket_email === data.sender_email;                            
                             const messageClass = isLeftSide ? 'left-msg' : 'right-msg';
                             const avatarHtml = `
                                                 <div class="msg-user-info">
@@ -1664,15 +1664,15 @@
                 if (ticket_id == data.ticket_unique_id) {
                     var ticketItem = $('#myUL').find('li#' + data.ticket_unique_id);
                     ticketItem.find('.chat-user').text(data.latestMessage);
-                    var isSenderUserExterno = (data.sender === 'user');
+                    const isLeftSide = data.ticket_email === data.sender_email;
                     
                     const messageList = $('.messages-container');
                     var newMessage = `
-                                    <div class="msg ${isSenderUserExterno ? 'left-msg' : 'right-msg'}">
+                                    <div class="msg ${isLeftSide ? 'left-msg' : 'right-msg'}">
 
                                         <div class="msg-box" data-conversion-id="${data.id}">
                             
-                                            ${isSenderUserExterno ? `
+                                            ${isLeftSide ? `
                                             <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top" title="${data.sender_name}">
                                                 <div class="msg-img">
                                                     <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
@@ -1704,7 +1704,7 @@
                                                 </div>
                                                 <span>${data.timestamp}</span>
                                             </div>
-                                             ${!isSenderUserExterno ? `
+                                             ${!isLeftSide ? `
                                             <div class="msg-user-info" data-bs-toggle="tooltip" data-bs-placement="top" title="${data.sender_name}">
                                                 <div class="msg-img">
                                                     <img alt="${data.sender_name}" class="img-fluid" src="${avatarSrc}" />
@@ -1792,7 +1792,7 @@
     @endif
 
     {{-- This Pusher Code For Frontend Ticket Create & live chat ticket create --}}
-    @if (auth()->user()->id == 1 && (isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes'))
+    @if (auth()->user()->type == 'admin' && (isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes'))
         <script>
             Pusher.logToConsole = false;
 

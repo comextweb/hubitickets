@@ -34,7 +34,7 @@ class Settings extends Model
         if(\Auth::user())
         {
             $user = \Auth::user()->getCreatedBy();
-            $setting = DB::table('settings')->where('created_by',$user)->pluck('value','name')->toArray();
+            $setting = DB::table('settings')->where('company_id',$user->company_id)->pluck('value','name')->toArray();
         }   
         else{
             $setting = DB::table('settings')->pluck('value','name')->toArray();

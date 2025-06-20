@@ -14,7 +14,8 @@ class RoleController extends Controller
     public function index()
     {
         if (Auth::user()->isAbleTo('role manage')) {
-            $roles = Role::where('created_by', creatorId())->with('permissions')->get();
+            //$roles = Role::where('created_by', creatorId())->with('permissions')->get();
+            $roles = Role::with('permissions')->get();
             return view('admin.roles.index', compact('roles'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');

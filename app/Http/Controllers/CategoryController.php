@@ -16,7 +16,9 @@ class CategoryController extends Controller
     {
         $user = Auth::user();
         if ($user->isAbleTo('category manage')) {
-            $categories = Category::where('created_by', creatorId())->get();
+            //$categories = Category::where('created_by', creatorId())->get();
+            $categories = Category::all();
+
             $categoryTree = getChildreCategory($categories);
             return view('admin.category.index', compact('categoryTree'));
         } else {
@@ -28,7 +30,8 @@ class CategoryController extends Controller
     public function create()
     {
         if (Auth::user()->isAbleTo('category create')) {
-            $categories = Category::where('created_by', creatorId())->get();
+            //$categories = Category::where('created_by', creatorId())->get();
+            $categories = Category::all();
             $categoryTree = buildCategoryTree($categories);
             $settings = getCompanyAllSettings();
             return view('admin.category.create', compact('settings', 'categoryTree'));
@@ -70,7 +73,8 @@ class CategoryController extends Controller
         if (Auth::user()->isAbleTo('category edit')) {
             $category = Category::find($id);
             if ($category) {
-                $categories = Category::where('created_by', creatorId())->get();
+                //$categories = Category::where('created_by', creatorId())->get();
+                $categories = Category::all();
                 $categoryTree = buildCategoryTree($categories);
                 $settings = getCompanyAllSettings();
                 return view('admin.category.edit', compact('categories', 'categoryTree', 'settings', 'category'));

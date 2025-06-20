@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Settings;
 use App\Mail\EmailTest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SettingController extends Controller
@@ -104,6 +105,7 @@ class SettingController extends Controller
                 $data = [
                     'name'       => $key,
                     'created_by' => creatorId(),
+                    'company_id' => Auth::user()->company_id
                 ];
                 Settings::updateOrInsert($data, ['value' => $value]);
             }
@@ -173,6 +175,7 @@ class SettingController extends Controller
             $data = [
                 'name'       => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
 
             Settings::updateOrInsert($data, ['value' => $value]);
@@ -277,6 +280,7 @@ class SettingController extends Controller
             $data = [
                 'name'       => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
 
             Settings::updateOrInsert($data, ['value' => $value]);

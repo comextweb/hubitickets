@@ -52,7 +52,8 @@ class DashboardController extends Controller
                 $categories = Category::count();
                 $open_ticket = Ticket::whereIn('status', ['On Hold', 'In Progress'])->count();
                 $close_ticket = Ticket::where('status', '=', 'Closed')->count();
-                $agents = User::where('created_by', creatorId())->where('type', 'agent')->count();
+                //$agents = User::where('created_by', creatorId())->where('type', 'agent')->count();
+                $agents = User::all()->where('type', 'agent')->count();
 
                 // Category Wise Total Ticket Number Chart
                 // $categoriesChart = Category::withCount('getTickets')->get();
@@ -131,11 +132,21 @@ class DashboardController extends Controller
                 $openTicket = Ticket::whereIn('status', ['On Hold', 'In Progress'])->where('is_assign', Auth::user()->id)->count();
                 $closeTickets = Ticket::where('status', '=', 'Closed')->where('is_assign', Auth::user()->id)->count();
 
+                $categoriesChart = Category::whereHas('getTickets', function($query) {
+                    $query->where('is_assign', Auth::user()->id);
+                })
+                ->withCount(['getTickets' => function($query) {
+                    $query->where('is_assign', Auth::user()->id);
+                }])
+                ->get();
+
                 // Category Wise Total Ticket Number Chart
-                $categoriesChart = Category::withCount('getTickets')
+                /*$categoriesChart = Category::withCount('getTickets')
                     ->whereHas('getTickets', function ($query) {
                         $query->where('is_assign', Auth::user()->id);
-                    })->get();
+                    })->get();*/
+
+                //dd($categoriesChart->toArray());
                 $chartData = ['color' => [], 'name' => [], 'value' => []];
                 foreach ($categoriesChart as $category) {
                     $chartData['name'][] = $category->name;

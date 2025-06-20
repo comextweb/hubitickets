@@ -47,7 +47,7 @@
 </form>
 
 
-<script src="{{ asset('public/libs/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
 
 <script>
     if ($(".multi-select").length > 0) {

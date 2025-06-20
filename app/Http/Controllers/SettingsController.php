@@ -190,6 +190,7 @@ class SettingsController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => $user->company_id
                 ];
                 Settings::updateOrInsert($data, ['value' => $value]);
             }
@@ -230,6 +231,7 @@ class SettingsController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => $user->company_id
                 ];
 
                 Settings::updateOrInsert($data, ['value' => $value]);
@@ -284,6 +286,7 @@ class SettingsController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => $user->company_id
                 ];
                 Settings::updateOrInsert($data, ['value' => $value]);
             }
@@ -342,6 +345,7 @@ class SettingsController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => $user->company_id
                 ];
                 Settings::updateOrInsert($data, ['value' => $value]);
             }
@@ -500,6 +504,7 @@ class SettingsController extends Controller
             $data = [
                 'name' => $key,
                 "created_by" => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
             Settings::updateOrInsert($data, ['value' => $value]);
         }
@@ -553,6 +558,7 @@ class SettingsController extends Controller
             $data = [
                 'name' => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
             Settings::updateOrInsert($data, ['value' => $value]);
         }
@@ -581,6 +587,7 @@ class SettingsController extends Controller
             $data = [
                 'name' => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
 
             Settings::updateOrInsert($data, ['value' => $value]);
@@ -619,6 +626,7 @@ class SettingsController extends Controller
             $data = [
                 'name' => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
             Settings::updateOrCreate($data, ['value' => $value]);
         }
@@ -659,6 +667,8 @@ class SettingsController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => $user->company_id
+
                 ];
                 Settings::updateOrInsert($data, ['value' => $value]);
             }
@@ -711,6 +721,7 @@ class SettingsController extends Controller
             $data = [
                 'name' => $key,
                 'created_by' => creatorId(),
+                'company_id' => Auth::user()->company_id
             ];
             Settings::updateOrInsert($data, ['value' => $value]);
         }

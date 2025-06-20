@@ -1,0 +1,19 @@
+
+.tag-chioce .choices__inner{
+    border: 0;
+  }
+  .tag-chioce .choices__input{
+    width: 100% !important;
+  }
+  .tag-chioce .choices__list--dropdown .choices__item{
+    color: var(--black);
+  }
+  .tag-chioce .choices__list--multiple{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+  .tag-chioce .choices__list--multiple .choices__item{
+    margin: 0;
+  }

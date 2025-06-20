@@ -127,9 +127,14 @@ return [
     |
     */
 
-    'cookie' => env(
+    /*'cookie' => env(
         'SESSION_COOKIE',
         Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+    ),*/
+
+    'cookie' => env(
+        'SESSION_COOKIE', 
+        Str::slug(env('APP_NAME', 'laravel'), '_').'_session_'.(isset($_SERVER['HTTP_HOST']) ? str_replace('.', '_', $_SERVER['HTTP_HOST']) : '')
     ),
 
     /*
@@ -156,7 +161,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => env('SESSION_DOMAIN', null), // Nota el punto al inicio
 
     /*
     |--------------------------------------------------------------------------

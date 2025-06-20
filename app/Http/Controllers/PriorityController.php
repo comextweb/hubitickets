@@ -12,7 +12,9 @@ class PriorityController extends Controller
     public function index(Request $request)
     {
         if (Auth::user()->isAbleTo('priority manage')) {
-            $priority = Priority::where('created_by', Auth::user()->id)->get();
+            //$priority = Priority::where('created_by', Auth::user()->id)->get();
+            $priority = Priority::all();
+
             return view('admin.priority.index', compact('priority'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');

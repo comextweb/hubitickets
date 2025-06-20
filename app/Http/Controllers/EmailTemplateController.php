@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Api\User;
 use App\Models\EmailTemplate;
 use App\Models\EmailTemplateLang;
 use App\Models\UserEmailTemplate;
@@ -124,6 +125,7 @@ class EmailTemplateController extends Controller
                 $data = [
                     'name' => $key,
                     'created_by' => creatorId(),
+                    'company_id' => Auth::user()->company_id,
                 ];
                 // Check if the record exists, and update or insert accordingly
                 Settings::updateOrInsert($data, ['value' => $notification]);

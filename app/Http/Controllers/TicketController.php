@@ -39,9 +39,11 @@ class TicketController extends Controller
     {
         if (Auth::user()->isAbleTo('ticket create')) {
             $customFields = CustomField::orderBy('order')->get();
-            $categories = Category::where('created_by', creatorId())->get();
+            //$categories = Category::where('created_by', creatorId())->get();
+            $categories = Category::all();
             $categoryTree = buildCategoryTree($categories);
-            $priorities = Priority::where('created_by', creatorId())->get();
+            //$priorities = Priority::where('created_by', creatorId())->get();
+            $priorities = Priority::all();
             $settings = getCompanyAllSettings();
             $users = User::where('type', 'agent')->get();
             $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department

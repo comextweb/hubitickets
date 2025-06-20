@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToCompany;
 use Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Settings extends Model
 {
+    use BelongsToCompany;
+
     protected $fillable = [
-        'name', 'value', 'created_by'
+        'name', 'value', 'created_by','company_id'
     ];
 
     public function settings($key)

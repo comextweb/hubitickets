@@ -25,7 +25,8 @@ class CustomFieldController extends Controller
 
     public function CustomFields(Request $request)
     {
-        $customfield = CustomField::where('created_by', $request->user_id)->get();
+        //$customfield = CustomField::where('created_by', $request->user_id)->get();
+        $customfield = CustomField::all();
 
         $data = [
             'custom_field' => $customfield
@@ -51,7 +52,8 @@ class CustomFieldController extends Controller
             return $this->error($data, $messages->first(), 200);
         }
 
-        $order      = CustomField::where('created_by', creatorId())->get()->count();
+        //$order      = CustomField::where('created_by', creatorId())->get()->count();
+        $order      = CustomField::all()->count();
 
         $post = [
             'name'        => $request->name,

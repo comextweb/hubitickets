@@ -1,0 +1,21 @@
+{
+  "Action": "Действие",
+  "Are You Sure?": "Вы уверены?",
+  "Cancel": "Отмена",
+  "Color": "Цвет",
+  "Create": "Создавать",
+  "Create Tags": "Создать теги",
+  "Edit Tags": "Редактировать теги",
+  "Enter Name": "Введите имя",
+  "Home": "Дом",
+  "Manage Tags": "Управление тегами",
+  "Name": "Имя",
+  "Permission Denied.": "Доступ запрещен.",
+  "Tag delete successfully.": "Tag Delete успешно.",
+  "Tag update successfully.": "Обновление метки успешно.",
+  "Tags": "Теги",
+  "Tags created successfully.": "Теги созданы успешно.",
+  "This action can not be undone. Do you want to continue?": "Это действие не может быть отменено. ",
+  "This tag is being used and cannot be deleted.": "Этот тег используется и не может быть удален.",
+  "Update": "Обновлять"
+}

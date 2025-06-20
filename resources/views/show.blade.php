@@ -210,7 +210,7 @@
     </script>
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{asset('css/summernote/summernote-bs4.js')}}"></script>
-        <script src="{{ asset('public/custom/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+        <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
         <script>
             function show_toastr(title, message, type) {
                 var o, i;

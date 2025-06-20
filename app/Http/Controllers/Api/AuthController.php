@@ -7,6 +7,7 @@ use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -44,6 +45,7 @@ class AuthController extends Controller
         $user = User::find($request->id);
         if(!empty($user)){
             $user->tokens()->delete();
+            Session::forget('current_company_id');
 
             return $this->success(['message' => 'logout successfully']);
         }else{

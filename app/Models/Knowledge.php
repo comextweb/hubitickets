@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Knowledge;
 use App\Models\Knowledgebasecategory;
+use App\Traits\BelongsToCompany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Knowledge extends Model
 {
+    use BelongsToCompany;
+
     protected $fillable = [
         'title', 'description', 'category'
     ];

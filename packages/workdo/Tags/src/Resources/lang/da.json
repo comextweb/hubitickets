@@ -1,0 +1,21 @@
+{
+  "Action": "Handling",
+  "Are You Sure?": "Er du sikker?",
+  "Cancel": "Ophæve",
+  "Color": "Farve",
+  "Create": "Skabe",
+  "Create Tags": "Opret tags",
+  "Edit Tags": "Rediger tags",
+  "Enter Name": "Indtast navn",
+  "Home": "Hjem",
+  "Manage Tags": "Administrer tags",
+  "Name": "Navn",
+  "Permission Denied.": "Tilladelse nægtet.",
+  "Tag delete successfully.": "Tag slet med succes.",
+  "Tag update successfully.": "Tagopdatering med succes.",
+  "Tags": "Tags",
+  "Tags created successfully.": "Mærker oprettet med succes.",
+  "This action can not be undone. Do you want to continue?": "Denne handling kan ikke fortrydes. ",
+  "This tag is being used and cannot be deleted.": "Dette tag bruges og kan ikke slettes.",
+  "Update": "Opdatering"
+}
