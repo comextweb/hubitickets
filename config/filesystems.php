@@ -83,6 +83,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        //public_path('uploads') => base_path('uploads'), // Nueva línea
+        //public_path('packages') => base_path('packages'), // Nueva línea
     ],
 
 ];

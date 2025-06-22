@@ -278,6 +278,12 @@ if (!function_exists('uploadFile')) {
     function uploadFile($request, $key_name, $fileNameToStore, $path, $custom_validation = [])
     {
         try {
+            //$path = handleCompanyFilePath($path);
+            $company = app('currentCompany');
+            if ($company) {
+                $path = "{$company->slug}/" . $path;
+            }
+
             $settings = getCompanyAllSettings();
             if (!empty($settings['storage_setting'])) {
 
@@ -387,6 +393,11 @@ if (!function_exists('multipleFileUpload')) {
     function multipleFileUpload($request, $key_name, $fileNameToStore, $path, $custom_validation = [])
     {
         try {
+            $company = app('currentCompany');
+            if ($company) {
+                $path = "{$company->slug}/" . $path;
+            }
+
             $storage_settings = getCompanyAllSettings();
 
             if (isset($storage_settings['storage_setting'])) {

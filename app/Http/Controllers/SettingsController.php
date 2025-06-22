@@ -744,7 +744,7 @@ class SettingsController extends Controller
                 $os_name = $whichbrowser->os->name ?? null;
                 $browser_language = isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? mb_substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2) : null;
                 $device_type = get_device_type($_SERVER['HTTP_USER_AGENT']);
-                $ip = '49.36.83.154';
+                //$ip = '49.36.83.154';
                 $ip = $_SERVER['REMOTE_ADDR']; // your ip address hered
                 $query = @unserialize(file_get_contents('http://ip-api.com/php/' . $ip));
                 $date = (new \DateTime())->format('Y-m-d');
