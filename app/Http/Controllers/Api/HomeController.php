@@ -21,7 +21,8 @@ class HomeController extends Controller
             $categories   = Category::count();
             $open_ticket  = Ticket::whereIn('status', ['On Hold','In Progress'])->count();
             $close_ticket = Ticket::where('status', '=', 'Closed')->count();
-            $agents       = User::where('created_by', creatorId())->count();
+            //$agents       = User::where('created_by', creatorId())->count();
+            $agents       = User::all()->count();
             $today_ticket = Ticket::whereDate('created_at', Carbon::today())->count();
     
             // Latest Ticket

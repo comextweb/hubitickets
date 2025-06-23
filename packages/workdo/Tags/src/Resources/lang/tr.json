@@ -1,0 +1,21 @@
+{
+  "Action": "Aksiyon",
+  "Are You Sure?": "Emin misin?",
+  "Cancel": "İptal etmek",
+  "Color": "Renk",
+  "Create": "Yaratmak",
+  "Create Tags": "Etiket Oluştur",
+  "Edit Tags": "Etiketleri Düzenle",
+  "Enter Name": "İsim girin",
+  "Home": "Ev",
+  "Manage Tags": "Etiketleri Yönetin",
+  "Name": "İsim",
+  "Permission Denied.": "İzin reddedildi.",
+  "Tag delete successfully.": "Etiket başarılı bir şekilde sil.",
+  "Tag update successfully.": "Güncellemeyi başarıyla etiketleyin.",
+  "Tags": "Etiketler",
+  "Tags created successfully.": "Etiketler başarıyla oluşturuldu.",
+  "This action can not be undone. Do you want to continue?": "Bu eylem geri alınamaz. ",
+  "This tag is being used and cannot be deleted.": "Bu etiket kullanılıyor ve silinemiyor.",
+  "Update": "Güncelleme"
+}

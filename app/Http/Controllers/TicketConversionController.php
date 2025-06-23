@@ -99,7 +99,8 @@ class TicketConversionController extends Controller
                     'tickets' => $ticketsWithMessages, // Use the processed ticketsWithMessages
                 ]);
             }
-            $priorities = Priority::where('created_by', creatorId())->get();
+            //$priorities = Priority::where('created_by', creatorId())->get();
+            $priorities = Priority::all();
 
 
             return view('admin.chats.new-chat', compact('tickets', 'tikcettype', 'totalticket', 'settings', 'priorities'));
@@ -148,9 +149,11 @@ class TicketConversionController extends Controller
 
             $status = $ticket->status;
             $users = User::where('type', 'agent')->get();
-            $categories = Category::where('created_by', creatorId())->get();
+            //$categories = Category::where('created_by', creatorId())->get();
+            $categories = Category::all();
             $categoryTree = buildCategoryTree($categories);
-            $priorities = Priority::where('created_by', creatorId())->get();
+            //$priorities = Priority::where('created_by', creatorId())->get();
+            $priorities = Priority::all();
             $tikcettype = Ticket::getTicketTypes();
             $customFields = CustomField::where('is_core', false)->orderBy('order')->get();
             $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
@@ -377,10 +380,12 @@ class TicketConversionController extends Controller
             $data = [
                 'id' => $conversion->id,
                 'tikcet_id' => $conversion->ticket_id,
+                'ticket_email' => $conversion->ticket->email,
                 'ticket_unique_id' => $ticket->id,
                 'new_message' => $conversion->description ?? '',
                 'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                 'sender_name' => $conversion->replyBy()->name,
+                'sender_email' => $conversion->replyBy()->email,
                 'attachments' => json_decode($conversion->attachments),
                 'baseUrl' => env('APP_URL'),
                 'latestMessage' => $ticket->latestMessages($ticket->id),

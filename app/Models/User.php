@@ -12,10 +12,12 @@ use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Contracts\LaratrustUser;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\BelongsToCompany;
+
 
 class User extends Authenticatable implements LaratrustUser
 {
-    use Notifiable, UserTrait, HasApiTokens, HasRolesAndPermissions;
+    use Notifiable,BelongsToCompany, UserTrait, HasApiTokens, HasRolesAndPermissions;
 
     protected $fillable = [
         'name',

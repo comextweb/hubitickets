@@ -1,0 +1,8 @@
+{
+    "name": "Ratings",
+    "alias": "Ratings",
+    "description": "",
+    "priority": 350,
+    "version":1.2,
+    "package_name":"ratings"
+}

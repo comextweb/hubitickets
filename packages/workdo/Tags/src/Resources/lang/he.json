@@ -1,0 +1,21 @@
+{
+  "Action": "פְּעוּלָה",
+  "Are You Sure?": "אתה בטוח?",
+  "Cancel": "לְבַטֵל",
+  "Color": "צֶבַע",
+  "Create": "לִיצוֹר",
+  "Create Tags": "צור תגיות",
+  "Edit Tags": "ערוך תגיות",
+  "Enter Name": "הזן שם",
+  "Home": "בַּיִת",
+  "Manage Tags": "נהל תגיות",
+  "Name": "שֵׁם",
+  "Permission Denied.": "הרשאה נדחתה.",
+  "Tag delete successfully.": "תג מחק בהצלחה.",
+  "Tag update successfully.": "עדכון תגיות בהצלחה.",
+  "Tags": "תגיות",
+  "Tags created successfully.": "תגיות שנוצרו בהצלחה.",
+  "This action can not be undone. Do you want to continue?": "לא ניתן לבטל פעולה זו. ",
+  "This tag is being used and cannot be deleted.": "תג זה משמש ולא ניתן למחוק אותו.",
+  "Update": "לְעַדְכֵּן"
+}

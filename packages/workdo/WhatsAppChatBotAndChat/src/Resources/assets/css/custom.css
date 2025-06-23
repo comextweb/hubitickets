@@ -1,0 +1,20 @@
+.whatsappChatbotIcon {
+    right: 15px;
+    bottom: 15px;
+    z-index: 999;
+}
+.whatsappChatbotIcon .whatsapp-img{
+    height: 40px;
+    width: 40px;
+}
+.whatsappChatbotIcon .whatsapp-img img{
+    height: 100%;
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .whatsappChatbotIcon .whatsapp-img{
+        height: 35px;
+        width: 35px;
+    }
+}

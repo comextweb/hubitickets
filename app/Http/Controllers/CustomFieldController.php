@@ -46,7 +46,8 @@ class CustomFieldController extends Controller
                 $message = $validator->getMessageBag();
                 return redirect()->back()->with('error', $message->first());
             }
-            $order      = CustomField::where('created_by', creatorId())->get()->count();
+            //$order      = CustomField::where('created_by', creatorId())->get()->count();
+            $order  =   CustomField::all()->count();
 
             $customField              = new CustomField();
             $customField->name        = $request->name;

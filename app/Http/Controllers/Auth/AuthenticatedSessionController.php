@@ -13,6 +13,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -58,6 +59,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+
+        // Obtener el subdominio actual
+        $host = $request->getHost();
+        $subdomain = explode('.', $host)[0];
+        
+        // Guardar el subdominio en la sesión
+        Session::put('current_subdomain', $subdomain);
+        Session::save(); // Forzar guardado inmediato
+
         $user = Auth::user();
         if ($user->delete_status == 1) {
             auth()->logout();
@@ -103,6 +114,10 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
+        // Limpiar el subdominio de la sesión
+        Session::forget('current_subdomain');
+        Session::save();
 
         $request->session()->invalidate();
 

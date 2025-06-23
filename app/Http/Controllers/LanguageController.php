@@ -241,7 +241,8 @@ class LanguageController extends Controller
         $user  = Auth::user();
         $data = [
             'name' => 'site_rtl',
-            'created_by' => $user->id
+            'created_by' => $user->id,
+            'company_id' => $user->company_id
         ];
         $user->lang = $lang;
         if ($lang == 'ar' || $lang == 'he') {

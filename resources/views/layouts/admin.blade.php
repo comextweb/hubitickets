@@ -100,7 +100,7 @@ $customThemeBackground = isset($setting['cust_theme_bg']) ? $setting['cust_theme
 
     <!-- switch button -->
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/bootstrap-switch-button.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/libs/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('libs/select2/dist/css/select2.min.css') }}">
     @stack('css-page')
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
@@ -196,7 +196,7 @@ $customThemeBackground = isset($setting['cust_theme_bg']) ? $setting['cust_theme
     <script src="{{ asset('assets/js/dash.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('public/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
     <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
     <script src="{{ asset('js/jquery.form.js') }}"></script>
 
@@ -216,7 +216,7 @@ $customThemeBackground = isset($setting['cust_theme_bg']) ? $setting['cust_theme
         }
     </script>
 
-    <script src="{{ asset('public/libs/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <!-- switch button -->
     <script src="{{ asset('assets/js/plugins/bootstrap-switch-button.min.js') }}"></script>

@@ -178,7 +178,7 @@ class HomeController extends Controller
             $ticket->status = "New Ticket";
             $ticket->type = "Unassigned";
             $ticket->description = $request->description;
-            $ticket->created_by = 1;
+            $ticket->created_by = User::where('type', 'admin')->first()->id ?? 0; // Default to 0 if no admin user found
             $data = [];
             if ($request->hasfile('attachments')) {
                 $errors = [];
@@ -293,7 +293,7 @@ class HomeController extends Controller
             $ticket->type = "Unassigned";
             $ticket->description = $request->description;
             $ticket->attachments = json_encode([]);
-            $ticket->created_by = 1;
+            $ticket->created_by = User::where('type', 'admin')->first()->id ?? 0; // Default to 0 if no admin user found
             $ticket->save();
 
             event(new CreateTicket($ticket, $request));
@@ -450,10 +450,12 @@ class HomeController extends Controller
                     $data = [
                         'id' => $conversion->id,
                         'tikcet_id' => $conversion->ticket_id,
+                        'ticket_email' => $conversion->ticket->email,
                         'ticket_unique_id' => $ticket->id,
                         'new_message' => $conversion->description ?? '',
                         'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                         'sender_name' => $conversion->replyBy()->name,
+                        'sender_email' => $conversion->replyBy()->email,
                         'sender' => $conversion->sender,
                         'attachments' => json_decode($conversion->attachments),
                         'baseUrl' => env('APP_URL'),

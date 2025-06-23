@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToCompany;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -9,6 +10,8 @@ use Workdo\Tags\Entities\Tags;
 
 class Ticket extends Model
 {
+    use BelongsToCompany;
+
     protected $fillable = [
         'ticket_id',
         'name',

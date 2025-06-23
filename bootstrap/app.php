@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'XSS' => \App\Http\Middleware\XSS::class,
             'ModuleCheckEnable' => \App\Http\Middleware\CheckModuleEnable::class,
             'updater' => \App\Http\Middleware\CheckUpdater::class,
+            'set.current.company' => \App\Http\Middleware\SetCurrentCompany::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

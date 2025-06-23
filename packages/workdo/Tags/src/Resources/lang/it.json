@@ -1,0 +1,21 @@
+{
+  "Action": "Azione",
+  "Are You Sure?": "Sei sicuro?",
+  "Cancel": "Cancellare",
+  "Color": "Colore",
+  "Create": "Creare",
+  "Create Tags": "Crea tag",
+  "Edit Tags": "Modifica tag",
+  "Enter Name": "Immettere il nome",
+  "Home": "Casa",
+  "Manage Tags": "Gestisci tag",
+  "Name": "Nome",
+  "Permission Denied.": "Permesso negato.",
+  "Tag delete successfully.": "Tag Elimina correttamente.",
+  "Tag update successfully.": "Aggiornamento del tag correttamente.",
+  "Tags": "Tag",
+  "Tags created successfully.": "Tag creati correttamente.",
+  "This action can not be undone. Do you want to continue?": "Questa azione non può essere annullata. ",
+  "This tag is being used and cannot be deleted.": "Questo tag viene utilizzato e non può essere eliminato.",
+  "Update": "Aggiornamento"
+}

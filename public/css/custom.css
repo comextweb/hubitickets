@@ -2595,7 +2595,7 @@ body .dashboard-user-page svg path.bg-primary {
 }
 
 .custom-header .logo-col {
-    max-width: 150px;
+    max-width: 50px;
     width: 100%;
 }
 
@@ -3428,7 +3428,7 @@ ul.knowledge_ul li a {
     }
 
     .custom-header .logo-col {
-        max-width: 110px;
+        max-width: 60px;
         width: 100%;
     }
 

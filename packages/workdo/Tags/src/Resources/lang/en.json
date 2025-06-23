@@ -1,0 +1,21 @@
+{
+    "Action": "Action",
+    "Are You Sure?": "Are You Sure?",
+    "Cancel": "Cancel",
+    "Color": "Color",
+    "Create": "Create",
+    "Create Tags": "Create Tags",
+    "Edit Tags": "Edit Tags",
+    "Enter Name": "Enter Name",
+    "Home": "Home",
+    "Manage Tags": "Manage Tags",
+    "Name": "Name",
+    "Permission Denied.": "Permission Denied.",
+    "Tag delete successfully.": "Tag delete successfully.",
+    "Tag update successfully.": "Tag update successfully.",
+    "Tags": "Tags",
+    "Tags created successfully.": "Tags created successfully.",
+    "This action can not be undone. Do you want to continue?": "This action can not be undone. Do you want to continue?",
+    "This tag is being used and cannot be deleted.": "This tag is being used and cannot be deleted.",
+    "Update": "Update"
+}

@@ -1,0 +1,21 @@
+{
+  "Action": "فعل",
+  "Are You Sure?": "هل أنت متأكد؟",
+  "Cancel": "يلغي",
+  "Color": "لون",
+  "Create": "يخلق",
+  "Create Tags": "إنشاء علامات",
+  "Edit Tags": "تحرير العلامات",
+  "Enter Name": "أدخل الاسم",
+  "Home": "بيت",
+  "Manage Tags": "إدارة العلامات",
+  "Name": "اسم",
+  "Permission Denied.": "تم رفض الإذن.",
+  "Tag delete successfully.": "علامة الحذف بنجاح.",
+  "Tag update successfully.": "تحديث علامة بنجاح.",
+  "Tags": "العلامات",
+  "Tags created successfully.": "العلامات التي تم إنشاؤها بنجاح.",
+  "This action can not be undone. Do you want to continue?": "لا يمكن التراجع عن هذا الإجراء. ",
+  "This tag is being used and cannot be deleted.": "يتم استخدام هذه العلامة ولا يمكن حذفها.",
+  "Update": "تحديث"
+}

@@ -36,7 +36,8 @@ class UserController extends Controller
     public function index()
     {
         if (Auth::user()->isAbleTo('user manage')) {
-            $users = User::where('created_by', creatorId())->get()->load('roles');
+            //$users = User::where('created_by', creatorId())->with('roles')->get();
+            $users = User::where('type','!=', 'admin')->with('roles')->get();
             return view('admin.users.index', compact('users'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
@@ -67,7 +68,8 @@ class UserController extends Controller
         if (Auth::user()->isAbleTo('user create')) {
             // $categories = Category::where('created_by', creatorId())->get();
             // $categoryTree = buildCategoryTree($categories);
-            $roles = Role::where('created_by', creatorId())->get();
+            //$roles = Role::where('created_by', creatorId())->get();
+            $roles = Role::all();
             $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
             return view('admin.users.create', compact('roles','departments'));
         } else {
@@ -158,9 +160,13 @@ class UserController extends Controller
     public function edit(User $user)
     {
         if (Auth::user()->isAbleTo('user edit')) {
-            $categories = Category::where('created_by', creatorId())->get();
+            //$categories = Category::where('created_by', creatorId())->get();
+            $categories = Category::all();
+
             // $categoryTree = buildCategoryTree($categories);
-            $roles = Role::where('created_by', creatorId())->get();
+            //$roles = Role::where('created_by', creatorId())->get();
+            $roles = Role::all();
+
             // Traer todos los departamentos activos
             $departments = Department::where('is_active', true)->get();
 
@@ -267,8 +273,8 @@ class UserController extends Controller
     {
         if (Auth::user()->isAbleTo('userlog manage')) {
             $objUser = Auth::user();
-            $date = new DateTime($request->month);
-
+            $date = new DateTime($request->month);  
+            $companyId = $objUser->company_id;
             $usersList = User::where('parent', '=', $objUser->createId())->get()->pluck('name', 'id');
             $usersList->prepend('All User', '');
 
@@ -276,12 +282,14 @@ class UserController extends Controller
                 $users = DB::table('login_details')
                     ->join('users', 'login_details.user_id', '=', 'users.id')
                     ->select(DB::raw('login_details.*, users.name as user_name , users.email as user_email'))
+                    ->where('users.company_id', $companyId)
                     ->where(['login_details.created_by' => $objUser->id])
                     ->whereMonth('login_details.date', date('m'))
                     ->whereYear('login_details.date', date('Y'));
             } else {
                 $users = DB::table('login_details')
                     ->join('users', 'login_details.user_id', '=', 'users.id')
+                    ->where('users.company_id', $companyId)
                     ->select(DB::raw('login_details.*, users.name as user_name , users.email as user_email'))
                     ->where(['login_details.created_by' => $objUser->id]);
             }
