@@ -167,6 +167,7 @@ class HomeController extends Controller
             // ---------------------------------------------------------------------------------
 
             $this->validate($request, $validation);
+            $company = app('currentCompany');
 
             $ticket = new Ticket();
             $ticket->ticket_id = time();
@@ -175,6 +176,7 @@ class HomeController extends Controller
             $ticket->category_id = $request->category;
             $ticket->priority = $request->priority;
             $ticket->subject = $request->subject;
+            $ticket->company_id = $company->id ?? null;
             $ticket->status = "New Ticket";
             $ticket->type = "Unassigned";
             $ticket->description = $request->description;
@@ -283,12 +285,14 @@ class HomeController extends Controller
                     'message' => $validator->errors()->first()
                 ]);
             }
+            $company = app('currentCompany');
 
             $ticket = new Ticket();
             $ticket->ticket_id = time();
             $ticket->name = $request->name;
             $ticket->email = $request->email;
             $ticket->subject = $request->subject;
+            $ticket->company_id = $company->id ?? null;
             $ticket->status = "New Ticket";
             $ticket->type = "Unassigned";
             $ticket->description = $request->description;
