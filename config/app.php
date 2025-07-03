@@ -125,4 +125,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'public_token' => env('APP_PUBLIC_TOKEN'),
 ];

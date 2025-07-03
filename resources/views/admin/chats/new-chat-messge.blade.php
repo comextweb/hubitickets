@@ -83,7 +83,15 @@
             <div class="messages-container" id="msg">
                 @foreach ($ticket->conversions as $conversion)
                 @if (moduleIsActive('CustomerLogin') && \Auth::user()->type == 'customer')
-                @if ($conversion->sender == 'user' )
+                @if($conversion->sender == 'system')
+                <div class="system-message-container">
+                    <div class="system-message-content">
+                        <span class="system-icon">🔄</span>
+                        <span class="system-text">{!! $conversion->description !!}</span>
+                        <span class="system-time">({{$conversion->created_at->diffForHumans()}})</span>
+                    </div>
+                </div>     
+                @elseif ($conversion->sender == 'user' )
                 <div class="msg right-msg" data-id="{{ $conversion->id }}">
                     <div class="msg-box {{ isset($isSaveChat, $conversion->is_bookmark) && $isSaveChat && $conversion->is_bookmark ? 'bookmark-active' : '' }}"
                         data-conversion-id="{{ $conversion->id }}">
@@ -179,7 +187,15 @@
                 </div>
                 @endif
                 @else
-                @if ($conversion->sender == 'user' || (($conversion->replyBy()?->email == $ticket->email)))
+                @if($conversion->sender == 'system')
+                    <div class="system-message-container">
+                        <div class="system-message-content">
+                            <span class="system-icon">🔄</span>
+                            <span class="system-text">{!! $conversion->description !!}</span>
+                            <span class="system-time">({{$conversion->created_at->diffForHumans()}})</span>
+                        </div>
+                    </div>  
+                @elseif ($conversion->sender == 'user' || (($conversion->replyBy()?->email == $ticket->email)))
                 <div class="msg left-msg" data-id="{{ $conversion->id }}">
                     <div class="msg-box {{ isset($isSaveChat, $conversion->is_bookmark) && $isSaveChat && $conversion->is_bookmark ? 'bookmark-active' : '' }}"
                         data-conversion-id="{{ $conversion->id }}">
@@ -420,7 +436,7 @@
             </button>
         </div>
         <div class="msg-card-bottom">
-            <ul class="card-bottom-info">
+            <ul class="card-bottom-info" data-label="{{ __('Información del Solicitante') }}">
                 <li class="d-flex align-items-center justify-content-between gap-2">
                     <div class="input-wrp flex-1">
                         <label>{{ __('Name') }} :</label>
@@ -515,7 +531,7 @@
 
                 </li>
                 <li>
-                    <label>{{ __('Assign Agent') }} :</label>
+                    <label>{{ __('Resolution Agent') }} :</label>
                     <div class="badge-wrp assign-select-wrp d-flex align-items-center gap-1">
                         @if (moduleIsActive('OutOfOffice'))
                         @stack('is_available_edit')
@@ -523,7 +539,7 @@
                         <select id="agents" class="form-select" name="agent_id"
                             data-url="{{ route('admin.ticket.assign.change', ['id' => isset($ticket) ? $ticket->id : '0']) }}"
                             required>
-                            <option selected disabled value="">{{ __('Select Agent') }}</option>
+                            <option selected disabled value="">{{ __('Select Resolution Agent') }}</option>
                             @foreach ($users as $agent)
                             <option value="{{ $agent->id }}" {{ $ticket->is_assign == $agent->id ? 'selected' : '' }}>
                                 {{ $agent->name }}

@@ -122,6 +122,7 @@ class TicketController extends Controller
             sendTicketEmail('Send Mail To Agent', $settings, $ticket, $request, $error_msg);
             sendTicketEmail('Send Mail To Customer', $settings, $ticket, $request, $error_msg);
             sendTicketEmail('Send Mail To Admin', $settings, $ticket, $request, $error_msg);
+            sendTicketEmail('Send Mail To Creator', $settings, $ticket, $request, $error_msg);
 
             if (isset($error_msg)) {
                 Session::put('smtp_error', '<br><span class="text-danger ml-2">' . $error_msg . '</span>');

@@ -997,7 +997,7 @@ body.no-scroll {
 .chat-wrapper-left .active .social-chat {
   border-bottom: none;
 }
-.ticket-number {
+.ticket-number-old {
   background-color: var(--theme-color);
   padding: 5px 8px;
   border-radius: 6px;
@@ -1006,6 +1006,36 @@ body.no-scroll {
   width: -moz-fit-content;
   width: fit-content;
 }
+
+.info-badge-item {
+  display: inline-flex;
+  align-items: center;
+  background-color: #f1f3f5;
+  color: #333;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  border: 1px solid #dee2e6;
+}
+.first-badge {
+  border-radius: 8px 0 0 8px;
+}
+.last-badge {
+  border-radius: 0 8px 8px 0;
+}
+.primary-fill {
+  background-color: var(--theme-color);
+  color: var(--white);
+}
+
+.color-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px; /* Cambia a 50% para círculo */
+  background-color: transparent;
+}
+
 /* chat-right-body-css */
 .chat-right-body {
   display: -webkit-box;
@@ -1318,6 +1348,25 @@ background-color: #CEEFDF;
 .ticket-info-card .card-bottom-info li svg path {
   fill: #888888;
 }
+
+/* Agrega solo estas reglas a tu CSS existente */
+.ticket-info-card .card-bottom-info {
+    position: relative;
+    padding-top: 25px; /* Aumenta solo el padding superior */
+}
+
+.ticket-info-card .card-bottom-info::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: white;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--black) !important;
+}
+
 .chat-right-body .msg-card-bottom label {
   color: var(--black);
   margin: 0 0 5px;

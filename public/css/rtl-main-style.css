@@ -1004,6 +1004,15 @@ body.no-scroll {
   width: -moz-fit-content;
   width: fit-content;
 }
+/* Estilo base para el badge de prioridad */
+.chat_ticket_priority {
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 0.5rem;
+}
 /* chat-right-body-css */
 .chat-right-body {
   display: -webkit-box;

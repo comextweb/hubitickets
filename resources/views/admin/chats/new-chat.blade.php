@@ -391,11 +391,50 @@
                 <div class="chat-header-inner">
                     <div class="header-left-col">
                         <div class="header-left-col-wrp">
-                            <div class="chat-info d-flex align-items-center gap-3 mb-1">
-                                <h3 class="user-name chat_head"></h3>
-                                <span class="ticket-number"></span>
+                           
+
+                            <div class="chat-info d-flex align-items-center gap-3 mb-1 flex-wrap">
+                                <h4 class="user-name chat_subject"></h4>                                
+                                <div class="chat-info d-flex align-items-center gap-0 flex-wrap">
+
+                                    <span class="info-badge-item first-badge primary-fill">
+                                        <i class="bi bi-hash"></i> <span class="ticket-number"></span>
+                                    </span>
+
+                                    <span class="info-badge-item chat_ticket_priority">
+                                        <span class="color-dot me-1"></span>
+                                        <span class="priority-text"></span>
+                                    </span>
+
+                                    <span class="info-badge-item chat_ticket_category_wrapper gap-1">
+                                         <span>
+                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M12.5764 0.804446C12.0438 0.273273 11.317 -0.0169845 10.5648 0.00103587L2.87181 0.197115C1.4098 0.233585 0.233109 1.41006 0.196639 2.87229L0.000774043 10.5651C-0.0170319 11.3172 0.273011 12.044 0.80397 12.5769L11.4236 23.1961C12.4966 24.2668 14.2337 24.2668 15.3068 23.1961L23.1956 15.3072C24.268 14.235 24.268 12.4963 23.1956 11.4238L12.5764 0.804446ZM22.419 14.5306L14.5302 22.4193C13.8864 23.0618 12.844 23.0618 12.2002 22.4193L1.58078 11.8001C1.2622 11.4803 1.08801 11.0443 1.09873 10.593L1.2946 2.90018C1.31669 2.02297 2.02249 1.31696 2.8997 1.29507L10.5925 1.09899C10.6064 1.09878 10.6199 1.09856 10.6339 1.09856C11.0709 1.09921 11.4899 1.27276 11.7994 1.58125L22.419 12.2006C23.0613 12.8444 23.0613 13.8868 22.419 14.5306Z"
+                                                    fill="black" />
+                                                <path
+                                                    d="M7.17895 4.53503C5.71865 4.53503 4.53488 5.7188 4.53467 7.1791C4.53467 8.6394 5.71865 9.82317 7.17873 9.82317C8.63903 9.82317 9.8228 8.6394 9.8228 7.1791C9.82108 5.71966 8.63839 4.53675 7.17895 4.53503ZM7.17895 8.72478C6.32512 8.72478 5.63327 8.03271 5.63306 7.1791C5.63306 6.32549 6.32512 5.63342 7.17873 5.63342C8.03234 5.63342 8.72441 6.32549 8.72441 7.1791C8.72356 8.03228 8.03213 8.72371 7.17895 8.72478Z"
+                                                    fill="black" />
+                                            </svg>
+                                        </span>
+                                        <i class="bi bi-tag"></i> <span class="chat_ticket_category"></span>
+                                    </span>
+
+                                    <span class="info-badge-item chat_ticket_department_wrapper last-badge">
+                                        🛠️<i class="bi bi-gear"></i> <span class="chat_ticket_department"></span>
+                                    </span>
+
+                                </div>
                             </div>
-                            <span class="user-info chat_subject"></span>
+
+
+                            <div class="d-flex flex-column gap-1">
+                                <span class="user-info" style="font-size: smaller;"><strong>📅 Creado por:</strong> <span class="chat_created_by"></span></span>
+                                <span class="user-info" style="font-size: smaller;"><strong>🎧 Agente de Resolucion:</strong> <span class="chat_agent"></span></span>
+                                <span class="user-info" style="font-size: smaller;"><strong>👤 Solicitante:</strong> <span class="chat_head"></span>|<span class="chat_head_email"></span></span>
+                            </div>
+                            <!--span class="user-info chat_subject"></span-->
                         </div>
                     </div>
                     <div class="header-right-col d-flex flex-wrap align-items-center gap-2">
@@ -740,21 +779,21 @@
                         var messgehtml = '';
 
                         messgehtml += `
-                                                                                                                                                <div class="no-conversation d-flex flex-column align-items-center justify-content-center text-center">
-                                                                                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
-                                                                                                                                                        <g clip-path="url(#clip0_5340_380)">
-                                                                                                                                                        <path d="M19.9009 11.0289C21.1994 11.0289 22.411 11.4079 23.431 12.0611V5.82523C23.431 3.4441 21.4918 1.5625 19.1683 1.5625H4.26273C1.94054 1.5625 0 3.44296 0 5.82523V22.6921C0 23.3046 0.718117 23.6576 1.20125 23.2548L5.70469 19.5019H13.6208C13.4365 18.8974 13.3371 18.2566 13.3371 17.5926C13.3371 13.9732 16.2817 11.0289 19.9009 11.0289ZM4.65488 6.26946H18.7759C19.1805 6.26946 19.5084 6.59752 19.5084 7.00188C19.5084 7.40643 19.1805 7.7343 18.7759 7.7343H4.65488C4.25053 7.7343 3.92246 7.40643 3.92246 7.00188C3.92246 6.59752 4.25053 6.26946 4.65488 6.26946ZM4.65488 10.1921H14.069C14.4735 10.1921 14.8014 10.52 14.8014 10.9245C14.8014 11.3289 14.4735 11.657 14.069 11.657H4.65488C4.25053 11.657 3.92246 11.3289 3.92246 10.9245C3.92246 10.52 4.25053 10.1921 4.65488 10.1921ZM10.931 15.5794H4.65488C4.25053 15.5794 3.92246 15.2515 3.92246 14.847C3.92246 14.4424 4.25053 14.1146 4.65488 14.1146H10.931C11.3354 14.1146 11.6634 14.4424 11.6634 14.847C11.6634 15.2515 11.3356 15.5794 10.931 15.5794Z" fill="black"/>
-                                                                                                                                                        <path d="M19.9007 12.4937C17.0847 12.4937 14.8018 14.7766 14.8018 17.5926C14.8018 20.4088 17.0847 22.6917 19.9007 22.6917C22.7169 22.6917 24.9998 20.4088 24.9998 17.5926C24.9998 14.7764 22.7169 12.4937 19.9007 12.4937ZM20.9516 19.6794L19.9005 18.6283L18.8493 19.6794C18.1637 20.3651 17.1287 19.3284 17.8135 18.6435L18.8646 17.5926L17.8135 16.5414C17.1278 15.8557 18.1646 14.8208 18.8493 15.5055L19.9005 16.5567L20.9516 15.5055C21.6371 14.8199 22.6721 15.8567 21.9873 16.5414L20.9362 17.5926L21.9873 18.6435C22.6724 19.3286 21.6371 20.3649 20.9516 19.6794Z" fill="black"/>
-                                                                                                                                                        </g>
-                                                                                                                                                        <defs>
-                                                                                                                                                        <clipPath id="clip0_5340_380">
-                                                                                                                                                        <rect width="25" height="25" fill="white"/>
-                                                                                                                                                        </clipPath>
-                                                                                                                                                        </defs>
-                                                                                                                                                    </svg>
-                                                                                                                                                    <h5>No conversation</h5>
-                                                                                                                                                </div>
-                                                                                                                                            `;
+                                        <div class="no-conversation d-flex flex-column align-items-center justify-content-center text-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                <g clip-path="url(#clip0_5340_380)">
+                                                <path d="M19.9009 11.0289C21.1994 11.0289 22.411 11.4079 23.431 12.0611V5.82523C23.431 3.4441 21.4918 1.5625 19.1683 1.5625H4.26273C1.94054 1.5625 0 3.44296 0 5.82523V22.6921C0 23.3046 0.718117 23.6576 1.20125 23.2548L5.70469 19.5019H13.6208C13.4365 18.8974 13.3371 18.2566 13.3371 17.5926C13.3371 13.9732 16.2817 11.0289 19.9009 11.0289ZM4.65488 6.26946H18.7759C19.1805 6.26946 19.5084 6.59752 19.5084 7.00188C19.5084 7.40643 19.1805 7.7343 18.7759 7.7343H4.65488C4.25053 7.7343 3.92246 7.40643 3.92246 7.00188C3.92246 6.59752 4.25053 6.26946 4.65488 6.26946ZM4.65488 10.1921H14.069C14.4735 10.1921 14.8014 10.52 14.8014 10.9245C14.8014 11.3289 14.4735 11.657 14.069 11.657H4.65488C4.25053 11.657 3.92246 11.3289 3.92246 10.9245C3.92246 10.52 4.25053 10.1921 4.65488 10.1921ZM10.931 15.5794H4.65488C4.25053 15.5794 3.92246 15.2515 3.92246 14.847C3.92246 14.4424 4.25053 14.1146 4.65488 14.1146H10.931C11.3354 14.1146 11.6634 14.4424 11.6634 14.847C11.6634 15.2515 11.3356 15.5794 10.931 15.5794Z" fill="black"/>
+                                                <path d="M19.9007 12.4937C17.0847 12.4937 14.8018 14.7766 14.8018 17.5926C14.8018 20.4088 17.0847 22.6917 19.9007 22.6917C22.7169 22.6917 24.9998 20.4088 24.9998 17.5926C24.9998 14.7764 22.7169 12.4937 19.9007 12.4937ZM20.9516 19.6794L19.9005 18.6283L18.8493 19.6794C18.1637 20.3651 17.1287 19.3284 17.8135 18.6435L18.8646 17.5926L17.8135 16.5414C17.1278 15.8557 18.1646 14.8208 18.8493 15.5055L19.9005 16.5567L20.9516 15.5055C21.6371 14.8199 22.6721 15.8567 21.9873 16.5414L20.9362 17.5926L21.9873 18.6435C22.6724 19.3286 21.6371 20.3649 20.9516 19.6794Z" fill="black"/>
+                                                </g>
+                                                <defs>
+                                                <clipPath id="clip0_5340_380">
+                                                <rect width="25" height="25" fill="white"/>
+                                                </clipPath>
+                                                </defs>
+                                            </svg>
+                                            <h5>No conversation</h5>
+                                        </div>
+                                        `;
 
                         $('#messages').html(messgehtml);
 
@@ -762,10 +801,10 @@
                         var lihtml = '';
 
                         lihtml += `
-                                                                                                                                                <li class="nav-item no-tickets text-center">
-                                                                                                                                                    <p>No tickets Avaliable </p>
-                                                                                                                                                </li>
-                                                                                                                                            `;
+                                    <li class="nav-item no-tickets text-center">
+                                        <p>No tickets Avaliable </p>
+                                    </li>
+                                `;
 
                         $('#myUL').html(lihtml);
                         show_toastr('Error', data.message, 'error');
@@ -790,7 +829,21 @@
                         $('#messages').html(data.tickethtml);
                         $('.chat_head').text(name);
                         $('.chat_subject').text(subject);
+
+                        $('.chat_agent').text(data?.agentName || 'No Asignado'); 
+                        $('.chat_created_by').text(data?.createdByName);                        
+                        $('.chat_head_email').text(data?.currentTicket?.email || '').css('text-transform', 'none').css('font-family', 'monospace');
+                        const department = data?.currentTicket?.get_department?.name;
+                        $('.chat_ticket_department_wrapper').toggle(!!department);
+                        $('.chat_ticket_department').text(department || '');
+
+                        $('.chat_ticket_category_wrapper').toggle(!!category);
+                        $('.chat_ticket_category').text(category || '');
+                        //$('.chat_ticket_department').text(data?.currentTicket?.getDepartment?.name ||  '');
+
                         $('.chat_category').text(category);
+                        updateTicketPriority(data.priority); // data.priority ahora viene del backend con {name, color}
+
                         $('.chat_priority').text(priority);
                         $('.chat_img').attr('src', img);
                         $('.chat-info .ticket-number').text(data.ticketNumber);
@@ -965,8 +1018,22 @@
                         $('#messages').html(data.tickethtml);
                         $('.chat_head').text(name);
                         $('.chat_subject').text(subject);
+                        $('.chat_agent').text(data?.agentName || 'No Asignado'); 
+                        $('.chat_created_by').text(data?.createdByName);                        
+                        $('.chat_head_email').text(data?.currentTicket?.email || '').css('text-transform', 'none').css('font-family', 'monospace');;
+                        const department = data?.currentTicket?.get_department?.name;
+                        $('.chat_ticket_department_wrapper').toggle(!!department);
+                        $('.chat_ticket_department').text(department || '');
+
+                        $('.chat_ticket_category_wrapper').toggle(!!category);
+                        $('.chat_ticket_category').text(category || '');
+                        
+                        
+                        //$('.chat_ticket_department').text(data?.currentTicket?.get_department?.name ||  '');
+
                         $('.chat_category').text(category);
-                        $('.chat_priority').text(priority);
+                        updateTicketPriority(data.priority);
+
                         $('.chat_img').attr('src', img);
                         $('.chat-info .ticket-number').text(data.ticketNumber);
                         $('#copyTicketLink').attr('data-link', ticketCopyLinkUrl);
@@ -1051,6 +1118,21 @@
                 }
             });
         });
+
+        function updateTicketPriority(priorityData) {
+            const priorityWrapper = $('.chat_ticket_priority');
+
+            if (priorityData?.name && priorityData?.color) {
+                priorityWrapper.find('.priority-text').text(priorityData.name);
+                priorityWrapper.find('.color-dot').css('background-color', priorityData.color);
+            } else {
+                priorityWrapper.find('.priority-text').text('---');
+                priorityWrapper.find('.color-dot').css('background-color', 'transparent');
+            }
+        }
+
+
+
     </script>
 
     <script>
@@ -1079,7 +1161,7 @@
             var id = $('.user_chat.active').attr('id');
             var user = this.value;
             var Url = $(this).data('url');
-
+            var selectedText = this.options[this.selectedIndex].text;
             $.ajax({
                 url: Url + '?assign=' + user,
                 type: 'GET',
@@ -1087,6 +1169,7 @@
                 success: function (data) {
                     if (data.status == 'success') {
                         show_toastr('Success', data.message, 'success');
+                        $('.chat_agent').text(selectedText || 'No Asignado'); 
                     } else {
                         show_toastr('Error', data.message, 'error');
                     }
@@ -1100,6 +1183,8 @@
             var id = $('.user_chat.active').attr('id');
             var category = this.value;
             var Url = $(this).data('url');
+            var selectedText = this.options[this.selectedIndex].text;
+
             $.ajax({
                 url: Url + '?category=' + category,
                 type: 'GET',
@@ -1107,6 +1192,7 @@
                 success: function (data) {
                     if (data.status == 'success') {
                         show_toastr('Success', data.message, 'success');
+                        $('.chat_ticket_category').text(selectedText ||  ''); 
                     } else {
                         show_toastr('Error', data.message, 'error');
                     }
@@ -1120,7 +1206,7 @@
             var id = $('.user_chat.active').attr('id');
             var department = this.value;
             var Url = $(this).data('url');
-
+            var selectedText = this.options[this.selectedIndex].text;
             $.ajax({
                 url: Url + '?department=' + department,
                 type: 'GET',
@@ -1128,6 +1214,7 @@
                 success: function (data) {
                     if (data.status == 'success') {
                         show_toastr('Success', data.message, 'success');
+                        $('.chat_ticket_department').text(selectedText ||  ''); 
                     } else {
                         show_toastr('Error', data.message, 'error');
                     }
@@ -1142,6 +1229,7 @@
             var id = $('.user_chat.active').attr('id');
             var priority = this.value;
             var Url = $(this).data('url');
+            var selectedText = this.options[this.selectedIndex].text;
 
             $.ajax({
                 url: Url + '?priority=' + priority,
@@ -1150,6 +1238,8 @@
                 success: function (data) {
                     if (data.status == 'success') {
                         show_toastr('Success', data.message, 'success');
+                        updateTicketPriority(data.priority);
+
                     } else {
                         show_toastr('Error', data.message, 'error');
                     }
@@ -1208,6 +1298,7 @@
                     if (data.status == 'success') {
                         show_toastr('Success', data.message, 'success');
                         // $('.chat-user').text(newEmail);
+                        $('.chat_head_email').text(newEmail).css('text-transform', 'none').css('font-family', 'monospace');
                     } else {
                         show_toastr('Error', data.message, 'error');
                     }
@@ -1655,6 +1746,36 @@
                 forceTLS: true
             });
 
+            var agentChangeChannel = pusher.subscribe('ticket-agent-change-{{ auth()->user()->id }}');
+            
+            agentChangeChannel.bind('ticket-agent-change-event-{{ auth()->user()->id }}', function(data) {
+               
+                // Verificar que el mensaje es para este ticket
+
+                if (ticket_id == data.ticket_unique_id) {
+                    // Crear el HTML del mensaje del sistema
+                    const html = `
+                        <div class="system-message-container">
+                            <div class="system-message-content">
+                                <span class="system-icon">🔄</span>
+                                <span class="system-text">${data.message}</span>
+                                <span class="system-time">(${data.timestamp})</span>
+                            </div>
+                        </div>`;
+                        
+                    
+                    // Insertar el mensaje al inicio del contenedor de conversaciones
+                    $('.messages-container').append(html);
+                    
+                    // Hacer scroll al final
+                    $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
+
+                    // Actualizar el agente en la interfaz si es necesario
+                }
+                //window.location.reload()
+
+            });
+        
 
             // Subscribe to the Pusher channel after getting the ticket reply
             var channel = pusher.subscribe('ticket-reply-{{ auth()->user()->id }}');

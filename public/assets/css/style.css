@@ -24664,3 +24664,36 @@ table.dataTable tbody>tr.selected th.select-checkbox:after {
     }
 }
 /* ticket page css end */
+
+/* Estilos para mensajes del sistema */
+.system-message-container {
+    max-width: 80%;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.system-message-content {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    background-color:  #d1ecf1;
+}
+
+.system-icon {
+    font-size: 1rem;
+}
+
+.system-time {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--black) !important;
+}
+.system-text{
+    color: var(--black) !important;
+    text-transform: none;
+}
+/* Si no tienes --border-color definido, puedes usa

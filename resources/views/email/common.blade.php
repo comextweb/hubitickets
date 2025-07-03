@@ -94,6 +94,26 @@
         }
     </style>
 </head>
+@php
+    $themeColors = [
+        'theme-1' => '#0CAF60',
+        'theme-2' => '#584ED2',
+        'theme-3' => '#6FD943',
+        'theme-4' => '#145388',
+        'theme-5' => '#B9406B',
+        'theme-6' => '#008ECC',
+        'theme-7' => '#922C88',
+        'theme-8' => '#C0A145',
+        'theme-9' => '#48494B',
+        'theme-10' => '#0C7785',
+        'default' => '#6676EF',
+    ];
+
+    $setting      = getCompanyAllSettings();
+    $currentTheme = isset($setting['color']) ? $setting['color'] : 'default';
+    $primaryColor = $themeColors[$currentTheme] ?? '#6676EF';
+
+@endphp
 <body style="background-color:#f8f8f8;">
     <div style="background-color:#f8f8f8;">
         <table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600">
@@ -110,10 +130,11 @@
                                                     <div class="mj-column-per-100 outlook-group-fix" style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                                             <tr>
-                                                                <td style="font-size:0px;padding:10px 25px;padding-top:0px;padding-right:0px;padding-bottom:40px;padding-left:0px;word-break:break-word;">
-                                                                    <p style="border-top:solid 7px #6676EF;font-size:1;margin:0px auto;width:100%;">
-                                                                    </p>
-                                                                    <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 7px #6676EF;font-size:1;margin:0px auto;width:600px;" role="presentation" width="600px">
+                                                                <td style="font-size:0px;padding:10px 25px;padding-top:0px;padding-right:0px;padding-bottom:20px;padding-left:0px;word-break:break-word;">
+
+                                                                    <p style="border-top:solid 7px {{ $primaryColor }};font-size:1;margin:0px auto;width:100%;"></p>
+
+                                                                    <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-top:solid 7px {{ $primaryColor }};font-size:1;margin:0px auto;width:600px;" role="presentation" width="600px">
                                                                         <tr>
                                                                             <td style="height:0;line-height:0;">
                                                                             </td>
@@ -127,7 +148,9 @@
                                                                         <tbody>
                                                                             <tr>
                                                                                 <td style="width:110px;">
-                                                                                    <img alt="" height="auto" src="{{getSidebarLogo()}}" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;" title="" width="110"/>
+                                                                                    <!--img alt="" height="auto" src="{{getSidebarLogo()}}" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;" title="" width="70"/-->
+                                                                                    <img alt="" height="auto" src="{{ getFile(getSidebarLogo()) }}{{ '?' . time() }}" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;" title="" width="70"/>
+                                                                                    
                                                                                 </td>
                                                                             </tr>
                                                                         </tbody>

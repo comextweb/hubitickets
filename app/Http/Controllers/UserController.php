@@ -87,7 +87,13 @@ class UserController extends Controller
         if (Auth::user()->isAbleTo('user create')) {
             $request->validate([
                 'name'    => 'required|string|max:255',
-                'email'   => 'required|string|email|max:255|unique:users',
+                'email'   => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique('users')->where('company_id', auth()->user()->company_id)
+                ],
                 'role' => 'required',
                 'department_ids' => 'nullable|array',
                 'department_ids.*' => 'exists:departments,id' // Valida cada ID del array
@@ -148,6 +154,7 @@ class UserController extends Controller
                 $uArr = [
                     'email' => $user->email,
                     'password' => $request->password,
+                    'user_name' => $user->name
                 ];
                 $resp = Utility::sendEmailTemplate('New User', [$user->id => $user->email], $uArr);
             }
