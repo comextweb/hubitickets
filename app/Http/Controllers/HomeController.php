@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Pusher\Pusher;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -263,6 +264,8 @@ class HomeController extends Controller
 
             //Send Email To The Admin
             sendTicketEmail('Send Mail To Admin', $settings, $ticket, $request, $error_msg);
+            sendTicketEmail('Send Mail To Creator', $settings, $ticket, $request, $error_msg);
+            
 
             return redirect()->back()->with('create_ticket', __('Ticket created successfully') . ' <a href="' . route('home.view', Crypt::encrypt($ticket->ticket_id)) . '" target="_blank"><b>' . __('Your unique ticket link is this.') . '</b></a> ' . ((isset($error_msg)) ? '<br> <span class="text-danger">' . $error_msg . '</span>' : ''));
         } else {
@@ -344,6 +347,7 @@ class HomeController extends Controller
 
             //Send Email To The Admin
             sendTicketEmail('Send Mail To Admin', $settings, $ticket, $request, $error_msg);
+            sendTicketEmail('Send Mail To Creator', $settings, $ticket, $request, $error_msg);
 
             $data['status'] = 'success';
             $data['message'] = __('Ticket Create Successfully');
@@ -357,10 +361,15 @@ class HomeController extends Controller
             $ticket_id = decrypt($ticket_id);
             $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
             $settings = getCompanyAllSettings();
-            $is_agent = request()->query('is_agent', null); // null si no viene
+            $encrypt_id_agent = request()->query('id_agent', null); // null si no viene
+            $decrypt_id_agent = null;
+            if($encrypt_id_agent){
+                $decrypt_id_agent = decrypt($encrypt_id_agent);            
+            }
+            $users = User::where('type', 'agent')->get();
 
             if ($ticket) {
-                return view('show', compact('ticket', 'settings','is_agent'));
+                return view('show', compact('ticket', 'settings','decrypt_id_agent','users'));
             } else {
                 return redirect()->back()->with('error', __('Ticket Not Found.'));
             }
@@ -384,11 +393,12 @@ class HomeController extends Controller
         $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
         if ($ticket) {
 
-            $is_agent = $request->get('is_agent');
-            // determinar sender según is_agent
+            $id_agent = $request->get('id_agent', null); // null si no viene
+                                 
+            // determinar sender según id_agent
             $sender = 'user';
-            if (!empty($is_agent) && intval($is_agent) === 1) {
-                $sender = $ticket->is_assign ?? 'user';
+            if (!empty($id_agent)) {
+                $sender = $id_agent ?? 'user';
             }
 
             $summernoteContent = $request->reply_description;
@@ -446,7 +456,7 @@ class HomeController extends Controller
                         $settings['PUSHER_APP_ID'],
                         $options
                     );
-
+                    //ENVIAR EVENTO A COVERSACION INTERNA
                     $data = [
                         'id' => $conversion->id,
                         'tikcet_id' => $conversion->ticket_id,
@@ -475,21 +485,53 @@ class HomeController extends Controller
                     $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
 
                     // Enviar al agente asignado si existe
-                    if (!empty($ticket->is_assign)) {
+                    if (!empty($ticket->is_assign) && $ticket->is_assign != $ticket->created_by ) {
                         $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
                     }
                     //$pusher->trigger($channel, $event, $data);
+
+
+                    //ENVIAR EVENTO A LA VISTA DE CONVERSACION PUBLICA
+                    $data = [
+                        'converstation' => $conversion,
+                        'replyByRole' => $conversion->replyBy()->type,
+                        'id' => $conversion->id,
+                        'ticket_id' => $conversion->ticket_id,
+                        'ticket_number' => $ticket->ticket_id,
+                        'new_message' => $conversion->description ?? '',
+                        'sender_name' => $conversion->replyBy()->name,
+                        'attachments' => json_decode($conversion->attachments),
+                        'timestamp' =>$conversion->created_at->diffForHumans(),
+                        'baseUrl' => env('APP_URL'),
+                    ];
+                    $channel = "ticket-reply-send-$ticket->ticket_id";
+                    $event = "ticket-reply-send-event-$ticket->ticket_id";
+                    if (strlen(json_encode($data)) > 10240) {
+                        Log::warning('Pusher payload too large for ticket: ' . $ticket->ticket_id);
+                    } else {
+                        $pusher->trigger($channel, $event, $data);
+                    }
+
                 }
 
                 $request->merge(['type' => 'frontend']);
 
                 
 
-                // Send Email To Te Agent
+                // Send Emails
                 $error_msg = '';
-                sendTicketEmail('Reply Mail To Agent', $settings, $ticket, $request, $error_msg);
+                
+                if($id_agent != $ticket->is_assign){
+                    sendTicketEmail('Reply Mail To Agent', $settings, $ticket, $request, $error_msg);
+                }
+                if($id_agent != $ticket->created_by){
+                    sendTicketEmail('Reply Mail To Creator', $settings, $ticket, $request, $error_msg);
+                }
 
-                // Send Email To The Admin
+                if($sender!='user'){
+                    sendTicketEmail('Reply Mail To Customer', $settings, $ticket, $request, $error_msg);
+                }
+
                 sendTicketEmail('Reply Mail To Admin', $settings, $ticket, $request, $error_msg);
 
                 return redirect()->back()->with('success', __('Reply Added Successfully'));

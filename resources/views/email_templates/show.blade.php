@@ -77,6 +77,11 @@
                             @endforeach
                         @endif
                     </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#variablesModal">
+                            <i class="ti ti-edit"></i> {{ __('Editar Variables JSON') }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,3 +129,33 @@
         </div>
     </div>
 @endsection
+
+<!-- Modal de edición de variables -->
+<div class="modal fade" id="variablesModal" tabindex="-1" aria-labelledby="variablesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form action="{{ route('update.email.variables', $currEmailTempLang->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="variablesModalLabel">{{ __('Editar Variables JSON') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Close') }}"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="variables" class="form-label">{{ __('Variables JSON') }}</label>
+                        <textarea class="form-control" id="variables" name="variables" rows="10" style="font-family: monospace;">@json($variables, JSON_PRETTY_PRINT)</textarea>
+                        <small class="text-muted">{{ __('Edita el JSON directamente para agregar o eliminar variables.') }}</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Cancelar') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Actualizar Variables') }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

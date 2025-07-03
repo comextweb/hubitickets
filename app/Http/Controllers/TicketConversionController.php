@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Exception;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\Department;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 use Illuminate\Support\Facades\Log;
 use Pusher\Pusher;
@@ -135,7 +137,7 @@ class TicketConversionController extends Controller
     {
 
 
-        $ticket = Ticket::with('conversions')->find($ticket_id);
+        $ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment')->find($ticket_id);
 
         if ($ticket) {
             $conversions = Conversion::where('ticket_id', $ticket_id)->get();
@@ -148,6 +150,8 @@ class TicketConversionController extends Controller
 
 
             $status = $ticket->status;
+            $priority = $ticket->getPriority;
+            
             $users = User::where('type', 'agent')->get();
             //$categories = Category::where('created_by', creatorId())->get();
             $categories = Category::all();
@@ -170,11 +174,14 @@ class TicketConversionController extends Controller
             $response = [
                 'tickethtml' => $tickethtml,
                 'status' => $status,
+                'priority' => $priority,
                 'unread_message_count' => $ticket->unreadMessge($ticket_id)->count(),
                 'tag' => $ticket->getTagsAttribute(),
                 'ticketNumber' => $ticketNumber,
                 'currentTicket' => $ticket,
                 'encryptedTicketId' => encrypt($ticket->ticket_id),
+                'agentName' => $ticket->is_assign ? $ticket->getAgentDetails->name : 'No Asignado',
+                'createdByName' => $ticket->getTicketCreatedBy ? $ticket->getTicketCreatedBy->name : 'No Asignado'   
             ];
             return json_encode($response);
         } else {
@@ -413,6 +420,25 @@ class TicketConversionController extends Controller
         // **Email Notifications**
         $error_msg = '';
         sendTicketEmail('Reply Mail To Customer', $settings, $ticket, $request, $error_msg);
+        
+
+        // Obtener el agente asignado
+        $agent = User::where('id', $ticket->is_assign)->first();
+        $creator = User::where('id', $ticket->created_by)->first();
+        
+
+        // Enviar al agente o creador solo si:
+        // - hay un agente asignado o creador
+        // - y el usuario que responde NO es ese agente o creador
+        $sender = $conversion->replyBy();
+        if ($agent && $sender->id !== $agent->id) {
+            sendTicketEmail('Reply Mail To Agent', $settings, $ticket, $request, $error_msg);
+        }
+
+        if ($creator && $sender->id !== $creator->id) {
+            sendTicketEmail('Reply Mail To Creator', $settings, $ticket, $request, $error_msg);
+        }
+        
     }
 
 
@@ -463,9 +489,13 @@ class TicketConversionController extends Controller
         $assign = $request->assign;
         $ticket = Ticket::find($id);
         if ($ticket) {
+            $old_agent_id = $ticket->is_assign;
             $ticket->is_assign = $assign;
             $ticket->type = "Assigned";
             $ticket->save();
+
+            $this->createAgentChangeConversation($request, $ticket, $old_agent_id, $assign);
+
             $data['status'] = 'success';
             $data['message'] = __('Ticket assign successfully.');
             return $data;
@@ -475,6 +505,96 @@ class TicketConversionController extends Controller
             return $data;
         }
     }
+
+    public function assignPublicChange(Request $request, $id)
+    {
+        try {
+            $encryptedToken = $request->query('token');
+            $decryptedToken = Crypt::decryptString($encryptedToken);
+        } catch (DecryptException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token inválido o corrupto.',
+            ], 401);
+        }
+
+        if ($decryptedToken !== config('app.public_token')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token inválido o acceso no autorizado.',
+            ], 401);
+        }
+
+        $assign = $request->assign;
+        $ticket = Ticket::find($id);
+        if ($ticket) {
+            $old_agent_id = $ticket->is_assign;
+            $ticket->is_assign = $assign;
+            $ticket->type = "Assigned";
+            $ticket->save();
+            $this->createAgentChangeConversation($request, $ticket, $old_agent_id, $assign);
+
+            $data['status'] = 'success';
+            $data['message'] = __('Ticket assign successfully.');
+            return $data;
+        } else {
+            $data['status'] = 'error';
+            $data['message'] = __('Ticket not found');
+            return $data;
+        }
+    }
+    protected function createAgentChangeConversation(Request $request, $ticket, $old_agent_id, $new_agent_id)
+    {
+        // Obtener nombres de los agentes
+        $old_agent = $old_agent_id ? User::find($old_agent_id) : null;
+        $new_agent = User::find($new_agent_id);
+        
+        // Determinar el mensaje según si había agente asignado antes
+        if(Auth::check()){
+            $message = Auth::user()->name . " ha reasignado este ticket a " . $new_agent->name;
+        }else if ($old_agent) {
+            $message = $old_agent->name . " ha reasignado este ticket a " . $new_agent->name;
+        }else {
+            $message = "Se ha asignado el agente " . $new_agent->name . " al ticket";
+        }
+
+
+        // Crear la conversación
+        $conversion = new Conversion();
+        $conversion->ticket_id = $ticket->id;
+        $conversion->description = $message;
+        $conversion->sender = 'system';
+        $conversion->save();
+
+        // Disparar evento Pusher
+        $this->triggerPusherEvent($request,$ticket, $conversion);
+
+        $settings = getCompanyAllSettings();
+        
+        $error_msg = '';
+        sendTicketEmail('Send Mail To Agent', $settings, $ticket, $request, $error_msg);
+    }
+
+    protected function triggerPusherEvent(Request $request,$ticket, $conversion)
+    {
+        $pusher = getPusherInstance();
+        if($pusher){
+            $data = [
+                'id' => $conversion->id,
+                'ticket_unique_id' => $ticket->id,
+                'message' => $conversion->description,
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->diffForHumans()
+            ];
+
+            // Emitir solo un evento por ticket
+            $pusher->trigger("ticket-agent-change-{$ticket->is_assign}", "ticket-agent-change-event-{$ticket->is_assign}", $data);
+            if($ticket->is_assign != $ticket->created_by){
+                $pusher->trigger("ticket-agent-change-{$ticket->created_by}", "ticket-agent-change-event-{$ticket->created_by}", $data);
+            }
+
+        }
+    }
+
 
     public function departmentChange(Request $request, $id)
     {
@@ -528,6 +648,7 @@ class TicketConversionController extends Controller
 
             $data['status'] = 'success';
             $data['message'] = __('Ticket priority  change successfully.');
+            $data['priority'] = $ticket->getPriority;
             return $data;
         } else {
             $data['status'] = 'error';

@@ -13,6 +13,7 @@ use App\Mail\CommonEmailTemplate;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Storage;
 use Date;
+use Illuminate\Support\Facades\Log;
 
 class Utility extends Model
 {
@@ -48,6 +49,10 @@ class Utility extends Model
             $content = NotificationTemplateLangs::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
             if (!empty($content->content)) {
                 $content->content = self::replaceVariable($content->content, $obj);
+
+                if(isset($obj['ticket_subject']) && $obj['ticket_subject']){
+                    $content->subject = $content->subject .': '. $obj['ticket_subject'];
+                }
 
                 try {
                     $a = setSMTPConfig();
@@ -88,8 +93,14 @@ class Utility extends Model
             '{app_name}',
             '{company_name}',
             '{ticket_name}',
+            '{ticket_subject}',
             '{ticket_id}',
+            '{ticket_category}',
+            '{ticket_priority}',
+            '{ticket_priority_color}',
+            '{ticket_department}',
             '{ticket_description}',
+            '{ticket_reply_description}',
             '{app_url}',
             '{email}',
             '{password}',
@@ -97,7 +108,13 @@ class Utility extends Model
             '{ticket_url}',
             '{customer_email}',
             '{agent_email}',
+            '{agent_name}',
+            '{resolution_agent_name}',
+            '{resolution_agent_email}',
+            '{support_agent_email}',
+            '{support_agent_name}',
             '{customer_name}',
+            '{admin_name}',
             '{rating_url}',
         ];
 
@@ -105,8 +122,14 @@ class Utility extends Model
             'app_name' => '-',
             'company_name' => '-',
             'ticket_name' => '-',
+            'ticket_subject' => '-',
             'ticket_id' => '-',
+            'ticket_category' => '-',
+            'ticket_priority' => '-',
+            'ticket_priority_color' => '-',
+            'ticket_department' => '-',
             'ticket_description' => '-',
+            'ticket_reply_description' => '-',
             'app_url' => '-',
             'email' => '-',
             'password' => '-',
@@ -114,7 +137,13 @@ class Utility extends Model
             'ticket_url' => '-',
             'customer_email' => '-',
             'agent_email' => '-',
+            'agent_name' => '-',
+            'resolution_agent_name' => '-',
+            'resolution_agent_email' => '-',
+            'support_agent_email' => '-',
+            'support_agent_name' => '-',
             'customer_name' => '',
+            'admin_name' => '',
             'rating_url' => '',
         ];
 
@@ -126,9 +155,12 @@ class Utility extends Model
         $settings = getCompanyAllSettings();
         $company_name = isset($settings['company_name']) ? $settings['company_name'] : env('APP_NAME');
 
+        // Get current request URL
+        $currentUrl = request()->getSchemeAndHttpHost();
+        
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = isset($settings['company_name']) ? $settings['company_name'] : env('APP_NAME');;
-        $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
+        $arrValue['app_url']      = '<a href="' . $currentUrl . '" target="_blank">' . $currentUrl . '</a>';
         return str_replace($arrVariable, array_values($arrValue), $content);
     }
 }

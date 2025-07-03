@@ -10,14 +10,25 @@ class Conversion extends Model
         'ticket_id','description', 'attachments', 'sender'
     ];
 
-    public function replyBy(){
+    /*public function replyBy(){
         if($this->sender=='user'){
+            return $this->ticket;
+        }else if($this->sender=='system'){
             return $this->ticket;
         }
         else{
             return $this->hasOne('App\Models\User','id','sender')->first();
         }
+    }*/
+    public function replyBy()
+    {
+        if (in_array($this->sender, ['user', 'system'])) {
+            return $this->ticket;
+        }
+
+        return $this->hasOne(\App\Models\User::class, 'id', 'sender')->first();
     }
+
 
     public function getReplyByRoleName()
     {

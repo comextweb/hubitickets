@@ -62,6 +62,10 @@ class Ticket extends Model
     public function getTicketCreatedBy(){
         return $this->hasOne(User::class,'id','created_by');
     }
+    public function getDepartment(){
+        return $this->hasOne(Department::class,'id','department_id');
+    }
+    
 
     public static function category($category)
     {

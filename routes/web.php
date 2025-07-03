@@ -55,6 +55,10 @@ Route::middleware(['set.current.company'])->group(function () {
             return redirect(request()->get('2fa_referrer'));
         })->name('2faVerify')->middleware('2fa');
     });
+   
+    Route::name('admin.')->prefix('admin')->middleware(['XSS'])->group(function () {
+        Route::get('ticket/{id}/assign/public-change', [TicketConversionController::class, 'assignPublicChange'])->name('ticket.assign.publicchange');
+    });
 
     Route::name('admin.')->prefix('admin')->middleware(['auth', 'XSS'])->group(function () {
 
@@ -195,7 +199,7 @@ Route::middleware(['set.current.company'])->group(function () {
         Route::get('email_template_lang/{id}/{lang?}', [EmailTemplateController::class, 'manageEmailLang'])->name('manage.email.language');
         Route::post('email_template_store/{pid}', [EmailTemplateController::class, 'storeEmailLang'])->name('store.email.language');
         Route::post('email_template_status', [EmailTemplateController::class, 'updateStatus'])->name('status.email.language');
-
+        Route::put('email_template/variables/{id}', [EmailTemplateController::class, 'updateVariables'])->name('update.email.variables');        
         //====================================  chatgpt ====================================//
         Route::get('generate/{template_name}', [AiTemplateController::class, 'create'])->name('generate');
         Route::post('generate/keywords/{id}', [AiTemplateController::class, 'getKeywords'])->name('generate.keywords');

@@ -151,7 +151,7 @@
                                     <label class="require form-label">{{ __('Agent') }}</label><x-required></x-required>
                                     <select id="agents" class="form-select @error('category') is-invalid @enderror"
                                         name="agent_id" required>
-                                        <option value="">{{ __('Select Agent') }}</option>
+                                        <option value="">{{ __('Select Resolution Agent') }}</option>
                                         @foreach ($users as $agent)
                                             <option value="{{ $agent->id }}"
                                                 {{ $ticket->is_assign == $agent->id ? 'selected' : '' }}>

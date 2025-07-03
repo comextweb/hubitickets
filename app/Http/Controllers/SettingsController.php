@@ -122,7 +122,7 @@ class SettingsController extends Controller
                         'light_logo' => 'image',
                     ]
                 );
-                $lightlogoName = 'logo-light_ ' . time() . '.png';
+                $lightlogoName = 'logo-light_' . time() . '.png';
                 $dir = 'logo';
                 $validation = [
                     'mimes:' . 'png',

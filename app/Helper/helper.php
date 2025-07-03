@@ -1112,16 +1112,27 @@ if (!function_exists('sendTicketEmail')) {
         $uArr = [
             'ticket_name' => $ticket->name,
             'ticket_id' => $ticketNumber,
+            'ticket_subject' => $ticket->subject,
+            'ticket_category' => optional($ticket->getCategory)->name ?? '-',
+            'ticket_priority' => optional($ticket->getPriority)->name ?? '-',
+            'ticket_department' => optional($ticket->getDepartment)->name ?? '-',
             'ticket_url' => route('home.view', ['id' => encrypt($ticket->ticket_id)]),
+            'ticket_description' => $ticket->description ?? '-',
+            'customer_name' => $ticket->name ?? '-',
+            'customer_email' => $ticket->email ?? '-',
+            'support_agent_name' => optional($ticket->getTicketCreatedBy)->name ?? '-',
             'originalTicketId' => $ticket->id,
         ];
+
+        $agent = User::where('id', $ticket->is_assign)->first();
+        
+        $uArr['resolution_agent_name'] = isset($agent->name) ? $agent->name : 'No asignado';
         switch ($templateName) {
             case 'Send Mail To Agent':
-                $agent = User::where('id', $ticket->is_assign)->first();
                 if (!$agent)
                     return;
-                $uArr['email'] = $request->email;
-                $uArr['ticket_url'] .= '?is_agent=1';
+
+                $uArr['ticket_url'] .= '?id_agent='. encrypt($agent->id);
                 $recipientEmail = $agent->email;
                 break;
             case 'Send Mail To Customer':
@@ -1129,36 +1140,48 @@ if (!function_exists('sendTicketEmail')) {
                 $recipientEmail = $request->email;
                 break;
             case 'Send Mail To Admin':
-                $agent = User::where('id', $ticket->is_assign)->first();
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
                 if (!$admin)
                     return;
-                $uArr['customer_email'] = $request->email;
-                $uArr['agent_email'] = isset($agent->email) ? $agent->email : '---';
+                $uArr['admin_name'] = isset($admin->name) ? $admin->name : '---';
                 $recipientEmail = $admin->email;
                 break;
+            case 'Send Mail To Creator':
+                $creator = optional($ticket->getTicketCreatedBy);
+                if (!$creator)
+                    return;
+                $uArr['ticket_url'] .= '?id_agent='. encrypt($creator->id);
+                $recipientEmail = $creator->email;
+                break;
             case 'Reply Mail To Customer':
-                unset($uArr['ticket_url']);
-                $uArr['ticket_description'] = $request->reply_description;
+                $uArr['ticket_reply_description'] = $request->reply_description;
                 $recipientEmail = $ticket->email;
                 break;
             case 'Reply Mail To Agent':
-                $agent = User::where('id', $ticket->is_assign)->first();
                 if (!$agent)
                     return;
-                unset($uArr['ticket_url']);
-                $uArr['ticket_description'] = $request->reply_description;
+                $uArr['ticket_url'] .= '?id_agent='. encrypt($agent->id);
+                $uArr['ticket_reply_description'] = $request->reply_description;
                 $recipientEmail = $agent->email;
                 break;
             case 'Reply Mail To Admin':
-                $agent = User::where('id', $ticket->is_assign)->first();
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
                 if (!$admin)
                     return;
                 $uArr['customer_email'] = $ticket->email;
                 $uArr['agent_email'] = isset($agent->email) ? $agent->email : '---';
-                $uArr['ticket_description'] = $request->reply_description;
+                $uArr['ticket_reply_description'] = $request->reply_description;
+                $uArr['admin_name'] = isset($admin->name) ? $admin->name : '---';
                 $recipientEmail = $admin->email;
+                break;
+            case 'Reply Mail To Creator':
+                $creator = optional($ticket->getTicketCreatedBy);
+                if (!$creator)
+                    return;
+                $uArr['ticket_reply_description'] = $request->reply_description;
+                $uArr['ticket_url'] .= '?id_agent='. encrypt($creator->id);
+
+                $recipientEmail = $creator;
                 break;
             case 'Ticket Close':
                 $uArr['customer_email'] = $request->email;
@@ -1173,4 +1196,31 @@ if (!function_exists('sendTicketEmail')) {
             $error_msg = $response['error'];
         }
     }
+}
+
+function getPusherInstance()
+{
+    $settings = getCompanyAllSettings();
+    if (
+        isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes' &&
+        isset($settings['PUSHER_APP_KEY'], $settings['PUSHER_APP_CLUSTER'], $settings['PUSHER_APP_ID'], $settings['PUSHER_APP_SECRET']) &&
+        !empty($settings['PUSHER_APP_KEY']) &&
+        !empty($settings['PUSHER_APP_CLUSTER']) &&
+        !empty($settings['PUSHER_APP_ID']) &&
+        !empty($settings['PUSHER_APP_SECRET'])
+    ) {
+        $options = [
+            'cluster' => $settings['PUSHER_APP_CLUSTER'],
+            'useTLS' => true,
+        ];
+
+        return new \Pusher\Pusher(
+            $settings['PUSHER_APP_KEY'],
+            $settings['PUSHER_APP_SECRET'],
+            $settings['PUSHER_APP_ID'],
+            $options
+        );
+    }
+
+    return null;
 }

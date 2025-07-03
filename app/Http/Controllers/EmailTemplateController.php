@@ -135,4 +135,33 @@ class EmailTemplateController extends Controller
 
         return redirect()->back()->with('success', __('Status successfully updated!'));
     }
+
+
+    public function updateVariables(Request $request, $id)
+    {
+        if (Auth::user()->isAbleTo('email-template edit')) {
+            $validator = Validator::make($request->all(), [
+                'variables' => 'required|json'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->with('error', __('Invalid JSON format'));
+            }
+
+            $templateLang = NotificationTemplateLangs::find($id);
+            if ($templateLang) {
+                $templateLang->variables = $request->variables;
+                $templateLang->save();
+
+                return redirect()->back()
+                    ->with('success', __('Variables updated successfully.'));
+            }
+
+            return redirect()->back()
+                ->with('error', __('Template not found.'));
+        } else {
+            return redirect()->back()->with('error', 'Permission Denied.');
+        }
+    }
 }

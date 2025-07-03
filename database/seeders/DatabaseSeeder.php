@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AiTemplateSeeder::class);
         $this->call(DefaultCompanySetting::class);
         $this->call(LanguageTableSeeder::class);
+        $this->call(NewTemplateNotification::class);
     }
 }
