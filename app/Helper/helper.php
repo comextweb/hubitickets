@@ -184,9 +184,9 @@ if (!function_exists('getCompanyAllSettings')) {
         }
 
         // For Other roles Such as Agent
-        if (Auth::check() && Auth::user()->parent == 1) {
+        /*if (Auth::check() && Auth::user()->parent == 1) {
             $user = User::find(id: Auth::user()->parent == 1);
-        }
+        }*/
 
 
         if (!empty($user)) {
@@ -1129,7 +1129,7 @@ if (!function_exists('sendTicketEmail')) {
         $uArr['resolution_agent_name'] = isset($agent->name) ? $agent->name : 'No asignado';
         switch ($templateName) {
             case 'Send Mail To Agent':
-                if (!$agent)
+                if (!$agent || !$agent->canReceiveNotifications())
                     return;
 
                 $uArr['ticket_url'] .= '?id_agent='. encrypt($agent->id);
@@ -1141,47 +1141,65 @@ if (!function_exists('sendTicketEmail')) {
                 break;
             case 'Send Mail To Admin':
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
-                if (!$admin)
+                if (!$admin || !$admin->canReceiveNotifications())
                     return;
                 $uArr['admin_name'] = isset($admin->name) ? $admin->name : '---';
                 $recipientEmail = $admin->email;
                 break;
             case 'Send Mail To Creator':
                 $creator = optional($ticket->getTicketCreatedBy);
-                if (!$creator)
+                if (!$creator || !$creator->canReceiveNotifications())
                     return;
                 $uArr['ticket_url'] .= '?id_agent='. encrypt($creator->id);
                 $recipientEmail = $creator->email;
                 break;
             case 'Reply Mail To Customer':
                 $uArr['ticket_reply_description'] = $request->reply_description;
+                $uArr['sender_name'] = isset($request->sender_name) ? $request->sender_name : '---';
                 $recipientEmail = $ticket->email;
                 break;
             case 'Reply Mail To Agent':
-                if (!$agent)
+                if (!$agent || !$agent->canReceiveNotifications())
                     return;
                 $uArr['ticket_url'] .= '?id_agent='. encrypt($agent->id);
                 $uArr['ticket_reply_description'] = $request->reply_description;
+                $uArr['sender_name'] = isset($request->sender_name) ? $request->sender_name : '---';
+
                 $recipientEmail = $agent->email;
                 break;
             case 'Reply Mail To Admin':
                 $admin = User::where('type', 'admin')->where('created_by', 0)->first();
-                if (!$admin)
+                if (!$admin || !$admin->canReceiveNotifications())
                     return;
                 $uArr['customer_email'] = $ticket->email;
                 $uArr['agent_email'] = isset($agent->email) ? $agent->email : '---';
                 $uArr['ticket_reply_description'] = $request->reply_description;
                 $uArr['admin_name'] = isset($admin->name) ? $admin->name : '---';
+                $uArr['sender_name'] = isset($request->sender_name) ? $request->sender_name : '---';
+
                 $recipientEmail = $admin->email;
                 break;
             case 'Reply Mail To Creator':
                 $creator = optional($ticket->getTicketCreatedBy);
-                if (!$creator)
+                if (!$creator || !$creator->canReceiveNotifications())
                     return;
                 $uArr['ticket_reply_description'] = $request->reply_description;
                 $uArr['ticket_url'] .= '?id_agent='. encrypt($creator->id);
+                $uArr['sender_name'] = isset($request->sender_name) ? $request->sender_name : '---';
 
                 $recipientEmail = $creator;
+                break;
+            case 'New External Ticket':
+                $admins = User::whereHas('roles', function ($query) {
+                    $query->where('code', User::ROLE_CODE_AGENT_ADMIN);
+                })->get()->filter(function ($admin) {
+                    return $admin->canReceiveNotifications();
+                });
+
+                if ($admins->isEmpty()) {
+                    return;
+                }
+                $recipientEmail = $admins->pluck('email')->toArray();
                 break;
             case 'Ticket Close':
                 $uArr['customer_email'] = $request->email;
@@ -1190,8 +1208,9 @@ if (!function_exists('sendTicketEmail')) {
             default:
                 return;
         }
+        $recipientList = is_array($recipientEmail) ? $recipientEmail : [$recipientEmail];
 
-        $response = Utility::sendEmailTemplate($templateName, [$recipientEmail], $uArr);
+        $response = Utility::sendEmailTemplate($templateName, $recipientList, $uArr);
         if ((isset($response) && isset($response['is_success'])) && $response['is_success'] == false) {
             $error_msg = $response['error'];
         }

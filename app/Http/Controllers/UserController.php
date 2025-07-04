@@ -69,7 +69,7 @@ class UserController extends Controller
             // $categories = Category::where('created_by', creatorId())->get();
             // $categoryTree = buildCategoryTree($categories);
             //$roles = Role::where('created_by', creatorId())->get();
-            $roles = Role::all();
+            $roles = Role::where('created_by','!=','0')->get();
             $departments = Department::where('is_active', true)->get(); // Asegúrate de importar el modelo Department
             return view('admin.users.create', compact('roles','departments'));
         } else {
@@ -123,6 +123,8 @@ class UserController extends Controller
             $user->type = isset($role) ? $role->type : '';
             $user->lang = isset($settings['default_language']) ? $settings['default_language'] : 'en';
             $user->created_by = creatorId();
+            $user->receive_email_notifications =  $request->notification_switch == 'on' ? '1' : '0';
+            
             if ($request->hasFile('avatar')) {
                 $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -172,7 +174,7 @@ class UserController extends Controller
 
             // $categoryTree = buildCategoryTree($categories);
             //$roles = Role::where('created_by', creatorId())->get();
-            $roles = Role::all();
+            $roles = Role::where('created_by','!=','0')->get();
 
             // Traer todos los departamentos activos
             $departments = Department::where('is_active', true)->get();
@@ -205,6 +207,8 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->mobile_number = $request->mobile_no;
             $user->type = isset($role) ? $role->type : '';
+            $user->receive_email_notifications =  $request->notification_switch == 'on' ? '1' : '0';
+            
 
 
             if ($request->hasfile('avatar')) {

@@ -17,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         //$roles = Role::where('created_by', creatorId())->with('permissions')->get();
-        $roles = Role::with('permissions')->get();
+        $roles = Role::where('created_by','!=','0')->with('permissions')->get();
 
         $data = [
             'role' => $roles

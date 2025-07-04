@@ -82,6 +82,7 @@ class UserController extends Controller
             'type'            => isset($role) ? $role->name : '',
             'mobile_number'   => $request->mobile_no,
             'is_enable_login' => $request->password_switch == 'on' ? '1' : '0',
+            'receive_email_notifications' => $request->notification_switch == 'on' ? '1' : '0',
             'parent'          => creatorId(),
             'created_by'      => creatorId(),
         ];

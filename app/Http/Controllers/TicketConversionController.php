@@ -180,8 +180,9 @@ class TicketConversionController extends Controller
                 'ticketNumber' => $ticketNumber,
                 'currentTicket' => $ticket,
                 'encryptedTicketId' => encrypt($ticket->ticket_id),
-                'agentName' => $ticket->is_assign ? $ticket->getAgentDetails->name : 'No Asignado',
-                'createdByName' => $ticket->getTicketCreatedBy ? $ticket->getTicketCreatedBy->name : 'No Asignado'   
+                'agentName' => $ticket->getAgentDetails?->name ?? 'No Asignado',
+                'createdByName' => $ticket->getTicketCreatedBy?->name ?? 'No Asignado',
+                'tipoUsuario' => $ticket->getTipoUsuario()
             ];
             return json_encode($response);
         } else {
@@ -419,6 +420,9 @@ class TicketConversionController extends Controller
 
         // **Email Notifications**
         $error_msg = '';
+
+        $sender_name = $conversion->replyBy()->name;
+        $request->merge(['sender_name' => $sender_name]);
         sendTicketEmail('Reply Mail To Customer', $settings, $ticket, $request, $error_msg);
         
 
@@ -590,6 +594,10 @@ class TicketConversionController extends Controller
             $pusher->trigger("ticket-agent-change-{$ticket->is_assign}", "ticket-agent-change-event-{$ticket->is_assign}", $data);
             if($ticket->is_assign != $ticket->created_by){
                 $pusher->trigger("ticket-agent-change-{$ticket->created_by}", "ticket-agent-change-event-{$ticket->created_by}", $data);
+            }
+            // Mostrar el mensaje en el chat del usuario que cambia el agente
+            if($ticket->is_assign != Auth::user()->id && $ticket->created_by != Auth::user()->id){
+                $pusher->trigger("ticket-agent-change-" . Auth::user()->id, "ticket-agent-change-event-" . Auth::user()->id, $data);
             }
 
         }

@@ -21,8 +21,8 @@
                             <div class="btn-wrp">
                                 <a href="#" class="btn p-2 btn-sm btn-primary btn-icon cp_link"
                                     data-link="{{ url(\Auth::user()->slug . '/') }}" data-toggle="tooltip"
-                                    data-original-title="{{ __('Click To Copy Support Ticket Url') }}"
-                                    title="{{ __('Click To Copy Support Ticket Url') }}" data-bs-toggle="tooltip"
+                                    data-original-title="{{ __('Click To Copy Support Public Ticket Url') }}"
+                                    title="{{ __('Click To Copy Support Public Ticket Url') }}" data-bs-toggle="tooltip"
                                     data-bs-placement="top">
                                     <i class="ti ti-copy"></i>
                                     {{ __('Create Ticket') }}

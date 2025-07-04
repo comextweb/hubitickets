@@ -149,7 +149,7 @@
                                 @else
                                 <div class="form-group col-md-6">
                                     <label class="require form-label">{{ __('Agent') }}</label><x-required></x-required>
-                                    <select id="agents" class="form-select @error('category') is-invalid @enderror"
+                                    <select id="agents" class="form-select @error('category') is-invalid @enderror select2"
                                         name="agent_id" required>
                                         <option value="">{{ __('Select Resolution Agent') }}</option>
                                         @foreach ($users as $agent)

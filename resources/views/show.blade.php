@@ -7,7 +7,21 @@
 
 @push('css-page')
     <link rel="stylesheet" href="{{asset('css/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="{{ asset('libs/select2/dist/css/select2.min.css') }}">
 @endpush
+@php
+    use Illuminate\Support\Facades\Crypt;
+    $encryptedToken = Crypt::encryptString(config('app.public_token'));
+    $showAgentSelect = $decrypt_id_agent && ($decrypt_id_agent == $ticket->is_assign || $decrypt_id_agent == $ticket->created_by) ; 
+
+    $priorityColor = isset($ticket->getPriority) ? $ticket->getPriority->color : '---';
+    $priority = isset($ticket->getPriority) ? $ticket->getPriority->name : '---';
+    $department = isset($ticket->getDepartment) ? $ticket->getDepartment->name : '---';
+    $createdBy = isset($ticket->getTicketCreatedBy) ? $ticket->getTicketCreatedBy->name : '---';
+    $solicitante = isset($ticket->name) ? $ticket->name : '---';
+    $email_solicitante = isset($ticket->email) ? $ticket->email : '---';
+    $agentName = isset($ticket->is_assign) ? $ticket->getAgentDetails->name : '---';
+@endphp
 @section('content')
     <div class="auth-wrapper auth-v1">
         <div class="auth-content ticket-auth-content">
@@ -15,8 +29,24 @@
                 @csrf
                 <div class="card-header p-md-4 p-3 mb-4">
                     <div class="d-flex align-items-center justify-content-between flex-wrap ">
-                        <h2 class="h3 m-0 p-0">
-                            {{isset($ticket->subject) ? $ticket->subject : __('Ticket')}} - {{ isset($isTicketNumberActive) && $isTicketNumberActive ? Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($ticket['id']) : $ticket['ticket_id'] }}
+                       <h2 class="h3 m-0 p-0 d-flex align-items-center gap-2">
+                            {{ isset($ticket->subject) ? $ticket->subject : __('Ticket') }} - 
+                            {{ isset($isTicketNumberActive) && $isTicketNumberActive 
+                                ? Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($ticket['id']) 
+                                : $ticket['ticket_id'] 
+                            }}
+
+                            @if($showAgentSelect)
+                            <a href="{{ route('admin.new.chat') }}"
+                                class="btn border shadow-sm d-flex align-items-center justify-content-center p-1"
+                                style="background-color: white; width: 32px; height: 32px;"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="Administrar tickets"
+                                target="_blank">
+                                <span style="font-size: 1rem;">⚙️</span>
+                            </a>
+                            @endif
                         </h2>
                         <div class="ticket-category d-flex gap-2 align-items-center">
                             <span>
@@ -38,17 +68,9 @@
                     <div class="card-header-bottom d-flex align-items-center gap-2 flex-wrap justify-content-between">
                         <ul class="d-flex align-items-center gap-3 list-unstyled mb-0 flex-wrap">
                             <li class="d-flex">
-                                <span class="status-badge">{{$ticket->status}}</span>
+                                <span class="status-badge">{{__($ticket->status)}}</span>
                             </li>
-                            @php
-                                $priorityColor = isset($ticket->getPriority) ? $ticket->getPriority->color : '---';
-                                $priority = isset($ticket->getPriority) ? $ticket->getPriority->name : '---';
-                                $department = isset($ticket->getDepartment) ? $ticket->getDepartment->name : '---';
-                                $createdBy = isset($ticket->getTicketCreatedBy) ? $ticket->getTicketCreatedBy->name : '---';
-                                $solicitante = isset($ticket->name) ? $ticket->name : '---';
-                                $email_solicitante = isset($ticket->email) ? $ticket->email : '---';
-                                $agentName = isset($ticket->is_assign) ? $ticket->getAgentDetails->name : '---';
-                            @endphp
+
                             <li class="d-flex">
                                 <span class="priority-badge"
                                     style="background-color: {{ $priorityColor }};">{{$priority}}</span>
@@ -57,15 +79,11 @@
                                 <i class="ti ti-clock fs-5"></i> {{ $ticket->created_at->diffForHumans() }}
                             </li>
                         </ul>
-                        @php
-                            use Illuminate\Support\Facades\Crypt;
-                            $encryptedToken = Crypt::encryptString(config('app.public_token'));
-                            $showAgentSelect = $decrypt_id_agent && ($decrypt_id_agent == $ticket->is_assign || $decrypt_id_agent == $ticket->created_by) ; 
-                        @endphp
+
                         <div class="d-flex flex-column gap-1">
                             <span class="user-info" style="font-size: smaller;"><strong>📅 Creado por:</strong> <span class="chat_created_by">{{$createdBy}}</span></span>
                             <span class="user-info" style="font-size: smaller;"><strong>🛠️ Proceso Afectado:</strong> <span class="chat_agent">{{$department}}</span></span>
-                            <span class="user-info" style="font-size: smaller;"><strong>👤 Solicitante:</strong> <span class="chat_head">{{$solicitante}}</span>|<span class="chat_head_email">{{$email_solicitante}}</span></span>
+                            <span class="user-info" style="font-size: smaller;"><strong>👤 Solicitante:</strong> <span class="chat_head">{{$solicitante}}</span>|<span class="chat_head_email">{{$email_solicitante}}</span>|<span class="">{{$ticket->getTipoUsuario()}}</span></span></span>
                             @if (!$showAgentSelect)<span class="user-info" style="font-size: smaller;"><strong>🎧 Agente de Resolucion:</strong> <span class="chat_agent">{{$agentName}}</span></span>@endif
 
                         </div>
@@ -74,7 +92,7 @@
                         <div class="w-100 w-md-auto mt-2 mt-md-0 ">
                             <label><span class="me-1">🎧</span>{{ __('Resolution Agent') }} :</label>
                             <div class="badge-wrp assign-select-wrp d-flex align-items-center gap-1">
-                                <select id="agents" class="form-select w-100" name="agent_id"
+                                <select id="agents" class="form-select w-100 select2 " name="agent_id"
                                     data-url="{{ route('admin.ticket.assign.publicchange', ['id' => isset($ticket) ? $ticket->id : '0']) }}?token={{ urlencode($encryptedToken) }}"
                                     required>
                                     <option selected disabled value="">{{ __('Select Resolution Agent') }}</option>
@@ -269,6 +287,8 @@
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{asset('css/summernote/summernote-bs4.js')}}"></script>
         <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
+        <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
+
         <script>
             function show_toastr(title, message, type) {
                 var o, i;

@@ -13,6 +13,16 @@
                         </small>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="code" class="form-label">{{ __('Code') }}</label><x-required></x-required>
+                    <input type="text" name="code" class="form-control"
+                        placeholder="{{ __('Enter Code Name') }}" required>
+                    @error('code')
+                        <small class="invalid-code" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </small>
+                    @enderror
+                </div>
             </div>
         </div>
         <div class="row justify-content-center">

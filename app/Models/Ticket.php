@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\CustomFieldsConstants;
 use App\Traits\BelongsToCompany;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -167,4 +168,11 @@ class Ticket extends Model
         return Tags::whereIn('id', $tagIds)->get();
     }
     }
+
+    public function getTipoUsuario()
+    {
+        $field = \App\Models\CustomField::where('name', CustomFieldsConstants::TIPO_USUARIO)->first();
+        return $field ? $field->getData($this, $field->id) : '-';
+    }
+
 }

@@ -10,6 +10,10 @@
 @php
     $setting = getCompanyAllSettings();
     $SITE_RTL = isset($setting['site_rtl']) ? $setting['site_rtl'] : 'off';
+    $isAdmin = Auth::check() && (
+        Auth::user()->hasRole('admin') ||
+        Auth::user()->roles()->where('code', \App\Models\User::ROLE_CODE_AGENT_ADMIN)->exists()
+    );
 @endphp
 @push('css-page')
     @if ($SITE_RTL == 'on')
@@ -140,16 +144,18 @@
         <div class="chat-wrapper-left">
             <div class="chat-header-left">
                 <div class="chat-header-left-wrp d-flex align-items-center justify-content-between">
+                    @if($isAdmin)
                     <div class="select-wrp">
                         <select name="type" id="tikcettype">
                             <option value="">{{ __('All Tickets') }}</option>
                             @foreach ($tikcettype as $item)
                                 <option {{ isset($_GET['type']) && $_GET['type'] == $item ? 'selected' : '' }}
-                                    value="{{ $item }}">{{ $item }}
+                                    value="{{ $item }}">{{ __($item)  }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                    @endif
                     <div class="input-wrp">
                         <input type="text" id="myInput" class="form-control" onkeyup="myFunction()"
                             placeholder="Search Ticket Number" title="Type in a name">
@@ -400,7 +406,9 @@
                                     <span class="info-badge-item first-badge primary-fill">
                                         <i class="bi bi-hash"></i> <span class="ticket-number"></span>
                                     </span>
-
+                                     <span class="info-badge-item ">
+                                        <i class="bi bi-hash"></i> <span class="ticket_type"></span>
+                                    </span>
                                     <span class="info-badge-item chat_ticket_priority">
                                         <span class="color-dot me-1"></span>
                                         <span class="priority-text"></span>
@@ -476,8 +484,8 @@
                             </div>
                         @endif
                         <a href="#" id="copyTicketLink" class="btn px-2 btn-sm btn-primary btn-icon cp_link" data-link="#"
-                            data-toggle="tooltip" data-original-title="{{ __('Click To Copy Support Ticket Url') }}"
-                            title="{{ __('Click To Copy Support Ticket Url') }}" data-bs-toggle="tooltip"
+                            data-toggle="tooltip" data-original-title="{{ __('Click To Copy Support Public Ticket Url') }}"
+                            title="{{ __('Click To Copy Support Public Ticket Url') }}" data-bs-toggle="tooltip"
                             data-bs-placement="top">
                             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -838,6 +846,7 @@
                         $('.chat_ticket_department').text(department || '');
 
                         $('.chat_ticket_category_wrapper').toggle(!!category);
+                        $('.ticket_type').text(data?.tipoUsuario);
                         $('.chat_ticket_category').text(category || '');
                         //$('.chat_ticket_department').text(data?.currentTicket?.getDepartment?.name ||  '');
 
@@ -1027,7 +1036,7 @@
 
                         $('.chat_ticket_category_wrapper').toggle(!!category);
                         $('.chat_ticket_category').text(category || '');
-                        
+                        $('.ticket_type').text(data?.tipoUsuario);
                         
                         //$('.chat_ticket_department').text(data?.currentTicket?.get_department?.name ||  '');
 
