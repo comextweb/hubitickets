@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
 <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
 <link rel="stylesheet" href="{{ asset('css/summernote/summernote-bs4.css') }}">
+<link rel="stylesheet" href="{{ asset('libs/select2/dist/css/select2.min.css') }}">
+
 @endpush
 <div class="chat-top-content">
     <div class="chat-container">
@@ -536,7 +538,7 @@
                         @if (moduleIsActive('OutOfOffice'))
                         @stack('is_available_edit')
                         @else
-                        <select id="agents" class="form-select" name="agent_id"
+                        <select id="agents" class="form-select w-100 select2" name="agent_id"
                             data-url="{{ route('admin.ticket.assign.change', ['id' => isset($ticket) ? $ticket->id : '0']) }}"
                             required>
                             <option selected disabled value="">{{ __('Select Resolution Agent') }}</option>
@@ -618,9 +620,14 @@
         </div>
     </div>
 </div>
-
-
-
+<script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
+<script>
+        
+    $(document).ready(function () {
+        $('#agents').select2();
+    });
+    
+</script>
 <script>
     function setDescription(description) {
         $('#reply_description').summernote('code', description);

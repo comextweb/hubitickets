@@ -34,7 +34,7 @@
                                 @foreach ($roles as $key => $role)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $role->name }}</td>
+                                        <td>{{ $role->display_name }}</td>
                                         <td class="permission">
                                             @foreach ($role->permissions as $permission)
                                                 <span

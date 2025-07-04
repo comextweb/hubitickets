@@ -24628,3 +24628,127 @@ input:-webkit-autofill:active {
 .knowledge-sec .card{
     box-shadow: unset !important;
 }
+/* Estilos para mensajes del sistema */
+.system-message-container {
+    max-width: 80%;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.system-message-content {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    background-color:  #d1ecf1;
+}
+
+.system-icon {
+    font-size: 1rem;
+}
+
+.system-time {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--black) !important;
+}
+.system-text{
+    color: var(--black) !important;
+    text-transform: none;
+}
+/* Si no tienes --border-color definido, puedes usa
+
+/* Estilos para igualar el select de categoría */
+/* ===== SELECT2 EN MODO OSCURO ===== */
+.select2-container--default .select2-selection--single {
+    padding: 0.575rem 1rem !important;
+    height: auto !important;
+    background-color: #22242c !important;
+    border: 2px solid #3E3F4A !important;
+    border-radius: 6px !important;
+    width: 100%;
+    position: relative; /* Asegura posicionamiento correcto */
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 0 !important;
+    padding-right: 25px !important; /* Espacio para la flecha */
+    color: #808191 !important;
+    line-height: 1.5 !important;
+    width: 100%;
+    display: block;
+}
+
+/* Solución definitiva para flecha centrada */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100% !important;
+    width: 20px !important;
+    right: 8px !important;
+    top: 0 !important;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #808191 transparent transparent transparent !important;
+    border-width: 6px 6px 0 6px !important;
+    margin: 0 !important;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Dropdown styles */
+.select2-container--default .select2-results__option {
+    color: #808191 !important; /* Texto gris */
+    background-color: #22242c !important; /* Fondo oscuro */
+    padding: 8px 12px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #51459d !important; /* Color morado de tu tema */
+    color: white !important;
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #1c232f !important; /* Similar a .table-dark */
+    color: white !important;
+}
+
+/* Search input (si usas búsqueda) */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    background-color: #22242c;
+    border: 2px solid #3E3F4A;
+    color: #808191;
+}
+
+/* Focus styles */
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #51459d !important; /* Morado de tu tema */
+    box-shadow: 0 0 0 0.2rem rgba(81, 69, 157, 0.25) !important; /* Igual que tus inputs */
+}
+
+/* Dropdown container */
+.select2-container--default .select2-dropdown {
+    background-color: #22242c;
+    border: 2px solid #3E3F4A;
+    border-radius: 6px;
+}
+
+/* Scrollbar (opcional) */
+.select2-results__options::-webkit-scrollbar {
+    width: 8px;
+}
+.select2-results__options::-webkit-scrollbar-track {
+    background: #2b2d38;
+}
+.select2-results__options::-webkit-scrollbar-thumb {
+    background: #51459d;
+    border-radius: 4px;
+}
+
+

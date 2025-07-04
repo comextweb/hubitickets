@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\CustomFieldsConstants;
 use App\Events\CreateTicket;
 use App\Events\CreateTicketFrontend;
 use App\Events\TicketReply;
@@ -207,7 +208,7 @@ class HomeController extends Controller
             $customFieldsData = $request->customField ?? [];
 
             // Buscamos el campo 'tipoUsuario' en la tabla custom_fields
-            $tipoUsuarioField = CustomField::where('name', 'Tipo de Usuario')->first();
+            $tipoUsuarioField = CustomField::where('name', CustomFieldsConstants::TIPO_USUARIO)->first();
             
             // Si existe el campo, agregamos el valor "Externo"
             if ($tipoUsuarioField) {
@@ -267,6 +268,7 @@ class HomeController extends Controller
             //Send Email To The Admin
             sendTicketEmail('Send Mail To Admin', $settings, $ticket, $request, $error_msg);
             sendTicketEmail('Send Mail To Creator', $settings, $ticket, $request, $error_msg);
+            sendTicketEmail('New External Ticket', $settings, $ticket, $request, $error_msg);
             
 
             return redirect()->back()->with('create_ticket', __('Ticket created successfully') . ' <a href="' . route('home.view', Crypt::encrypt($ticket->ticket_id)) . '" target="_blank"><b>' . __('Your unique ticket link is this.') . '</b></a> ' . ((isset($error_msg)) ? '<br> <span class="text-danger">' . $error_msg . '</span>' : ''));
@@ -352,6 +354,7 @@ class HomeController extends Controller
             //Send Email To The Admin
             sendTicketEmail('Send Mail To Admin', $settings, $ticket, $request, $error_msg);
             sendTicketEmail('Send Mail To Creator', $settings, $ticket, $request, $error_msg);
+            sendTicketEmail('New External Ticket', $settings, $ticket, $request, $error_msg);
 
             $data['status'] = 'success';
             $data['message'] = __('Ticket Create Successfully');
@@ -519,7 +522,8 @@ class HomeController extends Controller
                 }
 
                 $request->merge(['type' => 'frontend']);
-
+                $sender_name = $conversion->replyBy()->name;
+                $request->merge(['sender_name' => $sender_name]);
                 
 
                 // Send Emails

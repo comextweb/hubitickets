@@ -78,7 +78,21 @@
                                         </div>
                                     </div>
 
-                                    <x-mobile required value="{{ $user->mobile_number }}"></x-mobile>
+                                    <x-phone-input 
+                                        name="mobile_no" 
+                                        value="{{ $user->mobile_number }}" 
+                                        required
+                                    />
+                                    <div class="col-12 mb-3">
+                                        <span class="me-1">{{ __('Recieve notification') }}</span>
+                                        <div class="form-check form-switch d-inline-block custom-switch-v1">
+                                            <input type="checkbox" name="notification_switch"
+                                                class="form-check-input input-primary pointer"
+                                                id="notification_switch" 
+                                                {{ old('notification_switch', $user->receive_email_notifications) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="notification_switch"></label>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">

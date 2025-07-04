@@ -20,6 +20,22 @@
                             </small>
                         @enderror
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="code" class="form-label">{{ __('Code') }}</label>
+                        @if (in_array($role->name, \App\Models\User::$nonEditableRoles))
+                            <input type="text" name="role_code" value="{{ $role->code }}" class="form-control"
+                                placeholder="{{ __('Enter Role Code') }}" disabled>
+                            <input type="hidden" name="code" value="{{ $role->code }}">
+                        @else
+                            <input type="text" name="code" value="{{ old('code', $role->code) }}" class="form-control"
+                                placeholder="{{ __('Enter Role Code') }}">
+                        @endif
+                        @error('code')
+                            <small class="invalid-code" role="alert">
+                                <strong class="text-danger">{{ $message }}</strong>
+                            </small>
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="row justify-content-center">

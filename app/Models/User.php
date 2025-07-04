@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\UserConstants;
 use App\Traits\UserTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +29,8 @@ class User extends Authenticatable implements LaratrustUser
         'is_enable_login',
         'avatar',
         'category_id',
-        'created_by'
+        'created_by',
+        'receive_email_notifications'
     ];
 
     public static $adminDefaultActivatedModules = [];
@@ -157,9 +159,19 @@ class User extends Authenticatable implements LaratrustUser
         return $this->hasMany(Department::class, 'manager_id');
     }
 
+    public function hasRoleCode(string $code): bool
+    {
+        return $this->roles()->where('code', $code)->exists();
+    }
 
-    public static $nonEditableRoles = [
-        'agent',
-        'customer',
-    ];
+    public function canReceiveNotifications(): bool
+    {
+        return $this->receive_email_notifications == 1;
+    }
+
+
+    public static $nonEditableRoles = UserConstants::NON_EDITABLE_ROLES;
+
+    public const ROLE_CODE_AGENT_ADMIN = UserConstants::ROLE_CODE_AGENT_ADMIN
+;
 }

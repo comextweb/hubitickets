@@ -15,7 +15,7 @@ class RoleController extends Controller
     {
         if (Auth::user()->isAbleTo('role manage')) {
             //$roles = Role::where('created_by', creatorId())->with('permissions')->get();
-            $roles = Role::with('permissions')->get();
+            $roles = Role::where('created_by','!=','0')->with('permissions')->get();
             return view('admin.roles.index', compact('roles'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
@@ -44,6 +44,7 @@ class RoleController extends Controller
                 $request->all(),
                 [
                     'name' => 'required|max:100|unique:roles,name,NULL,id,created_by,' . \Auth::user()->id,
+                    'code' => 'required|max:10',
                     'permissions' => 'required',
                 ]
             );
@@ -56,6 +57,7 @@ class RoleController extends Controller
 
             $role = new Role();
             $role->name = $request->name;
+            $role->code = $request->code;
             $role->display_name = $request->name;
             $role->type = 'agent';
             $role->created_by = creatorId();
@@ -96,6 +98,7 @@ class RoleController extends Controller
                     $request->all(),
                     [
                         'name' => 'required|max:100|unique:roles,name,' . $role['id'] . ',id,created_by,' . Auth::user()->id,
+                        'code' => 'required|max:10',
                         'permissions' => 'required',
                     ]
                 );
@@ -106,6 +109,7 @@ class RoleController extends Controller
                 }
 
                 $role->name = $request->name;
+                $role->code = $request->code;
                 $role->display_name = $request->name;
                 $role->save();
 

@@ -99,6 +99,15 @@ class AuthenticatedSessionController extends Controller
 
     public function showLoginForm($lang = '')
     {
+        /**Verificación extra si está autencticado */
+        if (Auth::check()) {
+            return redirect()->intended(
+                Auth::user()->type != 'customer'
+                    ? RouteServiceProvider::HOME
+                    : \Workdo\CustomerLogin\Providers\RouteServiceProvider::HOME
+            );
+        }
+     
         if ($lang == '') {
             $lang = getActiveLanguage();
         } else {

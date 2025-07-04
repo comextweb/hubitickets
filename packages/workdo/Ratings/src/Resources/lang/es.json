@@ -1,10 +1,10 @@
 {
     "Action": "Acción",
     "Are You Sure?": "¿Está seguro?",
-    "Assign To": "Asignar",
+    "Assign To": "Agente Asignado",
     "Close": "Cerca",
-    "Customer Email": "Correo electrónico del cliente",
-    "Customer Name": "Nombre del cliente",
+    "Customer Email": "Correo electrónico del solicitante",
+    "Customer Name": "Nombre del solicitante",
     "Edit": "Editar",
     "Edit Rating": "Editar calificación",
     "Home": "Hogar",

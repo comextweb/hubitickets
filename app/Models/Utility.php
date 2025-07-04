@@ -115,6 +115,7 @@ class Utility extends Model
             '{support_agent_name}',
             '{customer_name}',
             '{admin_name}',
+            '{sender_name}',
             '{rating_url}',
         ];
 
@@ -144,6 +145,7 @@ class Utility extends Model
             'support_agent_name' => '-',
             'customer_name' => '',
             'admin_name' => '',
+            'sender_name' => '',
             'rating_url' => '',
         ];
 
