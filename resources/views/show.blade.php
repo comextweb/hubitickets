@@ -158,11 +158,11 @@
                             <div class="card message-card mb-0">
                                 <div class="card-header d-flex align-items-center gap-3">
                                     <div class="user-img">
-                                        <img src="{{ $conversion->replyBy()->name }}" alt="{{ $conversion->replyBy()->name }}"
-                                            loading="lazy" avatar="{{ $conversion->replyBy()->name }}">
+                                        <img src="{{ $conversion->replyBy?->name ?? '' }}" alt="{{ $conversion->replyBy?->name ?? '' }}"
+                                            loading="lazy" avatar="{{ $conversion->replyBy?->name ?? '' }}">
                                     </div>
                                     <div class="user-info">
-                                        <h3 class="mb-2 fs-5 d-flex gap-1">{{$conversion->replyBy()->name}}
+                                        <h3 class="mb-2 fs-5 d-flex gap-1">{{$conversion->replyBy?->name ?? ''}}
                                             @if ($conversion->sender != 'user')
                                                 <span class="staff-badge">{{$conversion->getReplyByRoleName()}}</span>
                                             @endif

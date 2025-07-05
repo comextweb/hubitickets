@@ -2243,6 +2243,9 @@ body .dashboard-user-page svg path.bg-primary {
 .status-badge {
     max-width: 100px;
     width: 100%;
+    white-space: nowrap;
+    padding: 5px !important;
+
 }
 
 /* rtl css */

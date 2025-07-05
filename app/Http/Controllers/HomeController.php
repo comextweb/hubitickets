@@ -366,7 +366,7 @@ class HomeController extends Controller
     {
         try {
             $ticket_id = decrypt($ticket_id);
-            $ticket = Ticket::where('ticket_id', '=', $ticket_id)->first();
+            $ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment','getAgentDetails')->where('ticket_id', '=', $ticket_id)->first();
             $settings = getCompanyAllSettings();
             $encrypt_id_agent = request()->query('id_agent', null); // null si no viene
             $decrypt_id_agent = null;
@@ -471,8 +471,8 @@ class HomeController extends Controller
                         'ticket_unique_id' => $ticket->id,
                         'new_message' => $conversion->description ?? '',
                         'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
-                        'sender_name' => $conversion->replyBy()->name,
-                        'sender_email' => $conversion->replyBy()->email,
+                        'sender_name' => $conversion->replyBy?->name ?? '',
+                        'sender_email' => $conversion->replyBy?->email ?? '',
                         'sender' => $conversion->sender,
                         'attachments' => json_decode($conversion->attachments),
                         'baseUrl' => env('APP_URL'),
@@ -501,12 +501,12 @@ class HomeController extends Controller
                     //ENVIAR EVENTO A LA VISTA DE CONVERSACION PUBLICA
                     $data = [
                         'converstation' => $conversion,
-                        'replyByRole' => $conversion->replyBy()->type,
+                        'replyByRole' => $conversion->replyBy->type,
                         'id' => $conversion->id,
                         'ticket_id' => $conversion->ticket_id,
                         'ticket_number' => $ticket->ticket_id,
                         'new_message' => $conversion->description ?? '',
-                        'sender_name' => $conversion->replyBy()->name,
+                        'sender_name' => $conversion->replyBy?->name,
                         'attachments' => json_decode($conversion->attachments),
                         'timestamp' =>$conversion->created_at->diffForHumans(),
                         'baseUrl' => env('APP_URL'),
@@ -522,7 +522,7 @@ class HomeController extends Controller
                 }
 
                 $request->merge(['type' => 'frontend']);
-                $sender_name = $conversion->replyBy()->name;
+                $sender_name = $conversion->replyBy?->name;
                 $request->merge(['sender_name' => $sender_name]);
                 
 

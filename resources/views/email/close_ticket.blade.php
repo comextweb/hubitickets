@@ -7,7 +7,7 @@
 <p>{!! $ticket->description !!}</p>
 
 @foreach($ticket->conversions as $conversion)
-<b style="font-size:15px">{{$conversion->replyBy()->name}}</b>&nbsp;&nbsp;<small>{{$conversion->created_at->diffForHumans()}}</small>
+<b style="font-size:15px">{{$conversion->replyBy?->name ?? ''}}</b>&nbsp;&nbsp;<small>{{$conversion->created_at->diffForHumans()}}</small>
 <p>{!! $conversion->description !!}</p>
 @endforeach
 

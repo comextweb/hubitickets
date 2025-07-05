@@ -128,11 +128,11 @@
                         <div class="msg-user-info"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="{{ $conversion->replyBy()->name ?? '' }}">
+                            title="{{ $conversion->replyBy?->name ?? '' }}">
                             <div class="msg-img">
-                                <img alt="{{ $conversion->replyBy()->name ?? '' }}"
+                                <img alt="{{ $conversion->replyBy?->name ?? '' }}"
                                     class="img-fluid"
-                                    avatar="{{ $conversion->replyBy()->name ?? '' }}">
+                                    avatar="{{ $conversion->replyBy?->name ?? '' }}">
                             </div>
                         </div>
                     </div>
@@ -144,16 +144,16 @@
                         <div class="msg-user-info"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="{{ $conversion->replyBy()->name }}">
+                            title="{{ $conversion->replyBy?->name ?? '' }}">
                             <div class="msg-img">
                                 @if ($ticket->type == 'Instagram' && !empty($isInstagramChat))
                                 @include('instagram-chat::instagram.profile')
                                 @elseif ($ticket->type == 'Facebook' && !empty($isFacebookChat))
                                 @include('facebook-chat::facebook.profile')
                                 @else
-                                <img alt="{{ $conversion->replyBy()->name }}"
+                                <img alt="{{ $conversion->replyBy?->name ?? '' }}"
                                     class="img-fluid"
-                                    avatar="{{ $conversion->replyBy()->name }}">
+                                    avatar="{{ $conversion->replyBy?->name ?? '' }}">
                                 @endif
                             </div>
                         </div>
@@ -197,23 +197,23 @@
                             <span class="system-time">({{$conversion->created_at->diffForHumans()}})</span>
                         </div>
                     </div>  
-                @elseif ($conversion->sender == 'user' || (($conversion->replyBy()?->email == $ticket->email)))
+                @elseif ($conversion->sender == 'user' || (($conversion->replyBy?->email == $ticket->email)))
                 <div class="msg left-msg" data-id="{{ $conversion->id }}">
                     <div class="msg-box {{ isset($isSaveChat, $conversion->is_bookmark) && $isSaveChat && $conversion->is_bookmark ? 'bookmark-active' : '' }}"
                         data-conversion-id="{{ $conversion->id }}">
                         <div class="msg-user-info"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="{{ $conversion->replyBy()->name }}">
+                            title="{{ $conversion->replyBy?->name ?? '' }}">
                             <div class="msg-img">
                                 @if ($ticket->type == 'Instagram' && !empty($isInstagramChat))
                                 @include('instagram-chat::instagram.profile')
                                 @elseif ($ticket->type == 'Facebook' && !empty($isFacebookChat))
                                 @include('facebook-chat::facebook.profile')
                                 @else
-                                <img alt="{{ $conversion->replyBy()->name }}"
+                                <img alt="{{ $conversion->replyBy?->name ?? '' }}"
                                     class="img-fluid"
-                                    avatar="{{ $conversion->replyBy()->name }}">
+                                    avatar="{{ $conversion->replyBy?->name ?? '' }}">
                                 @endif
                             </div>
                         </div>
@@ -282,11 +282,11 @@
                         <div class="msg-user-info"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="{{ $conversion->replyBy()->name ?? '' }}">
+                            title="{{ $conversion->replyBy?->name ?? '' }}">
                             <div class="msg-img">
-                                <img alt="{{ $conversion->replyBy()->name ?? '' }}"
+                                <img alt="{{ $conversion->replyBy?->name ?? '' }}"
                                     class="img-fluid"
-                                    avatar="{{ $conversion->replyBy()->name ?? '' }}">
+                                    avatar="{{ $conversion->replyBy?->name ?? '' }}">
                             </div>
                         </div>
                     </div>

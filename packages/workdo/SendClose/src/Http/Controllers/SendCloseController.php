@@ -87,7 +87,7 @@ class SendCloseController extends Controller
                             'message' => __('Reply Send and Ticket Close Successfully.'),
                             'new_message' => $conversion->description ?? '',
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
-                            'sender_name' => $conversion->replyBy()->name,
+                            'sender_name' => $conversion->replyBy?->name,
                             'attachments' => json_decode($conversion->attachments),
                             'baseUrl'     => env('APP_URL'),
                         ]);

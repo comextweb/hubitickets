@@ -20,19 +20,26 @@ class Conversion extends Model
             return $this->hasOne('App\Models\User','id','sender')->first();
         }
     }*/
-    public function replyBy()
+    /*public function replyBy()
     {
         if (in_array($this->sender, ['user', 'system'])) {
             return $this->ticket;
         }
 
         return $this->hasOne(\App\Models\User::class, 'id', 'sender')->first();
+    }*/
+
+    public function replyBy()
+    {
+        // Devuelve siempre una relación, no un resultado
+        if (in_array($this->sender, ['user', 'system'])) {
+            return $this->belongsTo(Ticket::class, 'ticket_id');
+        }
+        return $this->belongsTo(User::class, 'sender');
     }
-
-
     public function getReplyByRoleName()
     {
-        $replyBy = $this->replyBy();
+        $replyBy = $this->replyBy;
         if ($replyBy instanceof \App\Models\User) {
             return $replyBy->roles->first()->display_name ?? '';
         }

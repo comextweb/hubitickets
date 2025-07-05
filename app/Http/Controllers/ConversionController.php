@@ -54,7 +54,7 @@ class ConversionController extends Controller
                 // Send Reply Email To The Customer
                 $error_msg = '';
 
-                $sender_name = $conversion->replyBy()->name;
+                $sender_name = $conversion->replyBy?->name ?? '';
                 $request->merge(['sender_name' => $sender_name]);
                 sendTicketEmail('Reply Mail To Customer',$settings,$ticket,$request,$error_msg);
 
