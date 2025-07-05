@@ -41,7 +41,7 @@
                         <div class="d-flex justify-content-end text-end">
                             <button class="btn btn-secondary custom-cancel-btn btn-submit me-2" type="button"
                                 onclick="window.location='{{ route('admin.new.chat') }}'">{{ __('Cancel') }}</button>
-                            <button class="btn btn-primary btn-block btn-submit">{{ __('Create') }}</button>
+                            <button id="submitBtn" class="btn btn-primary btn-block btn-submit">{{ __('Create') }}</button>
 
                         </div>
                     </div>
@@ -52,4 +52,29 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('css/summernote/summernote-bs4.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.needs-validation');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            form.addEventListener('submit', function(e) {
+                if (form.checkValidity()) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> {{ __("Sending...") }}';
+                } else {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            });
+            
+            // Opcional: Rehabilitar si hay error en la petición
+            window.addEventListener('unload', function() {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '{{ __("Create") }}';
+            });
+        });
+    </script>
+
 @endpush

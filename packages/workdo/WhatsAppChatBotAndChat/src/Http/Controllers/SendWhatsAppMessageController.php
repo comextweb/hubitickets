@@ -108,7 +108,7 @@ class SendWhatsAppMessageController extends TicketConversionController
             'message' => $errorMessage,
             'new_message' => $conversion->description ?? '',
             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
-            'sender_name' => $conversion->replyBy()->name ?? 'Unknown',
+            'sender_name' => $conversion->replyBy?->name ?? 'Unknown',
             'attachments' => json_decode($conversion->attachments),
             'baseUrl' => env('APP_URL'),
         ]);

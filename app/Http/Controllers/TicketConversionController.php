@@ -137,16 +137,19 @@ class TicketConversionController extends Controller
     {
 
 
-        $ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment')->find($ticket_id);
+        $ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment','getAgentDetails')->find($ticket_id);
 
         if ($ticket) {
-            $conversions = Conversion::where('ticket_id', $ticket_id)->get();
-            foreach ($conversions as $conversion) {
+                /*$conversions = Conversion::where('ticket_id', $ticket_id)->get();
+                foreach ($conversions as $conversion) {
 
                 $conversion = Conversion::find($conversion->id);
                 $conversion->is_read = 1;
                 $conversion->update();
-            }
+            }*/
+            Conversion::where('ticket_id', $ticket_id)
+            ->where('is_read', 0)
+            ->update(['is_read' => 1]);
 
 
             $status = $ticket->status;
@@ -292,8 +295,8 @@ class TicketConversionController extends Controller
                             'converstation' =>  $conversion,
                             'new_message' => $conversion->description ?? '',
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
-                            'sender_name' => $conversion->replyBy()->name,
-                            'sender_email' => $conversion->replyBy()->email,
+                            'sender_name' => $conversion->replyBy?->name,
+                            'sender_email' => $conversion->replyBy?->email,
                             'ticket_email' => $ticket->email,
                             'attachments' => json_decode($conversion->attachments),
                             'baseUrl' => env('APP_URL'),
@@ -366,12 +369,12 @@ class TicketConversionController extends Controller
 
             $data = [
                 'converstation' => $conversion,
-                'replyByRole' => $conversion->replyBy()->type,
+                'replyByRole' => $conversion->replyBy?->type,
                 'id' => $conversion->id,
                 'ticket_id' => $conversion->ticket_id,
                 'ticket_number' => $ticket->ticket_id,
                 'new_message' => $conversion->description ?? '',
-                'sender_name' => $conversion->replyBy()->name,
+                'sender_name' => $conversion->replyBy?->name,
                 'attachments' => json_decode($conversion->attachments),
                 'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                 'baseUrl' => env('APP_URL'),
@@ -392,8 +395,8 @@ class TicketConversionController extends Controller
                 'ticket_unique_id' => $ticket->id,
                 'new_message' => $conversion->description ?? '',
                 'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
-                'sender_name' => $conversion->replyBy()->name,
-                'sender_email' => $conversion->replyBy()->email,
+                'sender_name' => $conversion->replyBy?->name,
+                'sender_email' => $conversion->replyBy?->email,
                 'attachments' => json_decode($conversion->attachments),
                 'baseUrl' => env('APP_URL'),
                 'latestMessage' => $ticket->latestMessages($ticket->id),
@@ -402,7 +405,7 @@ class TicketConversionController extends Controller
 
 
             // Obtener el ID del usuario que está enviando el mensaje
-            $senderId = $conversion->replyBy()->id;
+            $senderId = $conversion->replyBy?->id;
 
             // Enviar al creador del ticket, solo si no es el remitente
             if ($ticket->created_by != $senderId) {
@@ -421,7 +424,7 @@ class TicketConversionController extends Controller
         // **Email Notifications**
         $error_msg = '';
 
-        $sender_name = $conversion->replyBy()->name;
+        $sender_name = $conversion->replyBy?->name;
         $request->merge(['sender_name' => $sender_name]);
         sendTicketEmail('Reply Mail To Customer', $settings, $ticket, $request, $error_msg);
         
@@ -434,7 +437,7 @@ class TicketConversionController extends Controller
         // Enviar al agente o creador solo si:
         // - hay un agente asignado o creador
         // - y el usuario que responde NO es ese agente o creador
-        $sender = $conversion->replyBy();
+        $sender = $conversion->replyBy;
         if ($agent && $sender->id !== $agent->id) {
             sendTicketEmail('Reply Mail To Agent', $settings, $ticket, $request, $error_msg);
         }
@@ -899,7 +902,7 @@ class TicketConversionController extends Controller
                     'ticket_unique_id' => $ticket->id,
                     'new_message' => $conversion->description ?? '',
                     'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
-                    'sender_name' => $conversion->replyBy()->name,
+                    'sender_name' => $conversion->replyBy?->name,
                     'attachments' => json_decode($conversion->attachments),
                     'baseUrl' => env('APP_URL'),
                     'latestMessage' => $ticket->latestMessages($ticket->id),

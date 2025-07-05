@@ -907,13 +907,13 @@ if (!function_exists('findAgentByCategory')) {
 
 // get Activate Modules
 if (!function_exists('getActiveModules')) {
-    function getActiveModules($userId = null)
+    function getActiveModules($userTemp = null)
     {
         $defaultActivatedModules = User::$adminDefaultActivatedModules;
         $userActiveModules = []; // Default value.
 
-        if ($userId !== null) {
-            $user = User::find($userId);
+        if (!empty($user)) {
+            $user = $userTemp;
         } else if (Auth::check() && Auth::user()->hasRole('admin')) {
             $user = Auth::user();
         } else if (Auth::check()) {
@@ -963,7 +963,7 @@ if (!function_exists('moduleIsActive')) {
             }
 
             if (!empty($user)) {
-                $active_module = getActiveModules($user->id);
+                $active_module = getActiveModules($user);
                 if ((count($active_module) > 0 && in_array($module, $active_module))) {
                     return true;
                 }

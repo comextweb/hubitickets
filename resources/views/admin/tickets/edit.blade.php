@@ -319,7 +319,7 @@
             @foreach ($ticket->conversions as $conversion)
                 <div class="card">
                     <div class="card-header">
-                        <h6>{{ $conversion->replyBy()->name }}
+                        <h6>{{ $conversion->replyBy?->name ?? '' }}
                             <small>({{ $conversion->created_at->diffForHumans() }})</small>
                         </h6>
                     </div>
