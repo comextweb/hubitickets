@@ -1217,29 +1217,31 @@ if (!function_exists('sendTicketEmail')) {
     }
 }
 
-function getPusherInstance()
-{
-    $settings = getCompanyAllSettings();
-    if (
-        isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes' &&
-        isset($settings['PUSHER_APP_KEY'], $settings['PUSHER_APP_CLUSTER'], $settings['PUSHER_APP_ID'], $settings['PUSHER_APP_SECRET']) &&
-        !empty($settings['PUSHER_APP_KEY']) &&
-        !empty($settings['PUSHER_APP_CLUSTER']) &&
-        !empty($settings['PUSHER_APP_ID']) &&
-        !empty($settings['PUSHER_APP_SECRET'])
-    ) {
-        $options = [
-            'cluster' => $settings['PUSHER_APP_CLUSTER'],
-            'useTLS' => true,
-        ];
+if (!function_exists('getPusherInstance')) {
+    function getPusherInstance()
+    {
+        $settings = getCompanyAllSettings();
+        if (
+            isset($settings['CHAT_MODULE']) && $settings['CHAT_MODULE'] == 'yes' &&
+            isset($settings['PUSHER_APP_KEY'], $settings['PUSHER_APP_CLUSTER'], $settings['PUSHER_APP_ID'], $settings['PUSHER_APP_SECRET']) &&
+            !empty($settings['PUSHER_APP_KEY']) &&
+            !empty($settings['PUSHER_APP_CLUSTER']) &&
+            !empty($settings['PUSHER_APP_ID']) &&
+            !empty($settings['PUSHER_APP_SECRET'])
+        ) {
+            $options = [
+                'cluster' => $settings['PUSHER_APP_CLUSTER'],
+                'useTLS' => true,
+            ];
 
-        return new \Pusher\Pusher(
-            $settings['PUSHER_APP_KEY'],
-            $settings['PUSHER_APP_SECRET'],
-            $settings['PUSHER_APP_ID'],
-            $options
-        );
+            return new \Pusher\Pusher(
+                $settings['PUSHER_APP_KEY'],
+                $settings['PUSHER_APP_SECRET'],
+                $settings['PUSHER_APP_ID'],
+                $options
+            );
+        }
+
+        return null;
     }
-
-    return null;
 }

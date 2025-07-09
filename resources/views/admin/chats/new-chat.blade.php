@@ -703,6 +703,8 @@
                                     errorMessage += errors[field].join('<br>');
                                 }
                                 show_toastr('Error', errorMessage, 'error');
+                            }else{
+                                window.location.reload()
                             }
                         },
                         complete: function() {

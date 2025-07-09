@@ -259,7 +259,7 @@
                     <div class="form-group mb-3 {{ $customField->width }}">
                         <label for="{{ 'customField-' . $customField->id }} " class="form-label">{{ $customField->name }}</label>                        
                         @if ($customField->is_required == 1)
-                            <select class="form-select" id="priority"
+                            <select class="form-select"
                                 name="{{ 'customField[' . $customField->id . ']' }}" required
                                 data-placeholder="{{ __($customField->placeholder) }}">
                                 <option value="">{{ __($customField->placeholder) }}</option>
@@ -270,7 +270,7 @@
                                 @endforeach
                             </select>
                         @else
-                            <select class="form-select" id="priority"
+                            <select class="form-select"
                                 name="{{ 'customField[' . $customField->id . ']' }}"
                                 data-placeholder="{{ __($customField->placeholder) }}">
                                 <option value="">{{ __($customField->placeholder) }}</option>
