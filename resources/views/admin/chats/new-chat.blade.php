@@ -8,8 +8,7 @@
     <li class="breadcrumb-item mt-1" style="color: #293240">{{ __('Conversations') }}</li>
 @endsection
 @php
-    $setting = getCompanyAllSettings();
-    $SITE_RTL = isset($setting['site_rtl']) ? $setting['site_rtl'] : 'off';
+    $SITE_RTL = isset($settings['site_rtl']) ? $settings['site_rtl'] : 'off';
     $isAdmin = Auth::check() && (
         Auth::user()->hasRole('admin') ||
         Auth::user()->roles()->where('code', \App\Models\User::ROLE_CODE_AGENT_ADMIN)->exists()
@@ -23,7 +22,7 @@
         <link rel="stylesheet" href="{{ asset('css/main-style.css') }}">
         <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
     @endif
-    @if (isset($setting['cust_darklayout']) && $setting['cust_darklayout'] == 'on')
+    @if (isset($settings['cust_darklayout']) && $settings['cust_darklayout'] == 'on')
         <link rel="stylesheet" href="{{ asset('css/main-style-dark.css') }}">
     @endif
     <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
@@ -544,6 +543,7 @@
     <script src="{{ asset('css/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
     <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
+    <script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             $("#filterTickets").click(function () {

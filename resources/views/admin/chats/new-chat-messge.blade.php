@@ -620,7 +620,6 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('libs/select2/dist/js/select2.min.js') }}"></script>
 <script>
         
     $(document).ready(function () {
