@@ -137,7 +137,18 @@ class TicketConversionController extends Controller
     {
 
 
-        $ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment','getAgentDetails')->find($ticket_id);
+        //$ticket = Ticket::with('conversions','getCategory', 'getPriority', 'getTicketCreatedBy','getDepartment','getAgentDetails')->find($ticket_id);
+        $ticket = Ticket::with([
+                'conversions' => function($query) {
+                    $query->orderBy('id');
+                },
+                'getCategory:id,name',
+                'getPriority:id,name,color',
+                'getTicketCreatedBy:id,name',
+                'getDepartment:id,name',
+                'getAgentDetails:id,name'
+            ])->find($ticket_id);
+
 
         if ($ticket) {
                 /*$conversions = Conversion::where('ticket_id', $ticket_id)->get();
@@ -403,20 +414,22 @@ class TicketConversionController extends Controller
                 'unreadMessge' => $ticket->unreadMessge($ticket->id)->count(),
             ];
 
+            if (strlen(json_encode($data)) > 10240) {
+                Log::warning('Pusher payload too large for ticket: ' . $ticket->ticket_id);
+            } else {
+                // Obtener el ID del usuario que está enviando el mensaje
+                $senderId = $conversion->replyBy?->id;
 
-            // Obtener el ID del usuario que está enviando el mensaje
-            $senderId = $conversion->replyBy?->id;
+                // Enviar al creador del ticket, solo si no es el remitente
+                if ($ticket->created_by != $senderId) {
+                    $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
+                }
 
-            // Enviar al creador del ticket, solo si no es el remitente
-            if ($ticket->created_by != $senderId) {
-                $pusher->trigger("ticket-reply-{$ticket->created_by}", "ticket-reply-event-{$ticket->created_by}", $data);
+                // Enviar al agente asignado, solo si existe y no es el remitente
+                if (!empty($ticket->is_assign) && $ticket->is_assign != $senderId) {
+                    $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
+                }
             }
-
-            // Enviar al agente asignado, solo si existe y no es el remitente
-            if (!empty($ticket->is_assign) && $ticket->is_assign != $senderId) {
-                $pusher->trigger("ticket-reply-{$ticket->is_assign}", "ticket-reply-event-{$ticket->is_assign}", $data);
-            }
-
             // FIN CODIGO AGREGADO PARA ACTIVAR EL REAL TIME CHAT ENTRE AGENTES    
 
         }
