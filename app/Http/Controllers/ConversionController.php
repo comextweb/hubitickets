@@ -25,7 +25,14 @@ class ConversionController extends Controller
                 $conversion = new Conversion();
                 $conversion->sender = isset($user) ? $user->id : 'user';
                 $conversion->ticket_id = $ticket->id;
-                $conversion->description = $request->reply_description;
+                $description = $request->reply_description;
+
+                // Procesar imágenes base64 en el contenido Summernote
+                if ($description) {
+                    $description = processSummernoteImages($description, $ticket);
+                }
+                $conversion->description = $request->$description;
+                
                 if ($request->hasfile('reply_attachments')) {
                     $errors = [];
                     foreach ($request->file('reply_attachments') as $filekey => $file) {

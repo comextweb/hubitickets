@@ -583,6 +583,84 @@ if (!function_exists('getFile')) {
 }
 
 
+if (!function_exists('processSummernoteImages')) {
+    function processSummernoteImages($content, $ticket)
+    {
+        // Expresión regular para encontrar imágenes en base64
+        $pattern = '/<img[^>]+src="data:image\/(\w+);base64,([^"]+)"[^>]*>/i';
+        
+        // Buscar todas las imágenes en el contenido
+        preg_match_all($pattern, $content, $matches);
+        
+        if (count($matches[0]) > 0) {
+            $company = app('currentCompany');
+            $companySlug = $company ? $company->slug . '/' : '';
+            $basePath = "uploads/{$companySlug}tickets/{$ticket->ticket_id}/summernote/";
+            
+            // Crear directorio si no existe
+            $storageSettings = getCompanyAllSettings();
+
+            if ($storageSettings['storage_setting'] == 'local') {
+                $fullPath = base_path($basePath);
+                if (!File::exists($fullPath)) {
+                    File::makeDirectory($fullPath, 0755, true);
+                }
+            } else {
+                // Para almacenamiento en la nube (S3, Wasabi, etc.)
+                if ($storageSettings['storage_setting'] == 's3') {
+                    config([
+                        'filesystems.disks.s3.key' => $storageSettings['s3_key'],
+                        'filesystems.disks.s3.secret' => $storageSettings['s3_secret'],
+                        'filesystems.disks.s3.region' => $storageSettings['s3_region'],
+                        'filesystems.disks.s3.bucket' => $storageSettings['s3_bucket'],
+                    ]);
+                } elseif ($storageSettings['storage_setting'] == 'wasabi') {
+                    config([
+                        'filesystems.disks.wasabi.key' => $storageSettings['wasabi_key'],
+                        'filesystems.disks.wasabi.secret' => $storageSettings['wasabi_secret'],
+                        'filesystems.disks.wasabi.region' => $storageSettings['wasabi_region'],
+                        'filesystems.disks.wasabi.bucket' => $storageSettings['wasabi_bucket'],
+                        'filesystems.disks.wasabi.root' => $storageSettings['wasabi_root'],
+                        'filesystems.disks.wasabi.endpoint' => $storageSettings['wasabi_url']
+                    ]);
+                }
+            }
+            
+            // Procesar cada imagen encontrada
+            foreach ($matches[0] as $key => $imgTag) {
+                $extension = $matches[1][$key]; // Tipo de imagen (png, jpg, etc.)
+                $base64Data = $matches[2][$key]; // Datos base64
+                
+                // Generar nombre único para el archivo
+                $filename = uniqid() . '_' . time() . '.' . $extension;
+                $filePath = $basePath . $filename;
+                
+                // Guardar la imagen
+                $fileContent = base64_decode($base64Data);
+                
+                if ($storageSettings['storage_setting'] == 'local') {
+                    file_put_contents(base_path($filePath), $fileContent);
+                } else {
+                    Storage::disk($storageSettings['storage_setting'])->put($filePath, $fileContent);
+                }
+                // Generar URL pública para la imagen
+                $publicUrl = getFile($filePath);
+
+                // Reemplazar en el contenido
+                $newImgTag = str_replace(
+                    'src="data:image/' . $extension . ';base64,' . $base64Data . '"',
+                    'src="' . $publicUrl . '"',
+                    $imgTag
+                );
+                
+                $content = str_replace($imgTag, $newImgTag, $content);
+            }
+        }
+        
+        return $content;
+    }
+}
+
 // Get sidebar Logo
 if (!function_exists('getSidebarLogo')) {
     function getSidebarLogo()

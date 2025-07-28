@@ -51,8 +51,13 @@ class SendCloseController extends Controller
 
                         $conversion = new Conversion();
                         $conversion->sender = isset($user) ? $user->id : 'user';
-                        $conversion->ticket_id = $ticket->id;
-                        $conversion->description = $request->reply_description;
+                        $conversion->ticket_id = $ticket->id;                        
+                        $description = $request->reply_description;
+                        // Procesar imágenes base64 en el contenido Summernote
+                        if ($description) {
+                            $description = processSummernoteImages($description, $ticket);
+                        }
+                        $conversion->description = $request->$description;
 
                         if ($request->hasfile('reply_attachments')) {
                             $attachment = $this->handleFileUpload($request, $ticket);
