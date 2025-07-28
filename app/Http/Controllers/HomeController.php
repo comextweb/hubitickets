@@ -412,6 +412,8 @@ class HomeController extends Controller
             if (!empty($summernoteContent) || $request->hasfile('reply_attachments')) {
                 $conversion = new Conversion();
                 $conversion->ticket_id = $ticket->id;
+                // Procesar imágenes base64 en el contenido Summernote
+                $summernoteContent = processSummernoteImages($summernoteContent, $ticket);
                 $conversion->description = $summernoteContent;
                 $conversion->sender = $sender;
 

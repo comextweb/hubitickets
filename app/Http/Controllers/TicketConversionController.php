@@ -254,6 +254,11 @@ class TicketConversionController extends Controller
 
             if ($ticket) {
                 if ($description !== null || $request->hasfile('reply_attachments')) {
+                    // Procesar imágenes base64 en el contenido Summernote
+                    if ($description) {
+                        $description = processSummernoteImages($description, $ticket);
+                    }
+
                     if ($ticket->type === 'Whatsapp' && UserState::where('ticket_id', $ticket->id)->where('state', 'existing_chat')->exists() && moduleIsActive('WhatsAppChatBotAndChat')) {
                         $whatsappController = new SendWhatsAppMessageController();
                         $response = $whatsappController->sendMessage($request, $ticket, $user);
@@ -279,7 +284,7 @@ class TicketConversionController extends Controller
                             $conversion->sender = isset($user) ? $user->id : 'user';
                         }
                         $conversion->ticket_id = $ticket->id;
-                        $conversion->description = $request->reply_description;
+                        $conversion->description = $description; // Usar el contenido procesado
 
                         if ($request->hasfile('reply_attachments')) {
                             $attachment = $this->handleFileUpload($request, $ticket);
