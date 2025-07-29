@@ -77,12 +77,17 @@ class TicketConversionController extends Controller
                 $tickets->where('status', $request->status);
             }
 
+            if ($request->agent_filter_id != null) {
+                $tickets->where('is_assign', $request->agent_filter_id);
+            }
+
             if ($request->tags != null) {
                 $tickets->whereRaw("FIND_IN_SET(?, tags_id)", [$request->tags]);
             }
 
 
             $tickets = $tickets->orderBy('id', 'desc')->get();
+            $users = User::where('type', 'agent')->get();
 
             $totalticket = $tickets->count();
             $ticketsWithMessages = $tickets->map(function ($ticket) {
@@ -105,7 +110,7 @@ class TicketConversionController extends Controller
             $priorities = Priority::all();
 
 
-            return view('admin.chats.new-chat', compact('tickets', 'tikcettype', 'totalticket', 'settings', 'priorities'));
+            return view('admin.chats.new-chat', compact('tickets', 'tikcettype', 'totalticket', 'settings', 'priorities', 'users'));
         } else {
             return redirect()->back()->with('error', 'Permission Denied.');
         }
@@ -219,6 +224,7 @@ class TicketConversionController extends Controller
                     $ticket->reslove_at = now();
                 }
                 $ticket->save();
+                $this->createStatusChangeConversation($request, $ticket, $user, $status);
                 event(new UpdateTicketStatus($ticket, $request));
                 if ($status == 'Closed') {
                     // Send Email To The Ticket User
@@ -309,7 +315,7 @@ class TicketConversionController extends Controller
 
                         return response()->json([
                             'converstation' =>  $conversion,
-                            'new_message' => $conversion->description ?? '',
+                            'new_message' => process_content_images($conversion->description),
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                             'sender_name' => $conversion->replyBy?->name,
                             'sender_email' => $conversion->replyBy?->email,
@@ -389,7 +395,7 @@ class TicketConversionController extends Controller
                 'id' => $conversion->id,
                 'ticket_id' => $conversion->ticket_id,
                 'ticket_number' => $ticket->ticket_id,
-                'new_message' => $conversion->description ?? '',
+                'new_message' => process_content_images($conversion->description),
                 'sender_name' => $conversion->replyBy?->name,
                 'attachments' => json_decode($conversion->attachments),
                 'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
@@ -409,7 +415,7 @@ class TicketConversionController extends Controller
                 'tikcet_id' => $conversion->ticket_id,
                 'ticket_email' => $conversion->ticket->email,
                 'ticket_unique_id' => $ticket->id,
-                'new_message' => $conversion->description ?? '',
+                'new_message' => process_content_images($conversion->description),
                 'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                 'sender_name' => $conversion->replyBy?->name,
                 'sender_email' => $conversion->replyBy?->email,
@@ -557,8 +563,7 @@ class TicketConversionController extends Controller
             $ticket->is_assign = $assign;
             $ticket->type = "Assigned";
             $ticket->save();
-            $this->createAgentChangeConversation($request, $ticket, $old_agent_id, $assign);
-
+            $this->createAgentChangeConversation($request, $ticket, $old_agent_id, $assign, true);
             $data['status'] = 'success';
             $data['message'] = __('Ticket assign successfully.');
             return $data;
@@ -568,14 +573,41 @@ class TicketConversionController extends Controller
             return $data;
         }
     }
-    protected function createAgentChangeConversation(Request $request, $ticket, $old_agent_id, $new_agent_id)
+
+    protected function createStatusChangeConversation(Request $request, $ticket, $user, $status)
+    {
+        // Mapeo de estados a español
+        $statusMap = [
+            'New Ticket' => '<i><strong>Nuevo Ticket</strong></i>',
+            'In Progress' => '<i><strong>En Curso</strong></i>',
+            'On Hold' => '<i><strong>En Espera</strong></i>',
+            'Closed' => '<i><strong>Cerrado</strong></i>',
+            'Resolved' => '<i><strong>Resuelto</strong></i>'
+        ];
+
+        $statusSpanish = $statusMap[$status] ?? $status;
+        $message = $user->name . " ha actualizado el estado del ticket a " . $statusSpanish;
+
+        // Crear la conversación
+        $conversion = new Conversion();
+        $conversion->ticket_id = $ticket->id;
+        $conversion->description = $message;
+        $conversion->sender = 'system';
+        $conversion->save();
+
+        // Disparar evento Pusher
+        $this->triggerPusherSystemEvent($request,$ticket, $conversion, '🔄');
+
+    }
+
+    protected function createAgentChangeConversation(Request $request, $ticket, $old_agent_id, $new_agent_id, $is_public = false)
     {
         // Obtener nombres de los agentes
         $old_agent = $old_agent_id ? User::find($old_agent_id) : null;
         $new_agent = User::find($new_agent_id);
         
         // Determinar el mensaje según si había agente asignado antes
-        if(Auth::check()){
+        if(Auth::check() && !$is_public){
             $message = Auth::user()->name . " ha reasignado este ticket a " . $new_agent->name;
         }else if ($old_agent) {
             $message = $old_agent->name . " ha reasignado este ticket a " . $new_agent->name;
@@ -592,7 +624,7 @@ class TicketConversionController extends Controller
         $conversion->save();
 
         // Disparar evento Pusher
-        $this->triggerPusherEvent($request,$ticket, $conversion);
+        $this->triggerPusherSystemEvent($request,$ticket, $conversion, '🔄');
 
         $settings = getCompanyAllSettings();
         
@@ -600,7 +632,7 @@ class TicketConversionController extends Controller
         sendTicketEmail('Send Mail To Agent', $settings, $ticket, $request, $error_msg);
     }
 
-    protected function triggerPusherEvent(Request $request,$ticket, $conversion)
+    protected function triggerPusherSystemEvent(Request $request,$ticket, $conversion, $icon)
     {
         $pusher = getPusherInstance();
         if($pusher){
@@ -608,17 +640,18 @@ class TicketConversionController extends Controller
                 'id' => $conversion->id,
                 'ticket_unique_id' => $ticket->id,
                 'message' => $conversion->description,
-                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->diffForHumans()
+                'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->diffForHumans(),
+                'icon' => $icon,
             ];
 
             // Emitir solo un evento por ticket
-            $pusher->trigger("ticket-agent-change-{$ticket->is_assign}", "ticket-agent-change-event-{$ticket->is_assign}", $data);
+            $pusher->trigger("ticket-system-message-{$ticket->is_assign}", "ticket-system-message-event-{$ticket->is_assign}", $data);
             if($ticket->is_assign != $ticket->created_by){
-                $pusher->trigger("ticket-agent-change-{$ticket->created_by}", "ticket-agent-change-event-{$ticket->created_by}", $data);
+                $pusher->trigger("ticket-system-message-{$ticket->created_by}", "ticket-system-message-event-{$ticket->created_by}", $data);
             }
             // Mostrar el mensaje en el chat del usuario que cambia el agente
             if($ticket->is_assign != Auth::user()->id && $ticket->created_by != Auth::user()->id){
-                $pusher->trigger("ticket-agent-change-" . Auth::user()->id, "ticket-agent-change-event-" . Auth::user()->id, $data);
+                $pusher->trigger("ticket-system-message-" . Auth::user()->id, "ticket-system-message-event-" . Auth::user()->id, $data);
             }
 
         }
@@ -918,7 +951,7 @@ class TicketConversionController extends Controller
                     'id' => $conversion->id,
                     'tikcet_id' => $conversion->ticket_id,
                     'ticket_unique_id' => $ticket->id,
-                    'new_message' => $conversion->description ?? '',
+                    'new_message' => process_content_images($conversion->description),
                     'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                     'sender_name' => $conversion->replyBy?->name,
                     'attachments' => json_decode($conversion->attachments),

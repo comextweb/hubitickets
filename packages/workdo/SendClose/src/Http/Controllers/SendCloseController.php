@@ -57,7 +57,7 @@ class SendCloseController extends Controller
                         if ($description) {
                             $description = processSummernoteImages($description, $ticket);
                         }
-                        $conversion->description = $request->$description;
+                        $conversion->description = $description;
 
                         if ($request->hasfile('reply_attachments')) {
                             $attachment = $this->handleFileUpload($request, $ticket);
@@ -90,7 +90,7 @@ class SendCloseController extends Controller
                             'conversation' => $conversion,
                             'status' => 'success', 
                             'message' => __('Reply Send and Ticket Close Successfully.'),
-                            'new_message' => $conversion->description ?? '',
+                            'new_message' => process_content_images($conversion->description),
                             'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('l h:ia'),
                             'sender_name' => $conversion->replyBy?->name,
                             'attachments' => json_decode($conversion->attachments),

@@ -1,5 +1,5 @@
 @if(!\Auth::user()->hasRole('customer'))
-<div class="col-md-4 col-sm-6 col-12">
+<div class="col-md-3 col-sm-6 col-12">
     <div class="btn-box">
     <label class="form-label text-dark">{{ __('Tags') }}</label>
         <select class="form-control" name="tags">

@@ -79,7 +79,13 @@ class TicketController extends Controller
             $ticket->priority = $request->priority;
             $ticket->subject = $request->subject;
             $ticket->status = "New Ticket";
-            $ticket->description = $request->description;
+            $description = $request->description;
+            // Procesar imágenes base64 en el contenido Summernote
+            if ($description) {
+                $description = processSummernoteImages($description, $ticket);
+            }
+            
+            $ticket->description = $description;
             $ticket->type = "Assigned";
             $ticket->department_id = $request->department_id; // Asignar department_id
 

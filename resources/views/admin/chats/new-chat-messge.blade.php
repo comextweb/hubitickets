@@ -17,7 +17,7 @@
                 <div class="msg-box">
                     <div class="msg-box-content">
                         <div class="msg-box-inner">
-                            <p>{!! $ticket->description !!}</p>
+                            <p>{!! process_content_images($ticket->description) !!}</p>
                             @php $attachments = json_decode($ticket->attachments); @endphp
                             @if (isset($attachments) && !empty($attachments))
                             <div class="attachments-wrp">
@@ -56,7 +56,7 @@
                         </div>
                         <div class="msg-box-content">
                             <div class="msg-box-inner">
-                                <p>{!! $ticket->description !!}</p>
+                                <p>{!! process_content_images($ticket->description) !!}</p>
                                 @php $attachments = json_decode($ticket->attachments);@endphp
                                 @if (isset($attachments) && !empty($attachments))
                                 <div class="attachments-wrp">
@@ -99,7 +99,7 @@
                         data-conversion-id="{{ $conversion->id }}">
                         <div class="msg-box-content">
                             <div class="msg-box-inner">
-                                <p>{!! $conversion->description !!}</p> 
+                                <p>{!! process_content_images($conversion->description) !!}</p>                            
                                 @php $attachments = json_decode($conversion->attachments); @endphp
                                 @if (isset($attachments))
                                 <div class="attachments-wrp">
@@ -159,7 +159,7 @@
                         </div>
                         <div class="msg-box-content">
                             <div class="msg-box-inner">
-                                <p>{!! $conversion->description !!}</p>
+                                <p>{!! process_content_images($conversion->description) !!}</p>
                                 @php $attachments = json_decode($conversion->attachments); @endphp
                                 @if (isset($attachments))
                                 <div class="attachments-wrp">
@@ -219,7 +219,7 @@
                         </div>
                         <div class="msg-box-content">
                             <div class="msg-box-inner">
-                                <p>{!! $conversion->description !!}</p>
+                                <p>{!! process_content_images($conversion->description) !!}</p>
                                 @php $attachments = json_decode($conversion->attachments); @endphp
                                 @if (isset($attachments))
                                 <div class="attachments-wrp">
@@ -253,7 +253,7 @@
                         data-conversion-id="{{ $conversion->id }}">
                         <div class="msg-box-content">
                             <div class="msg-box-inner">
-                                <p>{!! $conversion->description !!}</p>
+                                <p>{!! process_content_images($conversion->description) !!}</p>
                                 @php $attachments = json_decode($conversion->attachments); @endphp
                                 @if (isset($attachments))
                                 <div class="attachments-wrp">

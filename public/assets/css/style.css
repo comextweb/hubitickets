@@ -24815,3 +24815,35 @@ table.dataTable tbody>tr.selected th.select-checkbox:after {
     background: #adb5bd;
     border-radius: 4px;
 }
+
+/*SELECT2*/
+.select2-container--default .select2-results>.select2-results__options {
+    border-radius: 8px;
+}
+
+.select2-container--open .select2-dropdown--below {
+    border-radius: 8px;
+}
+div.badge-wrp.filter-select-agent .select2-container .select2-selection--single:focus {
+    box-shadow: 0 0 0 0.2rem var(--bs-btn-focus-box-shadow) !important;
+}
+
+div.badge-wrp.filter-select-agent .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #EAE9E9 !important;
+    color: black !important;
+}
+
+div.badge-wrp.filter-select-agent .select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #EAE9E9 !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+div.badge-wrp.filter-select-agent .select2-results__option[aria-selected] {
+    cursor: pointer !important;
+    font-size: small !important;
+    font-weight: 600 !important;
+}
+
+div.badge-wrp.filter-select-agent .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-weight: 600 !important;
+}

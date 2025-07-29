@@ -219,7 +219,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="require form-label">{{ __('Description') }}</label>
                                     <textarea name="description" id="description"
-                                        class="form-control summernote-simple @error('description') is-invalid @enderror">{!! $ticket->description !!}</textarea>
+                                        class="form-control summernote-simple @error('description') is-invalid @enderror">{!! process_content_images($ticket->description) !!}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -293,7 +293,7 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <p>{!! $ticket->description !!}</p>
+                        <p>{!! process_content_images($ticket->description) !!}</p>
                     </div>
                     @php
                         $attachments = json_decode($ticket->attachments);
@@ -324,7 +324,7 @@
                         </h6>
                     </div>
                     <div class="card-body">
-                        <div>{!! $conversion->description !!}</div>
+                        <div>{!! process_content_images($conversion->description) !!}</div>
                         @php $attachments = json_decode($conversion->attachments); @endphp
                         @if (isset($attachments))
                             <div class="m-1">

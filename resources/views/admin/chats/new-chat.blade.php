@@ -60,7 +60,7 @@
                                 <div class="col-xl-10">
                                     <div class="row row-gap justify-content-end">
                                         @stack('filter_tags')
-                                        <div class="col-md-4 col-sm-6 col-12">
+                                        <div class="col-md-3 col-sm-6 col-12">
                                             <div class="btn-box">
                                                 <label class="form-label text-dark">{{ __('Priority') }}</label>
                                                 <select class="form-control" name="priority">
@@ -73,7 +73,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 col-sm-6 col-12">
+                                        <div class="col-md-3 col-sm-6 col-12">
                                             <div class="btn-box">
                                                 <label class="form-label text-dark">{{ __('Status') }}</label>
                                                 <select class="form-control" name="status">
@@ -96,6 +96,24 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-3 col-sm-6 col-12">
+                                            <div class="btn-box">
+                                                <label class="form-label text-dark">{{ __('Resolution Agent') }}</label>
+                                                    <div class="badge-wrp filter-select-agent d-flex align-items-center ">
+                                                        <select id="agents_filter" class="filter form-select w-100 select2" name="agent_filter_id"
+                                                            required>
+                                                            <option selected disabled value="">{{ __('Select Resolution Agent') }}</option>
+                                                            @foreach ($users as $agent)
+                                                            <option value="{{ $agent->id }}" {{ request('agent_filter_id') == $agent->id ? 'selected' : '' }}>
+                                                                {{ $agent->name }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="col-auto">
@@ -157,7 +175,7 @@
                     @endif
                     <div class="input-wrp">
                         <input type="text" id="myInput" class="form-control" onkeyup="myFunction()"
-                            placeholder="Search Ticket Number" title="Type in a name">
+                            placeholder="Buscar por nombre de solicitante" title="Type in a name">
                         <button class="search-btn" id="searchToggle">
                             <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_812_12464)">
@@ -578,6 +596,15 @@
                 $('.close-icon').hide();
                 $(".chat-main-wrapper .chat-wrapper-right").removeClass('info-active');
             }
+
+            const $select = $('#agents_filter');
+
+            $select.select2({
+                width: '100%',       // Hace que el ancho sea responsivo
+                dropdownAutoWidth: true,  // Ajusta el ancho del dropdown al contenido
+                dropdownParent: $('.badge-wrp.filter-select-agent')
+            });
+
         });
     </script>
 
@@ -1757,9 +1784,9 @@
                 forceTLS: true
             });
 
-            var agentChangeChannel = pusher.subscribe('ticket-agent-change-{{ auth()->user()->id }}');
+            var agentChangeChannel = pusher.subscribe('ticket-system-message-{{ auth()->user()->id }}');
             
-            agentChangeChannel.bind('ticket-agent-change-event-{{ auth()->user()->id }}', function(data) {
+            agentChangeChannel.bind('ticket-system-message-event-{{ auth()->user()->id }}', function(data) {
                
                 // Verificar que el mensaje es para este ticket
 
@@ -1768,7 +1795,7 @@
                     const html = `
                         <div class="system-message-container">
                             <div class="system-message-content">
-                                <span class="system-icon">🔄</span>
+                                <span class="system-icon">${data.icon}</span>
                                 <span class="system-text">${data.message}</span>
                                 <span class="system-time">(${data.timestamp})</span>
                             </div>

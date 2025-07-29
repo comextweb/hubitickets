@@ -4,11 +4,11 @@
 {{ __('A request for support has been closed') }} #{{ isset($isTicketNumberActive) && $isTicketNumberActive ? Workdo\TicketNumber\Entities\TicketNumber::ticketNumberFormat($ticket->id) : $ticket->ticket_id }}<br><br>
 
 <b style="font-size:15px">{{$ticket->name}}</b>&nbsp;&nbsp;<small>{{$ticket->created_at->diffForHumans()}}</small>
-<p>{!! $ticket->description !!}</p>
+<p>{!! process_content_images($ticket->description) !!}</p>
 
 @foreach($ticket->conversions as $conversion)
 <b style="font-size:15px">{{$conversion->replyBy?->name ?? ''}}</b>&nbsp;&nbsp;<small>{{$conversion->created_at->diffForHumans()}}</small>
-<p>{!! $conversion->description !!}</p>
+<p>{!! process_content_images($conversion->description) !!}</p>
 @endforeach
 
 <br>
