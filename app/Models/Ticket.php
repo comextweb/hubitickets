@@ -42,7 +42,7 @@ class Ticket extends Model
 
     public function conversions()
     {
-        return $this->hasMany('App\Models\Conversion', 'ticket_id', 'id')->orderBy('id')->with('replyBy');;
+        return $this->hasMany('App\Models\Conversion', 'ticket_id', 'id')->orderBy('id');;
     }
 
 

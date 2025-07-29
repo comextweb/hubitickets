@@ -4,7 +4,7 @@
 {{ __('Ticket Subject') }} : {{$ticket->subject}}
 
 <div>
-{!! $conversion->description !!}
+{!! process_content_images($conversion->description) !!}
 </div>
 
 @component('mail::button', ['url' => route('admin.tickets.edit',$ticket->id)])

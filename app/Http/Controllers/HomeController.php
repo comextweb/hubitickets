@@ -181,7 +181,12 @@ class HomeController extends Controller
             $ticket->company_id = $company->id ?? null;
             $ticket->status = "New Ticket";
             $ticket->type = "Unassigned";
-            $ticket->description = $request->description;
+            $description = $request->description;
+            // Procesar imágenes base64 en el contenido Summernote
+            if ($description) {
+                $description = processSummernoteImages($description, $ticket);
+            }
+            $ticket->description = $description;
             $ticket->created_by = User::where('type', 'admin')->first()->id ?? 0; // Default to 0 if no admin user found
             $data = [];
             if ($request->hasfile('attachments')) {
@@ -300,6 +305,14 @@ class HomeController extends Controller
             $ticket->company_id = $company->id ?? null;
             $ticket->status = "New Ticket";
             $ticket->type = "Unassigned";
+            
+            $description = $request->description;
+            // Procesar imágenes base64 en el contenido Summernote
+            if ($description) {
+                $description = processSummernoteImages($description, $ticket);
+            }
+            $ticket->description = $description;
+
             $ticket->description = $request->description;
             $ticket->attachments = json_encode([]);
             $ticket->created_by = User::where('type', 'admin')->first()->id ?? 0; // Default to 0 if no admin user found
@@ -471,7 +484,7 @@ class HomeController extends Controller
                         'tikcet_id' => $conversion->ticket_id,
                         'ticket_email' => $conversion->ticket->email,
                         'ticket_unique_id' => $ticket->id,
-                        'new_message' => $conversion->description ?? '',
+                        'new_message' => process_content_images($conversion->description),
                         'timestamp' => \Carbon\Carbon::parse($conversion->created_at)->format('d/m/Y, h:ia'),
                         'sender_name' => $conversion->replyBy?->name ?? '',
                         'sender_email' => $conversion->replyBy?->email ?? '',
@@ -507,7 +520,7 @@ class HomeController extends Controller
                         'id' => $conversion->id,
                         'ticket_id' => $conversion->ticket_id,
                         'ticket_number' => $ticket->ticket_id,
-                        'new_message' => $conversion->description ?? '',
+                        'new_message' => process_content_images($conversion->description),
                         'sender_name' => $conversion->replyBy?->name,
                         'attachments' => json_decode($conversion->attachments),
                         'timestamp' =>$conversion->created_at->diffForHumans(),

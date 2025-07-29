@@ -93,7 +93,7 @@
                             <label><span class="me-1">🎧</span>{{ __('Resolution Agent') }} :</label>
                             <div class="badge-wrp assign-select-wrp d-flex align-items-center gap-1">
                                 <select id="agents" class="form-select w-100 select2 " name="agent_id"
-                                    data-url="{{ route('admin.ticket.assign.publicchange', ['id' => isset($ticket) ? $ticket->id : '0']) }}?token={{ urlencode($encryptedToken) }}"
+                                    data-url="{{ route('admin.ticket.assign.publicchange', ['id' => $ticket->id ]) }}?token={{ urlencode($encryptedToken) }}"
                                     required>
                                     <option selected disabled value="">{{ __('Select Resolution Agent') }}</option>
                                     @foreach ($users as $agent)
@@ -121,7 +121,7 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <p class="mb-0">{!! $ticket->description !!}</p>
+                            <p class="mb-0">{!! process_content_images($ticket->description) !!}</p>
                         </div>
                         @php
                             $attachments = json_decode($ticket->attachments);
@@ -171,10 +171,13 @@
                                     </div>
                                 </div>
                                 <div class="card-body w-100">
-                                    <div>{!! $conversion->description !!}</div>
+                                   <div>{!! process_content_images($conversion->description) !!}</div>
+                               
                                     @php
                                         $attachments = json_decode($conversion->attachments);
                                     @endphp
+                                 
+                                
                                     @if(isset($attachments))
                                         <div class="m-1">
                                             <b>{{ __('Attachments') }} :</b>
@@ -404,7 +407,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body w-100">
-                                    <div>${data.new_message}</div>
+                                    <div>${data.new_message }</div>
                                     ${data.attachments ? `
                                         <div class="m-1">
                                             <h6>{{ __('Attachments') }} :</h6>

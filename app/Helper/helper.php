@@ -644,12 +644,12 @@ if (!function_exists('processSummernoteImages')) {
                     Storage::disk($storageSettings['storage_setting'])->put($filePath, $fileContent);
                 }
                 // Generar URL pública para la imagen
-                $publicUrl = getFile($filePath);
+                //$publicUrl = getFile($filePath);
 
                 // Reemplazar en el contenido
                 $newImgTag = str_replace(
                     'src="data:image/' . $extension . ';base64,' . $base64Data . '"',
-                    'src="' . $publicUrl . '"',
+                    'src="' . $filePath . '"',
                     $imgTag
                 );
                 
@@ -660,6 +660,29 @@ if (!function_exists('processSummernoteImages')) {
         return $content;
     }
 }
+
+if (!function_exists('process_content_images')) {
+    function process_content_images($content) {
+        // Si el contenido es null o vacío, retorna cadena vacía
+        if (empty($content)) {
+            return '';
+        }
+
+        return preg_replace_callback(
+            '/<img\s+([^>]*?)src=(["\'])((?:uploads|storage)\/[^"\'>]+)\2([^>]*)>/i',
+            function ($matches) {
+                $newTag = str_replace(
+                    $matches[2].$matches[3].$matches[2],
+                    $matches[2].getFile($matches[3]).$matches[2],
+                    $matches[0]
+                );
+                return $newTag;
+            },
+            $content
+        ) ?: ''; // Asegura retornar cadena vacía si preg_replace_callback falla
+    }
+}
+
 
 // Get sidebar Logo
 if (!function_exists('getSidebarLogo')) {
