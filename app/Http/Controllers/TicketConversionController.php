@@ -29,6 +29,34 @@ use Workdo\WhatsAppChatBotAndChat\Http\Controllers\SendWhatsAppMessageController
 
 class TicketConversionController extends Controller
 {
+
+    private function buildBaseTicketQuery()
+    {
+        if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
+            return Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
+
+        } elseif (Auth::user()->isAbleTo('ticket manage department')) {
+            $userDepartmentIds = Auth::user()->departments->pluck('id')->toArray();
+            
+            return Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
+                        ->where(function ($query) use ($userDepartmentIds) {
+                            $query->whereIn('department_id', $userDepartmentIds)
+                                ->orWhere('is_assign', Auth::user()->id)
+                                ->orWhere('created_by', Auth::user()->id);
+                        });
+
+        } elseif (Auth::user()->hasRole('customer')) {
+            return Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
+                        ->where('email', Auth::user()->email);
+        } else {
+            return Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
+                        ->where(function ($query) {
+                            $query->where('is_assign', Auth::user()->id)
+                                ->orWhere('created_by', Auth::user()->id);
+                        });
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,56 +65,32 @@ class TicketConversionController extends Controller
         if (Auth::user()->isAbleTo('ticket manage')) {
             $tikcettype = Ticket::getTicketTypes();
             $settings = getCompanyAllSettings();
-            if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
-                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
-
-            }elseif (Auth::user()->isAbleTo('ticket manage department')) {
-                // Obtiene IDs de departamentos del usuario
-                $userDepartmentIds = Auth::user()->departments->pluck('id')->toArray();
-                
-                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')
-                    //->whereIn('department_id', $userDepartmentIds); // Solo tickets de sus departamentos
-                    ->where(function ($query) use ($userDepartmentIds) {
-                        $query->whereIn('department_id', $userDepartmentIds)
-                            ->orWhere('is_assign', Auth::user()->id)
-                            ->orWhere('created_by', Auth::user()->id);
-                    });
             
-            }
-            //if (Auth::user()->hasRole('admin') || Auth::user()->isAbleTo('ticket manage all')) {
-            //    $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy');
-            //} 
-            elseif (Auth::user()->hasRole('customer')) {
-                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where('email', Auth::user()->email);
-            } else {
-                $tickets = Ticket::with('getAgentDetails', 'getCategory', 'getPriority', 'getTicketCreatedBy')->where(function ($query) {
-                    $query->where('is_assign', Auth::user()->id)
-                        ->orWhere('created_by', Auth::user()->id);
-                });
-            }
+            $query = $this->buildBaseTicketQuery();
+
 
             if ($request->tikcettype != null) {
-                $tickets->where('type', $request->tikcettype);
+                $query->where('type', $request->tikcettype);
             }
 
             if ($request->priority != null) {
-                $tickets->where('priority', $request->priority);
+                $query->where('priority', $request->priority);
             }
 
             if ($request->status != null) {
-                $tickets->where('status', $request->status);
+                $query->where('status', $request->status);
             }
 
             if ($request->agent_filter_id != null) {
-                $tickets->where('is_assign', $request->agent_filter_id);
+                $query->where('is_assign', $request->agent_filter_id);
             }
 
             if ($request->tags != null) {
-                $tickets->whereRaw("FIND_IN_SET(?, tags_id)", [$request->tags]);
+                $query->whereRaw("FIND_IN_SET(?, tags_id)", [$request->tags]);
             }
 
 
-            $tickets = $tickets->orderBy('id', 'desc')->get();
+            $tickets = $query->orderBy('id', 'desc')->get();
             $users = User::where('type', 'agent')->get();
 
             $totalticket = $tickets->count();
@@ -119,10 +123,35 @@ class TicketConversionController extends Controller
 
     public function getallTicket(Request $request)
     {
-        $tickets = Ticket::where('id', '<', $request->lastTicketId)
-            ->orderBy('id', 'desc')
-            ->take(5)
-            ->get();
+
+        $query = $this->buildBaseTicketQuery()->where('id', '<', $request->lastTicketId);
+
+        //$query = Ticket::where('id', '<', $request->lastTicketId);
+
+        if ($request->tikcettype != null) {
+            $query->where('type', $request->tikcettype);
+        }
+
+        if ($request->priority != null) {
+            $query->where('priority', $request->priority);
+        }
+
+        if ($request->status != null) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->agent_filter_id != null) {
+            $query->where('is_assign', $request->agent_filter_id);
+        }
+
+        if ($request->tags != null) {
+            $query->whereRaw("FIND_IN_SET(?, tags_id)", [$request->tags]);
+        }
+
+        $tickets = $query->orderBy('id', 'desc')
+                    ->take(5)
+                    ->get();
+          
         $ticketsWithMessages = $tickets->map(function ($ticket) {
             $latestMessage = $ticket->latestMessages($ticket->id);
             $unreadMessageCount = $ticket->unreadMessge($ticket->id)->count();
