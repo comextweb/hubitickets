@@ -1587,11 +1587,21 @@
             }
         });
 
+        function getUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const params = {};
+            for (let [key, value] of urlParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
         // load more tickets
         $(document).on('click', '#load_more', function () {
             var lastTicketId = $('#myUL li:last').attr('id');
             var ticketType = $('#tikcettype').val();
             var loadbtn = $('.load-more-btn');
+            const urlParams = getUrlParams();
             loadbtn.addClass('loading');
 
             setTimeout(() => {
@@ -1602,6 +1612,7 @@
                         "_token": "{{ csrf_token() }}",
                         "ticketType": ticketType,
                         "lastTicketId": lastTicketId,
+                        ...urlParams
                     },
                     success: function (data) {
                         if (data.tickets && data.tickets.length > 0) {
